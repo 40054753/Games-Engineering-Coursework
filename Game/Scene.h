@@ -2,7 +2,7 @@
 #include "ecm.h"
 #include <SFML/Graphics.hpp>
 
-class  Scene
+class Scene
 {
 public:
 	Scene() = default;

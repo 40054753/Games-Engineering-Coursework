@@ -7,12 +7,15 @@
 #include "cmp_pickups.h"
 #include "cmp_attack.h"
 
+#define MAX_NUMBER_OF_ITEMS 3 //number of main menu options
+
 using namespace sf;
 using namespace std;
 const int GHOSTS_COUNT = 4;
 Font font;
 Texture spritesheet;
-MenuScene::MenuScene() {}
+MenuScene::MenuScene() {
+}
 void MenuScene::load() {
 	if (!font.loadFromFile("res/fonts/leadcoat.ttf")) {
 		cout << "Cannot load font!" << endl;
@@ -22,24 +25,84 @@ void MenuScene::load() {
 		activeScene = gameScene;
 	}
 
+	//list of menu items
+	menu[0].setFont(font);
+	menu[0].setColor(sf::Color::Red);
+	menu[0].setString("Play");
+	menu[0].setPosition(sf::Vector2f(Renderer::gameWidth / 2, Renderer::gameHeight / (MAX_NUMBER_OF_ITEMS + 1) * 1));
+
+	menu[1].setFont(font);
+	menu[1].setColor(sf::Color::White);
+	menu[1].setString("Options");
+	menu[1].setPosition(sf::Vector2f(Renderer::gameWidth / 2, Renderer::gameHeight / (MAX_NUMBER_OF_ITEMS + 1) * 2));
+
+	menu[2].setFont(font);
+	menu[2].setColor(sf::Color::White);
+	menu[2].setString("Close");
+	menu[2].setPosition(sf::Vector2f(Renderer::gameWidth / 2, Renderer::gameHeight / (MAX_NUMBER_OF_ITEMS + 1) * 3));
+
+	selectedItemIndex = 0;
+
 	text.setPosition(Vector2f((1280* 0.5f) - (text.getLocalBounds().width * 0.5f), 0));
-	text.setString("Menu screen");
+	text.setString("Main Menu");
 	text.setFont(font);
+	text.setColor(sf::Color::Green);
+}
+
+//simple methods for moving between menu items
+void MenuScene::moveUp()
+{
+	if (selectedItemIndex - 1 >= 0) {
+		menu[selectedItemIndex].setColor(sf::Color::White);
+		selectedItemIndex--;
+		menu[selectedItemIndex].setColor(sf::Color::Red);
+	}
+}
+void MenuScene::moveDown()
+{
+	if (selectedItemIndex + 1 < MAX_NUMBER_OF_ITEMS) {
+		menu[selectedItemIndex].setColor(sf::Color::White);
+		selectedItemIndex++;
+		menu[selectedItemIndex].setColor(sf::Color::Red);
+	}
 }
 
 void MenuScene::update(double dt) {
-	if (Keyboard::isKeyPressed(Keyboard::Space)) 
-	{
-		activeScene = gameScene;
+	static float moveTime = 0.0f;
+	moveTime -= dt;
+	//if there are menu items to move to, move to it, limit keyboard input to 0.2
+	if (moveTime <= 0 && Keyboard::isKeyPressed(Keyboard::Up)) {
+		moveUp();
+		moveTime = 0.2f;
 	}
-	Renderer::setCenter(Vector2f(Renderer::gameWidth/2, Renderer::gameHeight/2));
+	if (moveTime <= 0 && Keyboard::isKeyPressed(Keyboard::Down)) {
+		moveDown();
+		moveTime = 0.2f;
+	}
+	if (moveTime <= 0 && Keyboard::isKeyPressed(Keyboard::Return)) {
+		moveTime = 0.2f;
+		if (selectedItemIndex == 0) {
+			activeScene = gameScene; //switch to game
+			std::cout << "Play button has been pressed" << std::endl;
+		}
+		if (selectedItemIndex == 1) {
+			std::cout << "Options button has been pressed" << std::endl;
+		}
+		if (selectedItemIndex == 2) {
+			std::cout << "Close button has been pressed" << std::endl;
+		}
+	}
+	Renderer::setCenter(Vector2f(Renderer::gameWidth / 2 + 25, Renderer::gameHeight/2));
 	Scene::update(dt);
 	_ents.update(dt);
 }
 void MenuScene::render() {
 	Scene::render();
 	_ents.render(); 
-	Renderer::queue(&text);
+	for (int i = 0; i < MAX_NUMBER_OF_ITEMS; i++) { //for every menu item
+		Renderer::queue(&text);
+		Renderer::queue(&menu[i]);
+	}
 }
 vector<shared_ptr<Entity>> ghosts;
 vector<shared_ptr<Entity>> eatingEnts;
