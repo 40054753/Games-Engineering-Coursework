@@ -9,7 +9,6 @@ protected:
 public:
 	explicit ActorMovementComponent(Entity *p);
 	ActorMovementComponent() = delete;
-
 	float getSpeed() const;
 	void setSpeed(float speed);
 
@@ -39,6 +38,7 @@ protected:
 	STATE _state;
 
 public:
+	
 	EnemyAIComponent() = delete;
 	explicit EnemyAIComponent(Entity *p);
 

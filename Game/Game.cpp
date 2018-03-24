@@ -13,7 +13,8 @@ using namespace sf;
 using namespace std;
 const int GHOSTS_COUNT = 4;
 Font font;
-Texture spritesheet;
+Texture playerTexture, zombieTexture;
+
 MenuScene::MenuScene() {
 }
 void MenuScene::load() {
@@ -141,13 +142,14 @@ void GameScene::respawn()
 		auto ghost = make_shared<Entity>();
 		ghost->addComponent<EnemyAIComponent>();
 
-		auto s = ghost->addComponent<ShapeComponent>();
-		s->setShape<sf::CircleShape>(10.0f);
-		s->getShape().setFillColor(ghost_cols[i % 4]);
-		s->getShape().setOrigin(Vector2f(10.f, 10.f));
+		auto s = ghost->addComponent<SpriteComponent>();
+		s->getSprite().setTexture(zombieTexture);
+		s->getSprite().setTextureRect({ 0,0,16,21 });
+		s->getSprite().setScale({ 2.0f, 2.0f });
 
 		_ents.list.push_back(ghost);
 		ghosts.push_back(ghost);
+		//eatingEnts.push_back(ghost);       ///ghosts can eat
 		pos += Vector2f(70.0f, 0);
 	}
 
@@ -167,7 +169,7 @@ void GameScene::respawn()
 	for (int i = 1; i < _ents.list.size(); ++i) {
 		_ents.list[i]->setPosition(ghost_spawns[rand() % ghost_spawns.size()]);
 	}
-
+	
 	auto nibbleLoc = ls::findTiles(ls::EMPTY);
 	for (const auto &nl : nibbleLoc)
 	{
@@ -183,11 +185,15 @@ void GameScene::respawn()
 		_ents.list.push_back(cherry);
 		nibbles.push_back(cherry);
 	}
-
+	
 }
 void GameScene::load()
 {
-	if (!spritesheet.loadFromFile("res/img/player.png"))
+	if (!playerTexture.loadFromFile("res/img/player.png"))
+	{
+		cerr << "Failed to load spritesheet!" << endl;
+	}
+	if (!zombieTexture.loadFromFile("res/img/zombie.png"))
 	{
 		cerr << "Failed to load spritesheet!" << endl;
 	}
@@ -197,7 +203,7 @@ void GameScene::load()
 	auto mp = pl->addComponent<PlayerMovementComponent>();
 	mp->setSpeed(100.0f);
 	auto s = pl->addComponent<SpriteComponent>();
-	s->getSprite().setTexture(spritesheet);	
+	s->getSprite().setTexture(playerTexture);
 	s->getSprite().setTextureRect({ 0,0,16,21 });
 	s->getSprite().setScale({ 2.0f, 2.0f });
 	s->getSprite().setOrigin({8.0f, 8.0f});
@@ -209,6 +215,7 @@ void GameScene::load()
 	s->getShape().setPosition({ 100.0f, 100.0f});*/
 	_ents.list.push_back(pl);
 	player = pl;
+	
 	eatingEnts.push_back(player);
 	respawn();
 	

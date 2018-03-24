@@ -13,7 +13,7 @@ void PickupComponent::update(double dt) {
 			_parent->setForDelete();
 			auto cp = e->GetComponent<ActorMovementComponent>();
 			if (cp != nullptr) {
-				cp->increaseSpeed(1.0f);
+			//	cp->increaseSpeed(2.5f);
 			}
 
 			break;

@@ -13,25 +13,28 @@ class Entity {
 private:
 	std::vector<std::shared_ptr<Component>> _components;
 	sf::Vector2f _position;
-
+	int face;;
 	int _points;
 	float _rotation;
 	bool _alive;
 	bool _visible;
 	bool _forDeletion;
-
+	bool _isPlayer = false;
 public:
 	Entity();
 	virtual ~Entity() = default;
 
 	virtual void update(const double dt);
 	virtual void render();
-
+	int getFace() { return face; }
+	void setFace(int f) { face = f; }
 	sf::Vector2f &getPosition();
 	void setPosition(const sf::Vector2f &pos);
 	bool is_forDeletion() const;
 	float getRotation()	const;
 	void setRotation(float _rot);
+	bool isPlayer() { return _isPlayer; }
+	void setPlayer() { _isPlayer = true; }
 	bool isAlive() const;
 	void setAlive(bool _value);
 	void setForDelete();

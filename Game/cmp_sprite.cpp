@@ -1,6 +1,7 @@
 #include "cmp_sprite.h"
 #include "SystemRenderer.h"
 #include <iostream>
+#include "cmp_actor_movement.h"
 using namespace sf;
 ShapeComponent::ShapeComponent(Entity *p) : Component(p), _shape(std::make_shared<sf::CircleShape>()) {}
 
@@ -45,6 +46,38 @@ void SpriteComponent::update(double dt)
 {
 	
 	AnimationCounter -= dt;
+	if (!_parent->isPlayer())
+	{
+		if (frame > 3) frame = 0;
+
+		if (_parent->getFace() == 1 && AnimationCounter <= 0.0f)
+		{
+			_sprite->setTextureRect(walkingAnimationUp[frame]);
+			frame++;
+			AnimationCounter = AnimationDelay;
+		}
+		else if (_parent->getFace() == 2 && AnimationCounter <= 0.0f)
+		{
+			_sprite->setTextureRect(walkingAnimationRight[frame]);
+			frame++;
+			AnimationCounter = AnimationDelay;
+		}
+		else if (_parent->getFace() == 3 && AnimationCounter <= 0.0f)
+		{
+			_sprite->setTextureRect(walkingAnimationDown[frame]);
+			frame++;
+			AnimationCounter = AnimationDelay;
+		}
+		else if (_parent->getFace() == 4 && AnimationCounter <= 0.0f)
+		{
+			_sprite->setTextureRect(walkingAnimationLeft[frame]);
+			frame++;
+			AnimationCounter = AnimationDelay;
+		}
+
+	}
+	else
+	{
 		if (Keyboard::isKeyPressed(Keyboard::W))
 		{
 			facing = 1;
@@ -89,6 +122,7 @@ void SpriteComponent::update(double dt)
 				AnimationCounter = AnimationDelay;
 			}
 		}
+
 		else
 		{
 			frame = 0;
@@ -108,6 +142,7 @@ void SpriteComponent::update(double dt)
 				break;
 			}
 		}
+	}
 	
 	_sprite->setPosition(_parent->getPosition());
 }

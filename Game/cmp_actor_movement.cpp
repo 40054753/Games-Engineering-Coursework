@@ -37,20 +37,24 @@ void ActorMovementComponent::increaseSpeed(float speed) {
 }
 
 //PLAYER MOVEMENT COMPONENT
-PlayerMovementComponent::PlayerMovementComponent(Entity *p) : ActorMovementComponent(p) {}
+PlayerMovementComponent::PlayerMovementComponent(Entity *p) : ActorMovementComponent(p) { _parent->setPlayer(); }
 
 void PlayerMovementComponent::update(double dt) {
 	int xdir = 0, ydir = 0;
 	if (Keyboard::isKeyPressed(Keyboard::W)) {
+		_parent->setFace(1);
 		move(Vector2f(0, -_speed * dt));
 	}
 	else if (Keyboard::isKeyPressed(Keyboard::S)) {
+		_parent->setFace(3);
 		move(Vector2f(0, _speed * dt));
 	}
 	else if (Keyboard::isKeyPressed(Keyboard::A)) {
+		_parent->setFace(4);
 		move(Vector2f(-_speed * dt, 0));
 	}
 	else if (Keyboard::isKeyPressed(Keyboard::D)) {
+		_parent->setFace(2);
 		move(Vector2f(_speed * dt , 0));
 	}
 
@@ -111,6 +115,15 @@ void EnemyAIComponent::update(double dt) {
 	default:
 		break;
 	}
+	//////////////SET DIRECTION PARENT IS FACING//////////////////////
+	if (_direction.x == 0 && _direction.y < 0)
+		_parent->setFace(1);
+	else if (_direction.x > 0 && _direction.y == 0)
+		_parent->setFace(2);
+	else if (_direction.x == 0 && _direction.y > 0)
+		_parent->setFace(3);
+	else if (_direction.x < 0 && _direction.y == 0)
+		_parent->setFace(4);
 
 	ActorMovementComponent::update(dt);
 }
