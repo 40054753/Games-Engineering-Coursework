@@ -44,45 +44,68 @@ SpriteComponent::SpriteComponent(Entity *p) : Component(p), _sprite(std::make_sh
 void SpriteComponent::update(double dt) 
 {
 	
-	AnimationDelay -= dt;
+	AnimationCounter -= dt;
 		if (Keyboard::isKeyPressed(Keyboard::W))
 		{
+			facing = 1;
 			if (frame > 3) frame = 0;
-			if (AnimationDelay <= 0.0f)
+			if (AnimationCounter <= 0.0f)
 			{
 				_sprite->setTextureRect(walkingAnimationUp[frame]);
 				frame++;
-				AnimationDelay = 0.15f;
+				AnimationCounter = AnimationDelay;
 			}
 		}
-		if (Keyboard::isKeyPressed(Keyboard::S))
+		else if (Keyboard::isKeyPressed(Keyboard::S))
 		{
+			facing = 3;
 			if (frame > 3) frame = 0;
-			if (AnimationDelay <= 0.0f)
+			if (AnimationCounter <= 0.0f)
 			{
 				_sprite->setTextureRect(walkingAnimationDown[frame]);
 				frame++;
-				AnimationDelay = 0.15f;
+				AnimationCounter = AnimationDelay;
 			}
 		}
-		if (Keyboard::isKeyPressed(Keyboard::A))
+		else if (Keyboard::isKeyPressed(Keyboard::A))
 		{
+			facing = 4;
 			if (frame > 3) frame = 0;
-			if (AnimationDelay <= 0.0f)
+			if (AnimationCounter <= 0.0f)
 			{
 				_sprite->setTextureRect(walkingAnimationLeft[frame]);
 				frame++;
-				AnimationDelay = 0.15f;
+				AnimationCounter = AnimationDelay;
 			}
 		}
-		if (Keyboard::isKeyPressed(Keyboard::D))
+		else if (Keyboard::isKeyPressed(Keyboard::D))
 		{
+			facing = 2;
 			if (frame > 3) frame = 0;
-			if (AnimationDelay <= 0.0f)
+			if (AnimationCounter <= 0.0f)
 			{
 				_sprite->setTextureRect(walkingAnimationRight[frame]);
 				frame++;
-				AnimationDelay = 0.15f;
+				AnimationCounter = AnimationDelay;
+			}
+		}
+		else
+		{
+			frame = 0;
+			switch (facing)
+			{
+			case 1:
+				_sprite->setTextureRect(walkingAnimationUp[frame]);
+				break;
+			case 2:
+				_sprite->setTextureRect(walkingAnimationRight[frame]);
+				break;
+			case 3:
+				_sprite->setTextureRect(walkingAnimationDown[frame]);
+				break;
+			case 4:
+				_sprite->setTextureRect(walkingAnimationLeft[frame]);
+				break;
 			}
 		}
 	

@@ -33,9 +33,11 @@ public:
 	std::vector<sf::IntRect> walkingAnimationLeft;
 	void update(double dt) override;
 	void render() override;
-	int frame=0;
+	int frame=0; //Current frame of player/npc animation (goes from 0 to 3)
+	int facing; //direction player/npc is facing 1 - north, then clockwise (1-4)
 	sf::Sprite &getSprite() const;
-	float AnimationDelay = 0.15f;
+	const float AnimationDelay = 0.15f; //delay between frames of animation
+	float AnimationCounter = 0.15f; //used as a count-down between frames, then set to AnimationDelay when frame changes
 	template<typename T, typename... Targs>
 	void setSprite(Targs... params) {
 		_sprite.reset(new T(params...));

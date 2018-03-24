@@ -44,13 +44,13 @@ void PlayerMovementComponent::update(double dt) {
 	if (Keyboard::isKeyPressed(Keyboard::W)) {
 		move(Vector2f(0, -_speed * dt));
 	}
-	if (Keyboard::isKeyPressed(Keyboard::S)) {
+	else if (Keyboard::isKeyPressed(Keyboard::S)) {
 		move(Vector2f(0, _speed * dt));
 	}
-	if (Keyboard::isKeyPressed(Keyboard::A)) {
+	else if (Keyboard::isKeyPressed(Keyboard::A)) {
 		move(Vector2f(-_speed * dt, 0));
 	}
-	if (Keyboard::isKeyPressed(Keyboard::D)) {
+	else if (Keyboard::isKeyPressed(Keyboard::D)) {
 		move(Vector2f(_speed * dt , 0));
 	}
 
