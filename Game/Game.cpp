@@ -198,7 +198,7 @@ void GameScene::load()
 	mp->setSpeed(100.0f);
 	auto s = pl->addComponent<SpriteComponent>();
 	s->getSprite().setTexture(spritesheet);	
-	s->getSprite().setTextureRect({ 0,0,16,16 });
+	s->getSprite().setTextureRect({ 0,0,16,21 });
 	s->getSprite().setScale({ 2.0f, 2.0f });
 	s->getSprite().setOrigin({8.0f, 8.0f});
 	s->getSprite().setPosition({ 100.0f, 100.0f });

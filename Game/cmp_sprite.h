@@ -27,12 +27,15 @@ protected:
 public:
 	SpriteComponent() = delete;
 	explicit SpriteComponent(Entity *p);
-
+	std::vector<sf::IntRect> walkingAnimationDown;
+	std::vector<sf::IntRect> walkingAnimationUp;
+	std::vector<sf::IntRect> walkingAnimationRight;
+	std::vector<sf::IntRect> walkingAnimationLeft;
 	void update(double dt) override;
 	void render() override;
-
+	int frame=0;
 	sf::Sprite &getSprite() const;
-
+	float AnimationDelay = 0.15f;
 	template<typename T, typename... Targs>
 	void setSprite(Targs... params) {
 		_sprite.reset(new T(params...));
