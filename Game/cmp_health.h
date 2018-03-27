@@ -16,6 +16,7 @@ public:
 	int getHealth() { return health; }
 	int getMana() { return mana; }
 	void reduceHealth(int x);
+	void reset();
 	void reduceMana(int x);
 	void render() override;
 	void update(double dt) override;	

@@ -9,6 +9,11 @@ HealthComponent::HealthComponent(Entity *p) : Component(p)
 	maxHealth = 150;
 	maxMana = 200;
 }
+void HealthComponent::reset()
+{
+	health = maxHealth;
+	mana = maxMana;
+}
 void HealthComponent::render() {}
 void HealthComponent::update(double dt)
 {

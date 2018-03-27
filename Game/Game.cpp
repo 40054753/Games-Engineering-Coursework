@@ -110,6 +110,7 @@ void MenuScene::render() {
 	}
 }
 vector<shared_ptr<Entity>> ghosts;
+vector<shared_ptr<Entity>> npcs;
 vector<shared_ptr<Entity>> eatingEnts;
 shared_ptr<Entity> player;
 vector<shared_ptr<Entity>> nibbles;
@@ -139,6 +140,12 @@ void GameScene::respawn()
 		n.reset();
 	}
 	ghosts.clear();
+	for (auto n : npcs)
+	{
+		n->setForDelete();
+		n.reset();
+	}
+	npcs.clear();
 
 	Vector2f pos = Vector2f{ 300.0f, 300.0f };
 	for (int i = 0; i < GHOSTS_COUNT; ++i)
@@ -168,6 +175,7 @@ void GameScene::respawn()
 	auto d = npc->addComponent<NPCComponent>();
 	d->setEntities(eatingEnts); ///////////TEMP SOLUTION /// need to update setEntities to take one entity, not vector
 	_ents.list.push_back(npc);
+	npcs.push_back(npc);
 
 	auto att = _ents.list[0]->addComponent<AttackComponent>();
 	att->setEntities(ghosts);
@@ -242,6 +250,7 @@ void GameScene::update(double dt)
 	auto health_mana = player->GetComponent<HealthComponent>();
 	if (health_mana->getHealth()<=0)
 	{
+		health_mana->reset();
 		std::cout << "Game over!" << std::endl;
 		respawn();
 	}
@@ -256,9 +265,10 @@ void GameScene::update(double dt)
 		if(!g->is_forDeletion())
 		if (length(g->getPosition() - player->getPosition()) < 20.0f) 
 		{
-			health_mana->reduceHealth(30);
 			auto d = player->GetComponent<ActorMovementComponent>();
-			d->move((player->getPosition() - g->getPosition())*2.0f);
+			d->move((player->getPosition() - g->getPosition())*3.0f);
+			health_mana->reduceHealth(30);
+			
 		}
 	}
 	_ents.update(dt);
