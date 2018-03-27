@@ -8,7 +8,7 @@ PickupComponent::PickupComponent(Entity *p) : _points(20), Component(p) {}
 void PickupComponent::update(double dt) {
 	for (auto e : _entities) 
 	{
-		if (length(_parent->getPosition() - e->getPosition()) < 15.0f) 
+		if (length(_parent->getPosition() - e->getPosition()) < 21.0f) 
 		{			
 			_parent->setForDelete();
 			auto cp = e->GetComponent<ActorMovementComponent>();

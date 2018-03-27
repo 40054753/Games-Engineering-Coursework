@@ -1,6 +1,5 @@
 #pragma once
 #include "Scene.h"
-
 #define MAX_NUMBER_OF_ITEMS 3
 
 extern std::shared_ptr<Scene> gameScene;
@@ -28,6 +27,7 @@ class GameScene : public Scene
 private:
 	sf::Text text;
 	sf::Clock scoreClock;
+
 	void respawn();
 public:
 	GameScene() = default;

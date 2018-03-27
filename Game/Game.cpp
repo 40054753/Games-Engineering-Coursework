@@ -3,9 +3,13 @@
 #include "Game.h"
 #include "levelsystem.h"
 #include "cmp_sprite.h"
+#include "cmp_health.h"
 #include "cmp_actor_movement.h"
 #include "cmp_pickups.h"
 #include "cmp_attack.h"
+#include "cmp_npc.h"
+
+
 
 #define MAX_NUMBER_OF_ITEMS 3 //number of main menu options
 
@@ -21,7 +25,7 @@ void MenuScene::load() {
 	if (!font.loadFromFile("res/fonts/leadcoat.ttf")) {
 		cout << "Cannot load font!" << endl;
 	}
-
+	
 	if (Keyboard::isKeyPressed(Keyboard::Space)) {
 		activeScene = gameScene;
 	}
@@ -146,12 +150,24 @@ void GameScene::respawn()
 		s->getSprite().setTexture(zombieTexture);
 		s->getSprite().setTextureRect({ 0,0,16,21 });
 		s->getSprite().setScale({ 2.0f, 2.0f });
+		s->getSprite().setOrigin(8.0f, 12.0f);
 
 		_ents.list.push_back(ghost);
 		ghosts.push_back(ghost);
 		//eatingEnts.push_back(ghost);       ///ghosts can eat
 		pos += Vector2f(70.0f, 0);
 	}
+
+	/////////////////////////////////////////////////////////////////EXAMPLE NPC/////////////////////////////////////
+	auto npc = make_shared<Entity>();
+	auto n = npc->addComponent<SpriteComponent>();
+	n->getSprite().setTexture(playerTexture);
+	n->getSprite().setTextureRect({ 0,0,16,21 });
+	n->getSprite().setScale({ 2.0f, 2.0f });
+	n->getSprite().setOrigin(8.0f, 12.0f);
+	auto d = npc->addComponent<NPCComponent>();
+	d->setEntities(eatingEnts); ///////////TEMP SOLUTION /// need to update setEntities to take one entity, not vector
+	_ents.list.push_back(npc);
 
 	auto att = _ents.list[0]->addComponent<AttackComponent>();
 	att->setEntities(ghosts);
@@ -189,6 +205,7 @@ void GameScene::respawn()
 }
 void GameScene::load()
 {
+	
 	if (!playerTexture.loadFromFile("res/img/player.png"))
 	{
 		cerr << "Failed to load spritesheet!" << endl;
@@ -202,26 +219,32 @@ void GameScene::load()
 	auto pl = make_shared<Entity>();
 	auto mp = pl->addComponent<PlayerMovementComponent>();
 	mp->setSpeed(100.0f);
+	pl->addComponent<HealthComponent>();
 	auto s = pl->addComponent<SpriteComponent>();
 	s->getSprite().setTexture(playerTexture);
 	s->getSprite().setTextureRect({ 0,0,16,21 });
 	s->getSprite().setScale({ 2.0f, 2.0f });
-	s->getSprite().setOrigin({8.0f, 8.0f});
+	s->getSprite().setOrigin({8.0f, 12.0f});
 	s->getSprite().setPosition({ 100.0f, 100.0f });
-
-	/*s->setShape<sf::CircleShape>(10.0f);
-	s->getShape().setFillColor(Color::Yellow);
-	s->getShape().setOrigin(10.0f, 10.0f);
-	s->getShape().setPosition({ 100.0f, 100.0f});*/
 	_ents.list.push_back(pl);
 	player = pl;
 	
 	eatingEnts.push_back(player);
 	respawn();
+
+	
 	
 }
+
+
 void GameScene::update(double dt)
 {
+	auto health_mana = player->GetComponent<HealthComponent>();
+	if (health_mana->getHealth()<=0)
+	{
+		std::cout << "Game over!" << std::endl;
+		respawn();
+	}
 	Renderer::setCenter(player->getPosition());
 	if (Keyboard::isKeyPressed(Keyboard::Tab))
 	{
@@ -231,10 +254,11 @@ void GameScene::update(double dt)
 	for (auto &g : ghosts) 
 	{
 		if(!g->is_forDeletion())
-		if (length(g->getPosition() - player->getPosition()) < 15.0f) 
+		if (length(g->getPosition() - player->getPosition()) < 20.0f) 
 		{
-			std::cout << "Game over!" << std::endl;
-			respawn();
+			health_mana->reduceHealth(30);
+			auto d = player->GetComponent<ActorMovementComponent>();
+			d->move((player->getPosition() - g->getPosition())*2.0f);
 		}
 	}
 	_ents.update(dt);
