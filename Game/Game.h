@@ -25,9 +25,8 @@ public:
 class GameScene : public Scene
 {
 private:
-	sf::Text text;
 	sf::Clock scoreClock;
-
+	sf::Text text;
 	void respawn();
 public:
 	GameScene() = default;

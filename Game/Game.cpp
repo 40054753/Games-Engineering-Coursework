@@ -8,7 +8,8 @@
 #include "cmp_pickups.h"
 #include "cmp_attack.h"
 #include "cmp_npc.h"
-
+#include "cmp_hud.h"
+#include <string>
 
 
 #define MAX_NUMBER_OF_ITEMS 3 //number of main menu options
@@ -113,6 +114,7 @@ vector<shared_ptr<Entity>> ghosts;
 vector<shared_ptr<Entity>> npcs;
 vector<shared_ptr<Entity>> eatingEnts;
 shared_ptr<Entity> player;
+shared_ptr<Entity> hud;
 vector<shared_ptr<Entity>> nibbles;
 
 shared_ptr<Entity> makeNibble(const Vector2f& nl, Color col, float size)
@@ -158,7 +160,7 @@ void GameScene::respawn()
 		s->getSprite().setTextureRect({ 0,0,16,21 });
 		s->getSprite().setScale({ 2.0f, 2.0f });
 		s->getSprite().setOrigin(8.0f, 12.0f);
-
+		auto h = ghost->addComponent<HealthComponent>();
 		_ents.list.push_back(ghost);
 		ghosts.push_back(ghost);
 		//eatingEnts.push_back(ghost);       ///ghosts can eat
@@ -179,6 +181,7 @@ void GameScene::respawn()
 
 	auto att = _ents.list[0]->addComponent<AttackComponent>();
 	att->setEntities(ghosts);
+	att->damageText.setFont(font);
 
 	for (auto n : nibbles)
 	{
@@ -236,11 +239,19 @@ void GameScene::load()
 	s->getSprite().setPosition({ 100.0f, 100.0f });
 	_ents.list.push_back(pl);
 	player = pl;
-	
+
+	if (!font.loadFromFile("res/fonts/leadcoat.ttf")) {
+		cout << "Cannot load font!" << endl;
+	}
+
+	auto hd = make_shared<Entity>();
+	auto hb = hd->addComponent<HudComponent>();
+	hud = hd;
+
+	HudComponent* hudobject = hud->GetComponent<HudComponent>();
+
 	eatingEnts.push_back(player);
 	respawn();
-
-	
 	
 }
 
@@ -248,11 +259,15 @@ void GameScene::load()
 void GameScene::update(double dt)
 {
 	auto health_mana = player->GetComponent<HealthComponent>();
+	auto hudobject = hud->GetComponent<HudComponent>();
 	if (health_mana->getHealth()<=0)
 	{
 		health_mana->reset();
 		std::cout << "Game over!" << std::endl;
+		hudobject->setHealth(150); // this really should be changed to something more related to the player, but i cant seem to see how the player is reset in the respawn method
+		hudobject->setText();
 		respawn();
+
 	}
 	Renderer::setCenter(player->getPosition());
 	if (Keyboard::isKeyPressed(Keyboard::Tab))
@@ -268,9 +283,13 @@ void GameScene::update(double dt)
 			auto d = player->GetComponent<ActorMovementComponent>();
 			d->move((player->getPosition() - g->getPosition())*3.0f);
 			health_mana->reduceHealth(30);
-			
+			hudobject->setHealth(health_mana->getHealth());
+			hudobject->setText();
 		}
 	}
+
+	hudobject->setPosition(Vector2f(player->getPosition().x - Renderer::gameWidth/2, player->getPosition().y - Renderer::gameHeight / 2));
+	hudobject->render();
 	_ents.update(dt);
 	Scene::update(dt);
 }

@@ -9,7 +9,9 @@ protected:
 public:
 	explicit AttackComponent(Entity *p);
 	AttackComponent() = delete;
-
+	sf::Text damageText;
+	sf::Font font;
+	std::vector<sf::Text> damageArray;
 	void render() override;
 	void update(double dt) override;
 	void setEntities(std::vector<std::shared_ptr<Entity>>& e);
