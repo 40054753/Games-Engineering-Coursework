@@ -2,6 +2,7 @@
 #include "SystemRenderer.h"
 #include <iostream>
 #include "cmp_actor_movement.h"
+#include "Game.h"
 using namespace sf;
 ShapeComponent::ShapeComponent(Entity *p) : Component(p), _shape(std::make_shared<sf::CircleShape>()) {}
 
@@ -153,9 +154,33 @@ void CharacterSpriteComponent::render() {
 sf::Sprite& CharacterSpriteComponent::getSprite() const {
 	return *_sprite;
 }
+
+DamageTextComponent::DamageTextComponent(Entity *p) : Component(p) 
+{
+	damageText.setString(std::to_string(30));
+	damageText.setFont(font);
+	damageText.setCharacterSize(20);
+	damageText.setColor(sf::Color::Red);
+	
+
+}
+void DamageTextComponent::update(double dt)
+{
+	textTime -= dt;
+	damageText.setPosition(_parent->getPosition());
+	if (textTime < 0)
+		_parent->setForDelete();
+	
+}
+void DamageTextComponent::render()
+{
+	Renderer::queue(&damageText);
+}
+	
 sf::Sprite& StaticSpriteComponent::getSprite() const {
 	return *_sprite;
 }
+
 StaticSpriteComponent::StaticSpriteComponent(Entity *p) : Component(p), _sprite(std::make_shared<sf::Sprite>())
 {
 

@@ -279,13 +279,17 @@ void GameScene::update(double dt)
 	
 	for (auto &g : ghosts) 
 	{
-		if(!g->is_forDeletion())
-		if (length(g->getPosition() - player->getPosition()) < 20.0f) 
+		if (!g->is_forDeletion())
 		{
-			auto d = player->GetComponent<PlayerMovementComponent>();
-			d->move((player->getPosition() - g->getPosition())*3.0f);
-			health_mana->reduceHealth(30);
-			
+			auto hp = g->GetComponent<HealthComponent>();
+			if (hp->getHealth() <= 0) g->setForDelete();
+			if (length(g->getPosition() - player->getPosition()) < 20.0f)
+			{
+				auto d = player->GetComponent<PlayerMovementComponent>();
+				d->move((player->getPosition() - g->getPosition())*3.0f);
+				health_mana->reduceHealth(30);
+
+			}
 		}
 	}
 

@@ -50,34 +50,21 @@ void AttackComponent::update(double dt)
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) 
 	{
-		for (auto e : _entities) {
+		for (auto e : _entities) 
+		{
+			if (!e->is_forDeletion())
 			if (attackTime <= 0 && length(_parent->getPosition() - e->getPosition()) < 100.0f) {
 				attackTime = 0.2f;
 				//this should take the hp of the entity, reduce it by the AD of whatever hits it
 				auto health_mana = e->GetComponent<HealthComponent>();
 				health_mana->reduceHealth(30); //should be changed to the player's attack damage
-				damageText.setString(std::to_string(30));
-				damageText.setFont(font);
-				damageText.setCharacterSize(20);
-				damageText.setColor(sf::Color::Red);
-				damageText.setPosition(e->getPosition());
-				damageArray.insert(damageArray.begin(), damageText);
-				if (health_mana->getHealth() <= 0) {
-					e->setForDelete();
-				}
-				break;
+
+				auto dmg = std::make_shared<Entity>();
+				dmg->addComponent<DamageTextComponent>();
+				dmg->setPosition(e->getPosition());
+				gameScene->getEnts().push_back(dmg);
 			}
 		}
 	}
-	if (textTime <= 0) {
-		if (!damageArray.empty()) {
-			damageArray.pop_back();
-		}
-		textTime = 0.4f;
-	}
-	for (int i = 0; i < damageArray.size(); i++) {
-		std::string string2 = std::to_string(damageArray.size());
-		std::cout << string2;
-		Renderer::queue(&damageArray[i]);
-	}
+	
 }

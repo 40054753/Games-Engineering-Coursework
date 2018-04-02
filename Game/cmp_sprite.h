@@ -43,7 +43,18 @@ public:
 		_sprite.reset(new T(params...));
 	}
 };
+class DamageTextComponent : public Component {
+protected:
+	sf::Text damageText;
+	std::vector<sf::Text> damageArray;
+	float textTime = 0.4f;
+public:
+	DamageTextComponent() = delete;
+	explicit DamageTextComponent(Entity *p);
+	void update(double dt) override;
+	void render() override;
 
+};
 class StaticSpriteComponent : public Component {
 protected:
 	std::shared_ptr<sf::Sprite> _sprite;
