@@ -18,7 +18,7 @@ using namespace sf;
 using namespace std;
 const int GHOSTS_COUNT = 4;
 Font font;
-Texture playerTexture, zombieTexture;
+Texture playerTexture, zombieTexture, spellsTexture;
 
 MenuScene::MenuScene() {
 }
@@ -220,6 +220,10 @@ void GameScene::load()
 		std::cout << "Cannot load font!" << std::endl;
 	}
 	if (!playerTexture.loadFromFile("res/img/player.png"))
+	{
+		cerr << "Failed to load spritesheet!" << endl;
+	}
+	if (!spellsTexture.loadFromFile("res/img/spells.png"))
 	{
 		cerr << "Failed to load spritesheet!" << endl;
 	}

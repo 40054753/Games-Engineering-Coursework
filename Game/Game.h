@@ -7,6 +7,7 @@ extern std::shared_ptr<Scene> menuScene;
 extern std::shared_ptr<Scene> activeScene;
 extern sf::Texture playerTexture;
 extern sf::Texture zombieTexture;
+extern sf::Texture spellsTexture;
 extern sf::Font font;
 class MenuScene : public Scene
 {

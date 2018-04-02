@@ -19,7 +19,7 @@ void ProjectileComponent::update(double dt)
 	if(!_parent->is_forDeletion())
 	for(auto g: _entities)
 	if(!g->is_forDeletion())
-	if (length(g->getPosition() - _parent->getPosition()) < 20.0f)
+	if (length(g->getPosition() - _parent->getPosition()) < 30.0f)
 	{
 		auto health_mana = g->GetComponent<HealthComponent>();
 		health_mana->reduceHealth(30); //should be changed to the player's attack damage

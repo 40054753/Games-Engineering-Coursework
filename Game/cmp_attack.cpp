@@ -39,8 +39,8 @@ void AttackComponent::update(double dt)
 		    auto c2 = bullet->addComponent<ProjectileComponent>();
 			c2->setEntities(_entities);
 			auto s = bullet->addComponent<StaticSpriteComponent>();
-			s->getSprite().setTexture(playerTexture);
-			s->getSprite().setTextureRect({ 0,0,15,15 });
+			s->getSprite().setTexture(spellsTexture);
+			s->getSprite().setTextureRect({ 0,0,30,30 });
 			s->getSprite().setScale({ 1.0f, 1.0f });
 			s->getSprite().setOrigin({ 8.0f, 12.0f });
 			s->getSprite().setPosition({ 100.0f, 100.0f });
