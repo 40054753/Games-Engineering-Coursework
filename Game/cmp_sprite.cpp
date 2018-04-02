@@ -18,7 +18,7 @@ sf::Shape& ShapeComponent::getShape() const {
 	return *_shape;
 }
 
-SpriteComponent::SpriteComponent(Entity *p) : Component(p), _sprite(std::make_shared<sf::Sprite>())
+CharacterSpriteComponent::CharacterSpriteComponent(Entity *p) : Component(p), _sprite(std::make_shared<sf::Sprite>())
 {
 	frame = 0;
 	walkingAnimationDown.push_back(sf::IntRect(0, 0, 16, 21));
@@ -42,7 +42,7 @@ SpriteComponent::SpriteComponent(Entity *p) : Component(p), _sprite(std::make_sh
 	walkingAnimationLeft.push_back(sf::IntRect(48, 65, 16, 21));
 }
 
-void SpriteComponent::update(double dt) 
+void CharacterSpriteComponent::update(double dt)
 {
 	
 	AnimationCounter -= dt;
@@ -147,10 +147,27 @@ void SpriteComponent::update(double dt)
 	_sprite->setPosition(_parent->getPosition());
 }
 
-void SpriteComponent::render() {
+void CharacterSpriteComponent::render() {
 	Renderer::queue(_sprite.get());
 }
-sf::Sprite& SpriteComponent::getSprite() const {
+sf::Sprite& CharacterSpriteComponent::getSprite() const {
 	return *_sprite;
 }
+sf::Sprite& StaticSpriteComponent::getSprite() const {
+	return *_sprite;
+}
+StaticSpriteComponent::StaticSpriteComponent(Entity *p) : Component(p), _sprite(std::make_shared<sf::Sprite>())
+{
 
+}
+
+void StaticSpriteComponent::update(double dt)
+{
+	_sprite->rotate(720.0f*dt);
+	_sprite->setPosition(_parent->getPosition());
+}
+
+void StaticSpriteComponent::render()
+{
+	Renderer::queue(_sprite.get());
+}

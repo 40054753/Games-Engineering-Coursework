@@ -2,6 +2,7 @@
 #include "levelsystem.h"
 
 using namespace sf;
+static const Vector2i directions[] = { Vector2i{ 0, 1 }, Vector2i{ 1, 0 }, Vector2i{ 0, -1 }, Vector2i{ -1, 0 } };
 //ACTOR MOVEMENT
 void ActorMovementComponent::render() {}
 
@@ -36,6 +37,38 @@ void ActorMovementComponent::increaseSpeed(float speed) {
 	_speed += speed;
 }
 
+ProjectileMovementComponent::ProjectileMovementComponent(Entity *p) : ActorMovementComponent(p) { _speed = 200.0f; }
+void ProjectileMovementComponent::render() {}
+
+void ProjectileMovementComponent::update(double dt)
+{//amount to move
+	auto face = _parent->getFace();
+	if (face==1) {
+		move(Vector2f(0, -_speed * dt));
+	}
+	else if (face == 3) {
+		move(Vector2f(0, _speed * dt));
+	}
+	else if (face == 4) {
+		move(Vector2f(-_speed * dt, 0));
+	}
+	else if (face == 2) {
+		move(Vector2f(_speed * dt, 0));
+	}
+}
+void ProjectileMovementComponent::move(const Vector2f &p)
+{
+	auto pp = _parent->getPosition() + p;
+	if (validMove(pp))
+	{
+		_parent->setPosition(pp);
+	}
+	else
+		_parent->setForDelete();
+
+}
+
+
 //PLAYER MOVEMENT COMPONENT
 PlayerMovementComponent::PlayerMovementComponent(Entity *p) : ActorMovementComponent(p) { _parent->setPlayer(); }
 
@@ -65,7 +98,7 @@ void PlayerMovementComponent::render() {
 	ActorMovementComponent::render();
 }
 
-static const Vector2i directions[] = { Vector2i{ 1, 0 }, Vector2i{ 0, 1 }, Vector2i{ 0, -1 }, Vector2i{ -1, 0 } };
+
 EnemyAIComponent::EnemyAIComponent(Entity * p) : ActorMovementComponent(p) {
 	_state = ROAMING;
 	_speed = 100.0f;

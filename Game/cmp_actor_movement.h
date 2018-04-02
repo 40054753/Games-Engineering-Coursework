@@ -19,7 +19,17 @@ public:
 	void render() override;
 	void update(double dt) override;
 };
+class ProjectileMovementComponent : public ActorMovementComponent {
 
+protected:
+	sf::Vector2f _direction;
+public:
+	ProjectileMovementComponent() = delete;
+	explicit ProjectileMovementComponent(Entity *p);
+	void move(const sf::Vector2f&);
+	void update(double dt) override;
+	void render() override;
+};
 
 class PlayerMovementComponent : public ActorMovementComponent {
 public:

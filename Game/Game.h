@@ -5,12 +5,13 @@
 extern std::shared_ptr<Scene> gameScene;
 extern std::shared_ptr<Scene> menuScene;
 extern std::shared_ptr<Scene> activeScene;
-
+extern sf::Texture playerTexture;
+extern sf::Texture zombieTexture;
+extern sf::Font font;
 class MenuScene : public Scene
 {
 private:
 	int selectedItemIndex;
-	sf::Font font;
 	sf::Text menu[MAX_NUMBER_OF_ITEMS];
 	sf::Text text;
 public:

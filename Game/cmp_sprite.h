@@ -20,13 +20,13 @@ public:
 	}
 };
 
-class SpriteComponent : public Component {
+class CharacterSpriteComponent : public Component {
 protected:
 	std::shared_ptr<sf::Sprite> _sprite;
 
 public:
-	SpriteComponent() = delete;
-	explicit SpriteComponent(Entity *p);
+	CharacterSpriteComponent() = delete;
+	explicit CharacterSpriteComponent(Entity *p);
 	std::vector<sf::IntRect> walkingAnimationDown;
 	std::vector<sf::IntRect> walkingAnimationUp;
 	std::vector<sf::IntRect> walkingAnimationRight;
@@ -38,6 +38,22 @@ public:
 	sf::Sprite &getSprite() const;
 	const float AnimationDelay = 0.15f; //delay between frames of animation
 	float AnimationCounter = 0.15f; //used as a count-down between frames, then set to AnimationDelay when frame changes
+	template<typename T, typename... Targs>
+	void setSprite(Targs... params) {
+		_sprite.reset(new T(params...));
+	}
+};
+
+class StaticSpriteComponent : public Component {
+protected:
+	std::shared_ptr<sf::Sprite> _sprite;
+
+public:
+	StaticSpriteComponent() = delete;
+	explicit StaticSpriteComponent(Entity *p);
+	void update(double dt) override;
+	void render() override;
+	sf::Sprite &getSprite() const;
 	template<typename T, typename... Targs>
 	void setSprite(Targs... params) {
 		_sprite.reset(new T(params...));

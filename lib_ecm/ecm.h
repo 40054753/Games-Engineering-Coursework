@@ -13,7 +13,7 @@ class Entity {
 private:
 	std::vector<std::shared_ptr<Component>> _components;
 	sf::Vector2f _position;
-	int face;;
+	int face=3;
 	int _points;
 	float _rotation;
 	bool _alive;

@@ -149,13 +149,13 @@ void GameScene::respawn()
 	}
 	npcs.clear();
 
-	Vector2f pos = Vector2f{ 300.0f, 300.0f };
+
 	for (int i = 0; i < GHOSTS_COUNT; ++i)
 	{
 		auto ghost = make_shared<Entity>();
 		ghost->addComponent<EnemyAIComponent>();
 
-		auto s = ghost->addComponent<SpriteComponent>();
+		auto s = ghost->addComponent<CharacterSpriteComponent>();
 		s->getSprite().setTexture(zombieTexture);
 		s->getSprite().setTextureRect({ 0,0,16,21 });
 		s->getSprite().setScale({ 2.0f, 2.0f });
@@ -164,12 +164,12 @@ void GameScene::respawn()
 		_ents.list.push_back(ghost);
 		ghosts.push_back(ghost);
 		//eatingEnts.push_back(ghost);       ///ghosts can eat
-		pos += Vector2f(70.0f, 0);
+		
 	}
 
 	/////////////////////////////////////////////////////////////////EXAMPLE NPC/////////////////////////////////////
 	auto npc = make_shared<Entity>();
-	auto n = npc->addComponent<SpriteComponent>();
+	auto n = npc->addComponent<CharacterSpriteComponent>();
 	n->getSprite().setTexture(playerTexture);
 	n->getSprite().setTextureRect({ 0,0,16,21 });
 	n->getSprite().setScale({ 2.0f, 2.0f });
@@ -216,7 +216,9 @@ void GameScene::respawn()
 }
 void GameScene::load()
 {
-	
+	if (!font.loadFromFile("res/fonts/leadcoat.ttf")) {
+		std::cout << "Cannot load font!" << std::endl;
+	}
 	if (!playerTexture.loadFromFile("res/img/player.png"))
 	{
 		cerr << "Failed to load spritesheet!" << endl;
@@ -231,7 +233,7 @@ void GameScene::load()
 	auto mp = pl->addComponent<PlayerMovementComponent>();
 	mp->setSpeed(100.0f);
 	pl->addComponent<HealthComponent>();
-	auto s = pl->addComponent<SpriteComponent>();
+	auto s = pl->addComponent<CharacterSpriteComponent>();
 	s->getSprite().setTexture(playerTexture);
 	s->getSprite().setTextureRect({ 0,0,16,21 });
 	s->getSprite().setScale({ 2.0f, 2.0f });
@@ -260,14 +262,14 @@ void GameScene::update(double dt)
 {
 	auto health_mana = player->GetComponent<HealthComponent>();
 	auto hudobject = hud->GetComponent<HudComponent>();
+	hudobject->setHealth(health_mana->getHealth());
+	hudobject->setMana(health_mana->getMana());
+	hudobject->setText();
 	if (health_mana->getHealth()<=0)
 	{
 		health_mana->reset();
 		std::cout << "Game over!" << std::endl;
-		hudobject->setHealth(150); // this really should be changed to something more related to the player, but i cant seem to see how the player is reset in the respawn method
-		hudobject->setText();
 		respawn();
-
 	}
 	Renderer::setCenter(player->getPosition());
 	if (Keyboard::isKeyPressed(Keyboard::Tab))
@@ -280,11 +282,10 @@ void GameScene::update(double dt)
 		if(!g->is_forDeletion())
 		if (length(g->getPosition() - player->getPosition()) < 20.0f) 
 		{
-			auto d = player->GetComponent<ActorMovementComponent>();
+			auto d = player->GetComponent<PlayerMovementComponent>();
 			d->move((player->getPosition() - g->getPosition())*3.0f);
 			health_mana->reduceHealth(30);
-			hudobject->setHealth(health_mana->getHealth());
-			hudobject->setText();
+			
 		}
 	}
 
