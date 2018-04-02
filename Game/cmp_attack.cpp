@@ -1,7 +1,6 @@
 #include <iostream>
 #include "cmp_attack.h"
 #include "cmp_health.h"
-#include "cmp_damage_text.h"
 #include "SystemRenderer.h"
 #include <string>
 
@@ -23,7 +22,7 @@ void AttackComponent::update(double dt)
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) 
 	{
 		for (auto e : _entities) {
-			if (attackTime <= 0 && length(_parent->getPosition() - e->getPosition()) < 100.0f) {
+			if (attackTime <= 0 && length(_parent->getPosition() - e->getPosition()) < 100.0f && !e->is_forDeletion()) {
 				attackTime = 0.2f;
 				//this should take the hp of the entity, reduce it by the AD of whatever hits it
 				auto health_mana = e->GetComponent<HealthComponent>();
@@ -48,7 +47,7 @@ void AttackComponent::update(double dt)
 		if (!damageArray.empty()) {
 			damageArray.pop_back();
 		}
-		textTime = 0.4f;
+		textTime = 0.3f;
 	}
 	for (int i = 0; i < damageArray.size(); i++) {
 		std::string string2 = std::to_string(damageArray.size());

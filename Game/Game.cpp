@@ -283,11 +283,10 @@ void GameScene::update(double dt)
 			auto d = player->GetComponent<ActorMovementComponent>();
 			d->move((player->getPosition() - g->getPosition())*3.0f);
 			health_mana->reduceHealth(30);
-			hudobject->setHealth(health_mana->getHealth());
-			hudobject->setText();
 		}
 	}
-
+	hudobject->setHealth(health_mana->getHealth());
+	hudobject->setText();
 	hudobject->setPosition(Vector2f(player->getPosition().x - Renderer::gameWidth/2, player->getPosition().y - Renderer::gameHeight / 2));
 	hudobject->render();
 	_ents.update(dt);
