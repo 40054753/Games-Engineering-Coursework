@@ -15,6 +15,7 @@
 
 
 
+
 using namespace sf;
 using namespace std;
 const int GHOSTS_COUNT = 4;
@@ -22,10 +23,17 @@ Font font;
 Texture playerTexture, zombieTexture, spellsTexture, snowEffect;
 Texture menuBg;
 sf::Sprite background;
+SoundBuffer buffer;
+Sound sound;
 RectangleShape rect;
 MenuScene::MenuScene() {
 }
 void MenuScene::load() {
+
+	if (!buffer.loadFromFile("res/sound/click.wav")) {
+		cout << "Cannot load font!" << endl;
+	}
+	sound.setBuffer(buffer);
 	if (!font.loadFromFile("res/fonts/font.ttf")) {
 		cout << "Cannot load font!" << endl;
 	}
@@ -47,7 +55,7 @@ void MenuScene::load() {
 		_ents.list.push_back(snow);
 	}
 	background.setTexture(menuBg);
-	rect.setPosition(sf::Vector2f(3.9f * Renderer::gameWidth / 5, Renderer::gameHeight / (MAX_NUMBER_OF_ITEMS)  * 2.15f));
+	rect.setPosition(sf::Vector2f(3.92f * Renderer::gameWidth / 5, Renderer::gameHeight / (MAX_NUMBER_OF_ITEMS)  * 2.15f));
 	//rect.setScale({ 3.0f,3.0f });
 	rect.setSize({ Renderer::gameWidth / 5.3f,Renderer::gameHeight / 2.8f });
 	rect.setFillColor(sf::Color(1,1,1,130));
@@ -93,12 +101,14 @@ void MenuScene::moveUp()
 		menu[selectedItemIndex].setColor(sf::Color::White);
 		selectedItemIndex--;
 		menu[selectedItemIndex].setColor(sf::Color::Red);
+		sound.play();
 	} 
 	else
 	{
 		menu[selectedItemIndex].setColor(sf::Color::White);
 		selectedItemIndex= MAX_NUMBER_OF_ITEMS-1;
 		menu[selectedItemIndex].setColor(sf::Color::Red);
+		sound.play();
 	}
 }
 void MenuScene::moveDown()
@@ -107,12 +117,14 @@ void MenuScene::moveDown()
 		menu[selectedItemIndex].setColor(sf::Color::White);
 		selectedItemIndex++;
 		menu[selectedItemIndex].setColor(sf::Color::Red);
+		sound.play();
 	}
 	else
 	{
 		menu[selectedItemIndex].setColor(sf::Color::White);
 		selectedItemIndex=0;
 		menu[selectedItemIndex].setColor(sf::Color::Red);
+		sound.play();
 	}
 }
 

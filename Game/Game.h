@@ -1,5 +1,6 @@
 #pragma once
 #include "Scene.h"
+#include "SFML\Audio.hpp"
 #define MAX_NUMBER_OF_ITEMS 4
 
 extern std::shared_ptr<Scene> gameScene;
@@ -8,6 +9,8 @@ extern std::shared_ptr<Scene> activeScene;
 extern sf::Texture playerTexture;
 extern sf::Texture zombieTexture;
 extern sf::Texture spellsTexture;
+extern sf::SoundBuffer buffer;
+extern sf::Sound sound;
 extern sf::Texture snowEffect;
 extern sf::Font font;
 class MenuScene : public Scene

@@ -36,6 +36,6 @@ add_custom_target(copy_resources ALL COMMAND ${CMAKE_COMMAND}
 file(GLOB_RECURSE SOURCES Game/*.cpp Game/*.h)
 add_executable(Game ${SOURCES})
 target_include_directories(Game SYSTEM PRIVATE ${SFML_INCS})
-target_link_libraries(Game lib_tile_level_loader lib_maths lib_ecm sfml-graphics)
+target_link_libraries(Game lib_tile_level_loader lib_maths lib_ecm sfml-graphics sfml-audio)
 set_target_properties(Game PROPERTIES VS_DEBUGGER_WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/$(Configuration))
 add_dependencies(Game copy_resources)
