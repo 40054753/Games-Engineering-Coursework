@@ -1,6 +1,7 @@
 #include "cmp_actor_movement.h"
 #include "levelsystem.h"
 #include "SystemRenderer.h"
+#include "cmp_sprite.h"
 
 using namespace sf;
 static const Vector2i directions[] = { Vector2i{ 0, 1 }, Vector2i{ 1, 0 }, Vector2i{ 0, -1 }, Vector2i{ -1, 0 } };
@@ -15,14 +16,24 @@ bool ActorMovementComponent::validMove(const sf::Vector2f &pos) {
 	return (LevelSystem::getTileAt(pos) != LevelSystem::WALL);
 }
 
-void ActorMovementComponent::move(const Vector2f &p) {
+void ActorMovementComponent::move(const Vector2f &p) 
+{
 	auto pp = _parent->getPosition() + p;
 	if (validMove(pp)) {
 		_parent->setPosition(pp);
 	}
 }
+void ActorMovementComponent::push(const Vector2f &p)
+{
+	pushed = true;
+	pushVector = 0.3f*p;
+	pushTimer = 0.1f;
+	auto c = _parent->GetComponent<CharacterSpriteComponent>();
+	c->getSprite().setColor(sf::Color::Red);
+}
 
-void ActorMovementComponent::move(float x, float y) {
+void ActorMovementComponent::move(float x, float y)
+{
 	move(Vector2f(x, y));
 }
 
@@ -106,7 +117,22 @@ void SnowComponent::move(const Vector2f &p)
 //PLAYER MOVEMENT COMPONENT
 PlayerMovementComponent::PlayerMovementComponent(Entity *p) : ActorMovementComponent(p) { _parent->setPlayer(); }
 
-void PlayerMovementComponent::update(double dt) {
+void PlayerMovementComponent::update(double dt) 
+{
+	if (pushed)
+	{
+		pushTimer -= dt;
+		move(pushVector);
+		immobilize();
+	}
+	if (pushed && pushTimer <= 0)
+	{
+		mobilize();
+		pushTimer = 0.1f;
+		pushed = false;
+		auto c = _parent->GetComponent<CharacterSpriteComponent>();
+		c->getSprite().setColor(sf::Color::White);
+	}
 	if (!immobilized)
 	{
 		int xdir = 0, ydir = 0;

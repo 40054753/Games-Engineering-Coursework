@@ -26,7 +26,6 @@ void AttackComponent::update(double dt)
 	attackTime -= dt;
 	cooldown -= dt;
 
-	textTime -= dt;
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::C))
 	{
 		if (cooldown < 0.0f && health_mana->getMana()>20 )
@@ -46,7 +45,7 @@ void AttackComponent::update(double dt)
 			s->getSprite().setOrigin({ 8.0f, 12.0f });
 			s->getSprite().setPosition({ 100.0f, 100.0f });
 			bullet->setPosition(_parent->getPosition());
-			gameScene->getEnts().push_back(bullet);
+			activeScene->getEnts().push_back(bullet);
 		}
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) 
@@ -63,7 +62,7 @@ void AttackComponent::update(double dt)
 				auto dmg = std::make_shared<Entity>();
 				dmg->addComponent<DamageTextComponent>();
 				dmg->setPosition(e->getPosition());
-				gameScene->getEnts().push_back(dmg);
+				activeScene->getEnts().push_back(dmg);
 			}
 		}
 	}

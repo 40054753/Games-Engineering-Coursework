@@ -6,6 +6,9 @@ protected:
 	bool validMove(const sf::Vector2f&);
 	float _speed;
 	bool immobilized=false;
+	bool pushed = false;
+	float pushTimer = 0.1f;
+	sf::Vector2f pushVector;
 public:
 	explicit ActorMovementComponent(Entity *p);
 	ActorMovementComponent() = delete;
@@ -14,6 +17,7 @@ public:
 	void immobilize() { immobilized = true; }
 	void mobilize() { immobilized = false; }
 	void move(const sf::Vector2f&);
+	void push(const sf::Vector2f&);
 	void move(float x, float y);
 	void increaseSpeed(float sp);
 

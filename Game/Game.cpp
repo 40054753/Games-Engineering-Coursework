@@ -9,6 +9,7 @@
 #include "cmp_attack.h"
 #include "cmp_npc.h"
 #include "cmp_hud.h"
+#include "cmp_enemy_attack.h"
 #include <string>
 
 
@@ -207,6 +208,8 @@ void GameScene::respawn()
 		s->getSprite().setOrigin(8.0f, 12.0f);
 		ghost->addComponent<HealthComponent>();
 		ghost->addComponent<EnemyHealthBarComponent>();
+		auto p = ghost->addComponent<EnemyAttackComponent>();
+		p->setPlayer(player);
 		_ents.list.push_back(ghost);
 		ghosts.push_back(ghost);
 		//eatingEnts.push_back(ghost);       ///ghosts can eat
@@ -220,6 +223,8 @@ void GameScene::respawn()
 	s->getSprite().setScale({ 2.0f, 2.0f });
 	s->getSprite().setOrigin(8.0f, 12.0f);
 	ghost->addComponent<HealthComponent>();
+	auto p = ghost->addComponent<EnemyAttackComponent>();
+	p->setPlayer(player);
 	ghost->addComponent<EnemyHealthBarComponent>();
 	_ents.list.push_back(ghost);
 	ghosts.push_back(ghost);
@@ -238,7 +243,6 @@ void GameScene::respawn()
 
 	auto att = _ents.list[0]->addComponent<AttackComponent>();
 	att->setEntities(ghosts);
-	att->damageText.setFont(font);
 
 	for (auto n : nibbles)
 	{
@@ -329,21 +333,7 @@ void GameScene::update(double dt)
 		activeScene = menuScene;
 	}
 	
-	for (auto &g : ghosts) 
-	{
-		if (!g->is_forDeletion())
-		{
-			auto hp = g->GetComponent<HealthComponent>();
-			if (hp->getHealth() <= 0) g->setForDelete();
-			if (length(g->getPosition() - player->getPosition()) < 20.0f)
-			{
-				auto d = player->GetComponent<PlayerMovementComponent>();
-				d->move((player->getPosition() - g->getPosition())*3.0f);
-				health_mana->reduceHealth(30);
-
-			}
-		}
-	}
+	
 
 	hudobject->setPosition(Vector2f(player->getPosition().x - Renderer::gameWidth/2, player->getPosition().y - Renderer::gameHeight / 2));
 	hudobject->render();
