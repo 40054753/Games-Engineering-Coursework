@@ -31,6 +31,18 @@ public:
 	void update(double dt) override;
 	void render() override;
 };
+class SnowComponent : public ActorMovementComponent {
+
+protected:
+	float dirTimer = 1.0f;
+	bool dir;
+public:
+	SnowComponent() = delete;
+	explicit SnowComponent(Entity *p);
+	void move(const sf::Vector2f&);
+	void update(double dt) override;
+	void render() override;
+};
 
 class PlayerMovementComponent : public ActorMovementComponent {
 public:

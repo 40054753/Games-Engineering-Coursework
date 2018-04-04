@@ -67,9 +67,11 @@ public:
 };
 class StaticSpriteComponent : public Component {
 protected:
+	bool spin = false;
 	std::shared_ptr<sf::Sprite> _sprite;
 
 public:
+	void addSpin() { spin = true; }
 	StaticSpriteComponent() = delete;
 	explicit StaticSpriteComponent(Entity *p);
 	void update(double dt) override;

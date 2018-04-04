@@ -18,7 +18,7 @@ using namespace sf;
 using namespace std;
 const int GHOSTS_COUNT = 4;
 Font font;
-Texture playerTexture, zombieTexture, spellsTexture;
+Texture playerTexture, zombieTexture, spellsTexture, snowEffect;
 Texture menuBg;
 sf::Sprite background;
 RectangleShape rect;
@@ -30,6 +30,20 @@ void MenuScene::load() {
 	}
 	if (!menuBg.loadFromFile("res/img/splashScreen.png")) {
 		cout << "Cannot load img!" << endl;
+	}
+	if (!snowEffect.loadFromFile("res/img/snow.png")) {
+		cout << "Cannot load img!" << endl;
+	}
+	for (int i = 0; i < 50; i++)
+	{
+		float scale = (float)(rand() % 10) / 50.0f;
+		auto snow = make_shared<Entity>();
+		auto s = snow->addComponent<StaticSpriteComponent>();
+		s->getSprite().setTexture(snowEffect);
+		s->getSprite().setScale({ scale,scale});
+		snow->setPosition(Vector2f((rand() % Renderer::gameWidth), rand() % Renderer::gameHeight));
+		snow->addComponent<SnowComponent>();
+		_ents.list.push_back(snow);
 	}
 	background.setTexture(menuBg);
 	rect.setPosition(sf::Vector2f(3.9f * Renderer::gameWidth / 5, Renderer::gameHeight / (MAX_NUMBER_OF_ITEMS)  * 2.15f));
@@ -140,6 +154,7 @@ void MenuScene::render()
 	Renderer::queue(&title);
 	Renderer::queue(&rect);
 	Renderer::queue(&text);
+	_ents.render();
 	for (int i = 0; i < MAX_NUMBER_OF_ITEMS; i++) { //for every menu item		
 		Renderer::queue(&menu[i]);
 	}

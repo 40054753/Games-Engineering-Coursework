@@ -189,6 +189,7 @@ StaticSpriteComponent::StaticSpriteComponent(Entity *p) : Component(p), _sprite(
 
 void StaticSpriteComponent::update(double dt)
 {
+	if(spin)
 	_sprite->rotate(360.0f*dt*5.0f);
 	_sprite->setPosition(_parent->getPosition());
 }

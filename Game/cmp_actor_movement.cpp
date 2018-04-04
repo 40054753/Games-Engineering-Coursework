@@ -1,5 +1,6 @@
 #include "cmp_actor_movement.h"
 #include "levelsystem.h"
+#include "SystemRenderer.h"
 
 using namespace sf;
 static const Vector2i directions[] = { Vector2i{ 0, 1 }, Vector2i{ 1, 0 }, Vector2i{ 0, -1 }, Vector2i{ -1, 0 } };
@@ -65,6 +66,39 @@ void ProjectileMovementComponent::move(const Vector2f &p)
 	}
 	else
 		_parent->setForDelete();
+
+}
+SnowComponent::SnowComponent(Entity *p) : ActorMovementComponent(p) 
+{ 
+	_speed = 50.0f; 
+	dir = rand() % 2 -1;
+}
+void SnowComponent::render() {}
+
+void SnowComponent::update(double dt)
+{//amount to move
+	dirTimer -= dt;
+	if (dirTimer < 0)
+	{
+		dir = (dir) ? false : true;
+		dirTimer = rand()%5 + 5;
+	}
+	Vector2f pos = _parent->getPosition();
+	if(dir)
+		move(Vector2f(_speed/3.0f*dt, _speed * dt));
+	else
+		move(Vector2f(-_speed / 3.0f*dt, _speed * dt));
+		if (pos.y > Renderer::gameHeight)
+		{
+			_parent->setPosition(Vector2f(rand() % Renderer::gameWidth, -55.0f));
+		}
+	
+}
+void SnowComponent::move(const Vector2f &p)
+{
+	auto pp = _parent->getPosition() + p;
+	
+		_parent->setPosition(pp);
 
 }
 
