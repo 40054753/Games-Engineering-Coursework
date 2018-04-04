@@ -5,22 +5,25 @@
 class HudComponent : public Component {
 
 protected:
-	int maxHealth;
-	int health;
-	int maxMana;
-	int mana;
+	sf::RectangleShape HP;
+	sf::RectangleShape MP;
+	float maxHealth;
+	float health;
+	float maxMana;
+	float mana;
 	sf::Text text;
 	sf::Font font;
 public:
+	void set(float health, float maxhealth, float mana, float maxmana);
 	explicit HudComponent(Entity *p);
 	HudComponent() = delete;
 	int getHealth();
 	int getMana();
 	sf::Text getHud();
-	void setMaxHealth(int maxHealth);
-	void setHealth(int health);
-	void setMaxMana(int maxMana);
-	void setMana(int mana);
+	void setMaxHealth(float maxHealth);
+	void setHealth(float health);
+	void setMaxMana(float maxMana);
+	void setMana(float mana);
 	void setText();
 	void setFont();
 	void setPosition(sf::Vector2f pos);

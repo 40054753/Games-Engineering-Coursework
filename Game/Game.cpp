@@ -21,6 +21,7 @@ Font font;
 Texture playerTexture, zombieTexture, spellsTexture;
 Texture menuBg;
 sf::Sprite background;
+RectangleShape rect;
 MenuScene::MenuScene() {
 }
 void MenuScene::load() {
@@ -31,11 +32,15 @@ void MenuScene::load() {
 		cout << "Cannot load img!" << endl;
 	}
 	background.setTexture(menuBg);
+	rect.setPosition(sf::Vector2f(3.8f * Renderer::gameWidth / 5, Renderer::gameHeight / (MAX_NUMBER_OF_ITEMS)  * 2.15f));
+	//rect.setScale({ 3.0f,3.0f });
+	rect.setSize({ Renderer::gameWidth / 5.7f,Renderer::gameHeight / 2.8f });
+	rect.setFillColor(sf::Color(1,1,1,130));
 
-	title.setPosition(sf::Vector2f(Renderer::gameWidth / 5.0f, Renderer::gameHeight /5.5f));
+	title.setPosition(sf::Vector2f(Renderer::gameWidth / 5.5f, Renderer::gameHeight / 5.5f));
 	title.setString("ICY DEAD PEOPLE");
 	title.setFont(font);
-	title.setScale({3.5f,3.5f});
+	title.setScale({ 3.5f,3.5f });
 	title.setColor(sf::Color::Black);
 	//list of menu items
 	menu[0].setFont(font);
@@ -133,6 +138,7 @@ void MenuScene::render()
 	Scene::render();
 	Renderer::queue(&background);
 	Renderer::queue(&title);
+	Renderer::queue(&rect);
 	Renderer::queue(&text);
 	for (int i = 0; i < MAX_NUMBER_OF_ITEMS; i++) { //for every menu item		
 		Renderer::queue(&menu[i]);
@@ -280,7 +286,6 @@ void GameScene::load()
 	auto hb = hd->addComponent<HudComponent>();
 	hud = hd;
 
-	HudComponent* hudobject = hud->GetComponent<HudComponent>();
 
 	eatingEnts.push_back(player);
 	respawn();
@@ -292,8 +297,7 @@ void GameScene::update(double dt)
 {
 	auto health_mana = player->GetComponent<HealthComponent>();
 	auto hudobject = hud->GetComponent<HudComponent>();
-	hudobject->setHealth(health_mana->getHealth());
-	hudobject->setMana(health_mana->getMana());
+	hudobject->set(health_mana->getHealth(), health_mana->getMaxHealth(), health_mana->getMana(), health_mana->getMaxMana());
 	hudobject->setText();
 	if (health_mana->getHealth()<=0)
 	{

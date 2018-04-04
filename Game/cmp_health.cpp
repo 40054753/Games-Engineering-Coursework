@@ -28,11 +28,11 @@ void HealthComponent::update(double dt)
 		recoveryTimer = recoveryDelay;
 	}
 }
-void HealthComponent::reduceHealth(int x)
+void HealthComponent::reduceHealth(float x)
 {
 	health -= x;
 }
-void HealthComponent::reduceMana(int x)
+void HealthComponent::reduceMana(float x)
 {
 	mana -= x;
 }

@@ -8,21 +8,33 @@ using namespace sf;
 
 HudComponent::HudComponent(Entity *p) : Component(p)
 {
-	health = 150;
-	mana = 100;
-	text.setCharacterSize(50);
-	text.setColor(sf::Color::Green);
-	maxHealth = 100;
-	maxMana = 100;
+	HP.setFillColor(sf::Color::Red);
+	HP.setSize({ Renderer::gameWidth / 5.7f,Renderer::gameHeight / 25.0f });
+	MP.setFillColor(sf::Color::Blue);
+	MP.setSize({ Renderer::gameWidth / 5.7f,Renderer::gameHeight / 25.0f });
+	text.setCharacterSize(30);
+	text.setColor(sf::Color::White);
 	setFont();
-	text.setString("Health : " + std::to_string(health) + "\n" + "Mana : " + std::to_string(mana));
+	
+}
+void HudComponent::set(float h, float mh, float m, float mm)
+{
+	health = h;
+	mana = m;
+	maxHealth = mh;
+	maxMana = mm;
+	HP.setScale((float)(h/mh),1.0f);
+	MP.setScale( (float)(m/mm) ,1.0f);
 }
 void HudComponent::reset()
 {
 	health = maxHealth;
 	mana = maxMana;
 }
-void HudComponent::render() {
+void HudComponent::render() 
+{
+	Renderer::queue(&HP);
+	Renderer::queue(&MP);
 	Renderer::queue(&text);
 }
 void HudComponent::update(double dt)
@@ -40,24 +52,24 @@ sf::Text HudComponent::getHud() {
 	return text;
 }
 
-void HudComponent::setMaxHealth(int healthChange) {
+void HudComponent::setMaxHealth(float healthChange) {
 	maxHealth = healthChange;
 }
 
-void HudComponent::setHealth(int healthChange) {
+void HudComponent::setHealth(float healthChange) {
 	health = healthChange;
 }
 
-void HudComponent::setMaxMana(int manaChange) {
+void HudComponent::setMaxMana(float manaChange) {
 	maxMana = manaChange;
 }
 
-void HudComponent::setMana(int manaChange) {
+void HudComponent::setMana(float manaChange) {
 	mana = manaChange;
 }
 
 void HudComponent::setText() {
-	text.setString("Health : " + std::to_string(health) + "\n" + "Mana : " + std::to_string(mana));
+	text.setString("HP: " + std::to_string((int)health) +"/" + std::to_string((int)maxHealth) + "\n" + "MP: " + std::to_string((int)mana) + "/" + std::to_string((int)maxMana));
 }
 
 void HudComponent::setFont()
@@ -70,5 +82,7 @@ void HudComponent::setFont()
 }
 
 void HudComponent::setPosition(Vector2f pos) {
-	text.setPosition(pos);
+	HP.setPosition(pos + Vector2f(50.0f, 12.0f));
+	MP.setPosition(pos+ Vector2f(50.0f, 42.0f));
+	text.setPosition(pos + Vector2f(10.0f,10.0f));
 }
