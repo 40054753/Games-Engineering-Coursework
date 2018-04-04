@@ -3,6 +3,7 @@
 #include <iostream>
 #include "cmp_actor_movement.h"
 #include "Game.h"
+#include "cmp_health.h"
 using namespace sf;
 ShapeComponent::ShapeComponent(Entity *p) : Component(p), _shape(std::make_shared<sf::CircleShape>()) {}
 
@@ -159,7 +160,7 @@ DamageTextComponent::DamageTextComponent(Entity *p) : Component(p)
 {
 	damageText.setString(std::to_string(30));
 	damageText.setFont(font);
-	damageText.setCharacterSize(20);
+	damageText.setCharacterSize(15);
 	damageText.setColor(sf::Color::Red);
 	
 
@@ -167,7 +168,7 @@ DamageTextComponent::DamageTextComponent(Entity *p) : Component(p)
 void DamageTextComponent::update(double dt)
 {
 	textTime -= dt;
-	damageText.setPosition(_parent->getPosition()+Vector2f(-8.0f,-30.0f -1500.0f*dt));
+	damageText.setPosition(_parent->getPosition()+Vector2f(-14.0f,-50.0f));
 	if (textTime < 0)
 		_parent->setForDelete();
 	
@@ -195,4 +196,20 @@ void StaticSpriteComponent::update(double dt)
 void StaticSpriteComponent::render()
 {
 	Renderer::queue(_sprite.get());
+}
+EnemyHealthBarComponent::EnemyHealthBarComponent(Entity *p) : Component(p) 
+{
+	hp.setFillColor(sf::Color::Red);
+	hp.setSize({31.0f, 4.0f});
+}
+void EnemyHealthBarComponent::update(double dt)
+{
+	auto health = _parent->GetComponent<HealthComponent>();
+	float scaleX = health->getHealth() / health->getMaxHealth();
+	hp.setScale(scaleX, 1.0f);
+	hp.setPosition(_parent->getPosition() + Vector2f(-15.0f, -30.0f));
+}
+void EnemyHealthBarComponent::render()
+{
+	Renderer::queue(&hp);
 }

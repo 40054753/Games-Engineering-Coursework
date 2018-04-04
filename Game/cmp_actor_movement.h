@@ -5,13 +5,14 @@ class ActorMovementComponent : public Component {
 protected:
 	bool validMove(const sf::Vector2f&);
 	float _speed;
-
+	bool immobilized=false;
 public:
 	explicit ActorMovementComponent(Entity *p);
 	ActorMovementComponent() = delete;
 	float getSpeed() const;
 	void setSpeed(float speed);
-
+	void immobilize() { immobilized = true; }
+	void mobilize() { immobilized = false; }
 	void move(const sf::Vector2f&);
 	void move(float x, float y);
 	void increaseSpeed(float sp);

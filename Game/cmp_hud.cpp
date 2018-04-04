@@ -3,7 +3,7 @@
 #include "SystemRenderer.h"
 #include <string>
 #include <iostream>
-
+#include "Game.h"
 using namespace sf;
 
 HudComponent::HudComponent(Entity *p) : Component(p)
@@ -12,9 +12,9 @@ HudComponent::HudComponent(Entity *p) : Component(p)
 	HP.setSize({ Renderer::gameWidth / 5.7f,Renderer::gameHeight / 25.0f });
 	MP.setFillColor(sf::Color::Blue);
 	MP.setSize({ Renderer::gameWidth / 5.7f,Renderer::gameHeight / 25.0f });
-	text.setCharacterSize(30);
+	text.setCharacterSize(22);
 	text.setColor(sf::Color::White);
-	setFont();
+	text.setFont(font);
 	
 }
 void HudComponent::set(float h, float mh, float m, float mm)
@@ -69,20 +69,11 @@ void HudComponent::setMana(float manaChange) {
 }
 
 void HudComponent::setText() {
-	text.setString("HP: " + std::to_string((int)health) +"/" + std::to_string((int)maxHealth) + "\n" + "MP: " + std::to_string((int)mana) + "/" + std::to_string((int)maxMana));
-}
-
-void HudComponent::setFont()
-{
-	if (!font.loadFromFile("res/fonts/leadcoat.ttf")) {
-	}
-	else {
-		text.setFont(font);
-	}
+	text.setString("HP " + std::to_string((int)health) +"/" + std::to_string((int)maxHealth) + "\n" + "MP " + std::to_string((int)mana) + "/" + std::to_string((int)maxMana));
 }
 
 void HudComponent::setPosition(Vector2f pos) {
-	HP.setPosition(pos + Vector2f(50.0f, 12.0f));
-	MP.setPosition(pos+ Vector2f(50.0f, 42.0f));
-	text.setPosition(pos + Vector2f(10.0f,10.0f));
+	HP.setPosition(pos + Vector2f(60.0f, 10.0f));
+	MP.setPosition(pos+ Vector2f(60.0f, 40.0f));
+	text.setPosition(pos + Vector2f(10.0f,15.0f));
 }

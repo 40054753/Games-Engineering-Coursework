@@ -13,10 +13,10 @@ protected:
 public:
 	explicit HealthComponent(Entity *p);
 	HealthComponent() = delete;
-	int getHealth() { return health; }
-	int getMaxHealth() { return maxHealth; }
-	int getMaxMana() { return maxMana; }
-	int getMana() { return mana; }
+	float getHealth() { return health; }
+	float getMaxHealth() { return maxHealth; }
+	float getMaxMana() { return maxMana; }
+	float getMana() { return mana; }
 	void reduceHealth(float x);
 	void reset();
 	void reduceMana(float x);

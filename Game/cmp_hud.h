@@ -12,7 +12,6 @@ protected:
 	float maxMana;
 	float mana;
 	sf::Text text;
-	sf::Font font;
 public:
 	void set(float health, float maxhealth, float mana, float maxmana);
 	explicit HudComponent(Entity *p);
@@ -25,7 +24,6 @@ public:
 	void setMaxMana(float maxMana);
 	void setMana(float mana);
 	void setText();
-	void setFont();
 	void setPosition(sf::Vector2f pos);
 	void reset();
 	void render() override;

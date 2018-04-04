@@ -55,6 +55,16 @@ public:
 	void render() override;
 
 };
+class EnemyHealthBarComponent : public Component {
+protected:
+	sf::RectangleShape hp;
+public:
+	EnemyHealthBarComponent() = delete;
+	explicit EnemyHealthBarComponent(Entity *p);
+	void update(double dt) override;
+	void render() override;
+
+};
 class StaticSpriteComponent : public Component {
 protected:
 	std::shared_ptr<sf::Sprite> _sprite;

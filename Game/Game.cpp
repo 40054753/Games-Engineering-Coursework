@@ -25,22 +25,22 @@ RectangleShape rect;
 MenuScene::MenuScene() {
 }
 void MenuScene::load() {
-	if (!font.loadFromFile("res/fonts/leadcoat.ttf")) {
+	if (!font.loadFromFile("res/fonts/font.ttf")) {
 		cout << "Cannot load font!" << endl;
 	}
 	if (!menuBg.loadFromFile("res/img/splashScreen.png")) {
 		cout << "Cannot load img!" << endl;
 	}
 	background.setTexture(menuBg);
-	rect.setPosition(sf::Vector2f(3.8f * Renderer::gameWidth / 5, Renderer::gameHeight / (MAX_NUMBER_OF_ITEMS)  * 2.15f));
+	rect.setPosition(sf::Vector2f(3.9f * Renderer::gameWidth / 5, Renderer::gameHeight / (MAX_NUMBER_OF_ITEMS)  * 2.15f));
 	//rect.setScale({ 3.0f,3.0f });
-	rect.setSize({ Renderer::gameWidth / 5.7f,Renderer::gameHeight / 2.8f });
+	rect.setSize({ Renderer::gameWidth / 5.3f,Renderer::gameHeight / 2.8f });
 	rect.setFillColor(sf::Color(1,1,1,130));
 
 	title.setPosition(sf::Vector2f(Renderer::gameWidth / 5.5f, Renderer::gameHeight / 5.5f));
 	title.setString("ICY DEAD PEOPLE");
 	title.setFont(font);
-	title.setScale({ 3.5f,3.5f });
+	title.setScale({ 2.0f,3.5f });
 	title.setColor(sf::Color::Black);
 	//list of menu items
 	menu[0].setFont(font);
@@ -190,20 +190,22 @@ void GameScene::respawn()
 		s->getSprite().setTextureRect({ 0,0,16,21 });
 		s->getSprite().setScale({ 2.0f, 2.0f });
 		s->getSprite().setOrigin(8.0f, 12.0f);
-		auto h = ghost->addComponent<HealthComponent>();
+		ghost->addComponent<HealthComponent>();
+		ghost->addComponent<EnemyHealthBarComponent>();
 		_ents.list.push_back(ghost);
 		ghosts.push_back(ghost);
 		//eatingEnts.push_back(ghost);       ///ghosts can eat
 		
 	}
-	///////stanting enemy
+	///////standing enemy
 	auto ghost = make_shared<Entity>();
 	auto s = ghost->addComponent<CharacterSpriteComponent>();
 	s->getSprite().setTexture(zombieTexture);
 	s->getSprite().setTextureRect({ 0,0,16,21 });
 	s->getSprite().setScale({ 2.0f, 2.0f });
 	s->getSprite().setOrigin(8.0f, 12.0f);
-	auto h = ghost->addComponent<HealthComponent>();
+	ghost->addComponent<HealthComponent>();
+	ghost->addComponent<EnemyHealthBarComponent>();
 	_ents.list.push_back(ghost);
 	ghosts.push_back(ghost);
 	/////////////////////////////////////////////////////////////////EXAMPLE NPC/////////////////////////////////////
@@ -214,7 +216,8 @@ void GameScene::respawn()
 	n->getSprite().setScale({ 2.0f, 2.0f });
 	n->getSprite().setOrigin(8.0f, 12.0f);
 	auto d = npc->addComponent<NPCComponent>();
-	d->setEntities(eatingEnts); ///////////TEMP SOLUTION /// need to update setEntities to take one entity, not vector
+	d->setDialogue("HELLO THERE, ADVENTURER! HELLO THERE, \nADVENTURER! HELLO THERE, ADVENTURER! ");
+	d->setEntities(player); ///////////TEMP SOLUTION /// need to update setEntities to take one entity, not vector
 	_ents.list.push_back(npc);
 	npcs.push_back(npc);
 
