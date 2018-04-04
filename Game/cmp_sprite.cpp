@@ -167,7 +167,7 @@ DamageTextComponent::DamageTextComponent(Entity *p) : Component(p)
 void DamageTextComponent::update(double dt)
 {
 	textTime -= dt;
-	damageText.setPosition(_parent->getPosition());
+	damageText.setPosition(_parent->getPosition()+Vector2f(-8.0f,-30.0f -1500.0f*dt));
 	if (textTime < 0)
 		_parent->setForDelete();
 	

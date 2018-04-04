@@ -12,45 +12,56 @@
 #include <string>
 
 
-#define MAX_NUMBER_OF_ITEMS 3 //number of main menu options
+
 
 using namespace sf;
 using namespace std;
 const int GHOSTS_COUNT = 4;
 Font font;
 Texture playerTexture, zombieTexture, spellsTexture;
-
+Texture menuBg;
+sf::Sprite background;
 MenuScene::MenuScene() {
 }
 void MenuScene::load() {
 	if (!font.loadFromFile("res/fonts/leadcoat.ttf")) {
 		cout << "Cannot load font!" << endl;
 	}
-	
-	if (Keyboard::isKeyPressed(Keyboard::Space)) {
-		activeScene = gameScene;
+	if (!menuBg.loadFromFile("res/img/splashScreen.png")) {
+		cout << "Cannot load img!" << endl;
 	}
+	background.setTexture(menuBg);
 
+	title.setPosition(sf::Vector2f(Renderer::gameWidth / 5.0f, Renderer::gameHeight /5.5f));
+	title.setString("ICY DEAD PEOPLE");
+	title.setFont(font);
+	title.setScale({3.5f,3.5f});
+	title.setColor(sf::Color::Black);
 	//list of menu items
 	menu[0].setFont(font);
 	menu[0].setColor(sf::Color::Red);
-	menu[0].setString("Play");
-	menu[0].setPosition(sf::Vector2f(Renderer::gameWidth / 2, Renderer::gameHeight / (MAX_NUMBER_OF_ITEMS + 1) * 1));
+	menu[0].setString("New Game");
+	menu[0].setPosition(sf::Vector2f(4*Renderer::gameWidth / 5, Renderer::gameHeight / (MAX_NUMBER_OF_ITEMS)  * 2.5f));
 
 	menu[1].setFont(font);
 	menu[1].setColor(sf::Color::White);
-	menu[1].setString("Options");
-	menu[1].setPosition(sf::Vector2f(Renderer::gameWidth / 2, Renderer::gameHeight / (MAX_NUMBER_OF_ITEMS + 1) * 2));
+	menu[1].setString("Load");
+	menu[1].setPosition(sf::Vector2f(4*Renderer::gameWidth / 5, Renderer::gameHeight / (MAX_NUMBER_OF_ITEMS ) *2.75f));
 
 	menu[2].setFont(font);
 	menu[2].setColor(sf::Color::White);
-	menu[2].setString("Close");
-	menu[2].setPosition(sf::Vector2f(Renderer::gameWidth / 2, Renderer::gameHeight / (MAX_NUMBER_OF_ITEMS + 1) * 3));
+	menu[2].setString("Options");
+	menu[2].setPosition(sf::Vector2f(4*Renderer::gameWidth / 5, Renderer::gameHeight / (MAX_NUMBER_OF_ITEMS) * 3.0f));
+
+	menu[3].setFont(font);
+	menu[3].setColor(sf::Color::White);
+	menu[3].setString("Close");
+	menu[3].setPosition(sf::Vector2f(4*Renderer::gameWidth / 5, Renderer::gameHeight / (MAX_NUMBER_OF_ITEMS ) *3.25f));
 
 	selectedItemIndex = 0;
 
-	text.setPosition(Vector2f((1280* 0.5f) - (text.getLocalBounds().width * 0.5f), 0));
-	text.setString("Main Menu");
+	text.setPosition(sf::Vector2f(4 * Renderer::gameWidth / 5, Renderer::gameHeight / (MAX_NUMBER_OF_ITEMS) *2.25f));
+	text.setString("Menu");
 	text.setFont(font);
 	text.setColor(sf::Color::Green);
 }
@@ -62,6 +73,12 @@ void MenuScene::moveUp()
 		menu[selectedItemIndex].setColor(sf::Color::White);
 		selectedItemIndex--;
 		menu[selectedItemIndex].setColor(sf::Color::Red);
+	} 
+	else
+	{
+		menu[selectedItemIndex].setColor(sf::Color::White);
+		selectedItemIndex= MAX_NUMBER_OF_ITEMS-1;
+		menu[selectedItemIndex].setColor(sf::Color::Red);
 	}
 }
 void MenuScene::moveDown()
@@ -69,6 +86,12 @@ void MenuScene::moveDown()
 	if (selectedItemIndex + 1 < MAX_NUMBER_OF_ITEMS) {
 		menu[selectedItemIndex].setColor(sf::Color::White);
 		selectedItemIndex++;
+		menu[selectedItemIndex].setColor(sf::Color::Red);
+	}
+	else
+	{
+		menu[selectedItemIndex].setColor(sf::Color::White);
+		selectedItemIndex=0;
 		menu[selectedItemIndex].setColor(sf::Color::Red);
 	}
 }
@@ -89,24 +112,29 @@ void MenuScene::update(double dt) {
 		moveTime = 0.2f;
 		if (selectedItemIndex == 0) {
 			activeScene = gameScene; //switch to game
-			std::cout << "Play button has been pressed" << std::endl;
+			std::cout << "New game button has been pressed" << std::endl;
 		}
 		if (selectedItemIndex == 1) {
-			std::cout << "Options button has been pressed" << std::endl;
+			std::cout << "Load button has been pressed" << std::endl;
 		}
 		if (selectedItemIndex == 2) {
-			std::cout << "Close button has been pressed" << std::endl;
+			std::cout << "Options button has been pressed" << std::endl;
+		}
+		if (selectedItemIndex == 3) {
+			Renderer::getWindow().close();
 		}
 	}
 	Renderer::setCenter(Vector2f(Renderer::gameWidth / 2 + 25, Renderer::gameHeight/2));
 	Scene::update(dt);
 	_ents.update(dt);
 }
-void MenuScene::render() {
+void MenuScene::render() 
+{
 	Scene::render();
-	_ents.render(); 
-	for (int i = 0; i < MAX_NUMBER_OF_ITEMS; i++) { //for every menu item
-		Renderer::queue(&text);
+	Renderer::queue(&background);
+	Renderer::queue(&title);
+	Renderer::queue(&text);
+	for (int i = 0; i < MAX_NUMBER_OF_ITEMS; i++) { //for every menu item		
 		Renderer::queue(&menu[i]);
 	}
 }
@@ -130,10 +158,6 @@ shared_ptr<Entity> makeNibble(const Vector2f& nl, Color col, float size)
 	cherry->setPosition(nl);
 	return cherry;
 }
-const sf::Color ghost_cols[]{ { 208, 62, 25 },
-{ 219, 133, 28 },
-{ 70, 191, 238 },
-{ 234, 130, 229 } };
 void GameScene::respawn()
 {
 	for (auto n : ghosts)
@@ -166,7 +190,16 @@ void GameScene::respawn()
 		//eatingEnts.push_back(ghost);       ///ghosts can eat
 		
 	}
-
+	///////stanting enemy
+	auto ghost = make_shared<Entity>();
+	auto s = ghost->addComponent<CharacterSpriteComponent>();
+	s->getSprite().setTexture(zombieTexture);
+	s->getSprite().setTextureRect({ 0,0,16,21 });
+	s->getSprite().setScale({ 2.0f, 2.0f });
+	s->getSprite().setOrigin(8.0f, 12.0f);
+	auto h = ghost->addComponent<HealthComponent>();
+	_ents.list.push_back(ghost);
+	ghosts.push_back(ghost);
 	/////////////////////////////////////////////////////////////////EXAMPLE NPC/////////////////////////////////////
 	auto npc = make_shared<Entity>();
 	auto n = npc->addComponent<CharacterSpriteComponent>();
@@ -216,9 +249,6 @@ void GameScene::respawn()
 }
 void GameScene::load()
 {
-	if (!font.loadFromFile("res/fonts/leadcoat.ttf")) {
-		std::cout << "Cannot load font!" << std::endl;
-	}
 	if (!playerTexture.loadFromFile("res/img/player.png"))
 	{
 		cerr << "Failed to load spritesheet!" << endl;
@@ -245,10 +275,6 @@ void GameScene::load()
 	s->getSprite().setPosition({ 100.0f, 100.0f });
 	_ents.list.push_back(pl);
 	player = pl;
-
-	if (!font.loadFromFile("res/fonts/leadcoat.ttf")) {
-		cout << "Cannot load font!" << endl;
-	}
 
 	auto hd = make_shared<Entity>();
 	auto hb = hd->addComponent<HudComponent>();

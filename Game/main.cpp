@@ -31,10 +31,7 @@ void Update(RenderWindow &window)
 	Event event;
 	while (window.pollEvent(event))
 	{
-		if (event.type == Event::Closed) {
-			window.close();
-			return;
-		}
+		
 		if (event.type == Event::Resized) {
 			Renderer::resizeView();
 			return;

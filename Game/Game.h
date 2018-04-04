@@ -1,6 +1,6 @@
 #pragma once
 #include "Scene.h"
-#define MAX_NUMBER_OF_ITEMS 3
+#define MAX_NUMBER_OF_ITEMS 4
 
 extern std::shared_ptr<Scene> gameScene;
 extern std::shared_ptr<Scene> menuScene;
@@ -15,6 +15,7 @@ private:
 	int selectedItemIndex;
 	sf::Text menu[MAX_NUMBER_OF_ITEMS];
 	sf::Text text;
+	sf::Text title;
 public:
 	MenuScene();
 	void update(double dt) override;
