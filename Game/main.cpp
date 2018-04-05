@@ -51,11 +51,17 @@ void Render(RenderWindow &window)
 
 int main()
 {
-	RenderWindow window(VideoMode(Renderer::gameWidth, Renderer::gameHeight), "Icy Dead People v0.01");
+	sf::Clock clock;
+	float lastTime = 0;
+	RenderWindow window(VideoMode(Renderer::gameWidth, Renderer::gameHeight), "Icy Dead People v0.01 : ");
 	Renderer::initialise(window);
 	Load();
 	while (window.isOpen())
 	{
+		float currentTime = clock.restart().asSeconds();
+		float fps = 1.f / currentTime;
+		lastTime = currentTime;
+		window.setTitle("Icy Dead People v0.01 : " + std::to_string(fps));
 		window.clear();
 		Update(window);
 		Render(window);
