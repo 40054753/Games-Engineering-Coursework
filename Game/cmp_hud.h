@@ -2,10 +2,14 @@
 #include "ecm.h"
 #include <string>
 
+#define BPslots 21
 class HudComponent : public Component {
 
 protected:
 	bool highlighted = false;
+	bool showInventory = false;
+	bool hideInventory = false;
+	float buttonDelay = 0.0f;
 	std::shared_ptr<Entity> _player;
 	sf::RectangleShape HP;
 	sf::RectangleShape MP;
@@ -27,6 +31,30 @@ protected:
 	sf::RectangleShape button_inventory;
 	sf::RectangleShape button_menu;
 	sf::RectangleShape button_save;
+	//////////////////////////////////////////inventory window
+	sf::RectangleShape inventory;
+	sf::RectangleShape backpack;
+	sf::RectangleShape slots[BPslots];
+	sf::RectangleShape statsArea;
+	sf::Text label_backpack;
+	sf::Text label_stats;
+	sf::Text label_equipped;
+	sf::RectangleShape equippedArea;
+	sf::RectangleShape helmet;
+	sf::RectangleShape armour;
+	sf::RectangleShape boots;
+	sf::RectangleShape weapon;
+	sf::RectangleShape shield;
+
+	////////////////////////////ICONS
+	sf::Sprite icon_weapon;
+	sf::Sprite icon_armour;
+	sf::Sprite icon_boots;
+	sf::Sprite icon_helmet;
+	sf::Sprite icon_shield;
+	float sliderX=0;
+	float slideTime = 0.2f;
+
 
 	float maxHealth;
 	float health;
