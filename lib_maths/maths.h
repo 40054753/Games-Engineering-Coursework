@@ -25,6 +25,8 @@ namespace sf {
 			vector.y /= l;
 		}
 		//to do
+		vector.x = v.x / l;
+		vector.y = v.y / l;
 		return vector;
 	}
 

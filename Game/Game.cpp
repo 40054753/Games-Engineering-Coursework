@@ -10,6 +10,7 @@
 #include "cmp_npc.h"
 #include "cmp_hud.h"
 #include "cmp_enemy_attack.h"
+#include "cmp_ai_steering.h"
 #include <string>
 
 
@@ -211,8 +212,7 @@ void GameScene::respawn()
 	for (int i = 0; i < GHOSTS_COUNT; ++i)
 	{
 		auto ghost = make_shared<Entity>();
-		ghost->addComponent<EnemyAIComponent>();
-
+		//ghost->addComponent<EnemyAIComponent>();
 		auto s = ghost->addComponent<CharacterSpriteComponent>();
 		s->getSprite().setTexture(zombieTexture);
 		s->getSprite().setTextureRect({ 0,0,16,21 });
@@ -222,6 +222,8 @@ void GameScene::respawn()
 		ghost->addComponent<EnemyHealthBarComponent>();
 		auto p = ghost->addComponent<EnemyAttackComponent>();
 		p->setPlayer(player);
+		ghost->addComponent<SteeringComponent>(player.get());
+		std::cout << player.get()->getPosition().x;
 		_ents.list.push_back(ghost);
 		ghosts.push_back(ghost);
 		//eatingEnts.push_back(ghost);       ///ghosts can eat
