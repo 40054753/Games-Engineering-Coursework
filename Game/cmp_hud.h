@@ -52,6 +52,8 @@ protected:
 	sf::Sprite icon_boots;
 	sf::Sprite icon_helmet;
 	sf::Sprite icon_shield;
+
+	sf::Sprite icon_inventory;
 	float sliderX=0;
 	float slideTime = 0.2f;
 

@@ -158,6 +158,9 @@ HudComponent::HudComponent(Entity *p) : Component(p)
 	icon_helmet.setTexture(iconsTexture);
 	icon_helmet.setTextureRect({ 50,0,50,50 });
 
+	icon_inventory.setTexture(iconsTexture);
+	icon_inventory.setTextureRect({ 50,0,50,50 });
+
 
 }
 void HudComponent::setPlayer(std::shared_ptr<Entity>& e) {
@@ -201,7 +204,7 @@ void HudComponent::render()
 	Renderer::HUDqueue(&button_inventory);
 	Renderer::HUDqueue(&button_menu);
 	Renderer::HUDqueue(&button_save);
-
+	Renderer::HUDqueue(&icon_inventory);
 	if (showInventory || hideInventory)
 	{
 		Renderer::HUDqueue(&inventory);
@@ -211,6 +214,7 @@ void HudComponent::render()
 		Renderer::HUDqueue(&equippedArea);
 		Renderer::HUDqueue(&label_stats);
 		Renderer::HUDqueue(&label_equipped);
+
 		for (int i = 0; i<BPslots; i++)
 		{
 			Renderer::HUDqueue(&slots[i]);
@@ -243,7 +247,20 @@ void HudComponent::update(double dt)
 	{
 		hideInventory = false;
 	}
-	
+	if (buttonDelay<0 && Keyboard::isKeyPressed(Keyboard::I))
+	{
+		sound.play();
+		buttonDelay = 0.2f;
+		if (!showInventory)
+			showInventory = true;
+		else
+			hideInventory = true;
+
+	}
+	if (Keyboard::isKeyPressed(Keyboard::Escape)) 
+	{
+		hideInventory = true;
+	}
 	
 	Vector2i mousePos = sf::Mouse::getPosition(Renderer::getWindow());
 	buttonDelay -= dt;
@@ -344,6 +361,7 @@ void HudComponent::setPosition()
 	//////////////////buttons
 	button_menu.setPosition(windowZero + Vector2f(0.57f*WX, 0.915f*WY));
 	button_inventory.setPosition(windowZero + Vector2f(0.63f*WX, 0.915f*WY));
+	icon_inventory.setPosition(button_inventory.getPosition());
 	button_save.setPosition(windowZero + Vector2f(0.69f*WX, 0.915f*WY));
 	////////////////////////////INVENTORY
 	inventory.setPosition(windowZero + Vector2f(WX, 0.02f*WY) - Vector2f(sliderX,0));
