@@ -2,7 +2,8 @@
 #include "Scene.h"
 #include "SFML\Audio.hpp"
 #define MAX_NUMBER_OF_ITEMS 4
-
+#define WX  1.0f*Renderer::gameWidth
+#define WY 1.0f*Renderer::gameHeight
 extern std::shared_ptr<Scene> gameScene;
 extern std::shared_ptr<Scene> menuScene;
 extern std::shared_ptr<Scene> activeScene;
@@ -16,6 +17,7 @@ extern sf::Font font;
 class MenuScene : public Scene
 {
 private:
+	float moveTime=0.0f;
 	int selectedItemIndex;
 	sf::Text menu[MAX_NUMBER_OF_ITEMS];
 	sf::Text text;
@@ -27,6 +29,7 @@ public:
 	void load() override;
 	void moveUp();
 	void moveDown();
+	void moveTo(int x);
 };
 
 class GameScene : public Scene

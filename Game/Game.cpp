@@ -14,8 +14,6 @@
 
 
 
-
-
 using namespace sf;
 using namespace std;
 const int GHOSTS_COUNT = 4;
@@ -26,6 +24,7 @@ sf::Sprite background;
 SoundBuffer buffer;
 Sound sound;
 RectangleShape rect;
+Vector2i mousePos;
 MenuScene::MenuScene() {
 }
 void MenuScene::load() {
@@ -111,6 +110,16 @@ void MenuScene::moveUp()
 		sound.play();
 	}
 }
+void MenuScene::moveTo(int x)
+{
+	if (x != selectedItemIndex)
+	{
+		menu[selectedItemIndex].setColor(sf::Color::White);
+		selectedItemIndex = x;
+		menu[selectedItemIndex].setColor(sf::Color::Red);
+		sound.play();
+	}
+}
 void MenuScene::moveDown()
 {
 	if (selectedItemIndex + 1 < MAX_NUMBER_OF_ITEMS) {
@@ -128,9 +137,54 @@ void MenuScene::moveDown()
 	}
 }
 
-void MenuScene::update(double dt) {
-	static float moveTime = 0.0f;
+void MenuScene::update(double dt) 
+{
+	mousePos = sf::Mouse::getPosition(Renderer::getWindow());
 	moveTime -= dt;
+	if (mousePos.x >=  0.78f * Renderer::gameWidth && mousePos.x <= 0.94f * Renderer::gameWidth )
+	{
+		if (moveTime <= 0 && mousePos.y >= menu[0].getPosition().y && mousePos.y <  menu[1].getPosition().y)
+		{
+			
+			moveTo(0);
+			if (sf::Mouse::isButtonPressed(Mouse::Left))
+			{
+				activeScene = gameScene; //switch to game
+				std::cout << "New game button has been pressed" << std::endl;
+			}
+		}
+		else if (moveTime <= 0 && mousePos.y >= menu[1].getPosition().y && mousePos.y <  menu[2].getPosition().y)
+		{
+		
+			moveTo(1);
+			if (sf::Mouse::isButtonPressed(Mouse::Left))
+			{
+				moveTime = 0.2f;
+				std::cout << "Load button has been pressed" << std::endl;
+			}
+
+		}
+		else if (moveTime <= 0 && mousePos.y >= menu[2].getPosition().y && mousePos.y <  menu[3].getPosition().y)
+		{
+			
+			moveTo(2);
+			if (sf::Mouse::isButtonPressed(Mouse::Left))
+			{
+				moveTime = 0.2f;
+				std::cout << "Options button has been pressed" << std::endl;
+			}
+		}
+		else if (moveTime <= 0 && mousePos.y >= menu[3].getPosition().y && mousePos.y <  menu[3].getPosition().y+30.0f)
+		{
+			
+			moveTo(3);
+			if (sf::Mouse::isButtonPressed(Mouse::Left))
+			{
+
+				Renderer::getWindow().close();
+			}
+		}
+	}
 	//if there are menu items to move to, move to it, limit keyboard input to 0.2
 	if (moveTime <= 0 && Keyboard::isKeyPressed(Keyboard::Up)) {
 		moveUp();
@@ -140,7 +194,7 @@ void MenuScene::update(double dt) {
 		moveDown();
 		moveTime = 0.2f;
 	}
-	if (moveTime <= 0 && Keyboard::isKeyPressed(Keyboard::Return)) {
+	if (moveTime <= 0 && (Keyboard::isKeyPressed(Keyboard::Return) || Keyboard::isKeyPressed(Keyboard::Space)) ) {
 		moveTime = 0.2f;
 		if (selectedItemIndex == 0) {
 			activeScene = gameScene; //switch to game
@@ -318,7 +372,9 @@ void GameScene::load()
 
 	auto hd = make_shared<Entity>();
 	auto hb = hd->addComponent<HudComponent>();
+	hb->setPlayer(player);
 	hud = hd;
+	_ents.list.push_back(hud);
 
 
 	eatingEnts.push_back(player);
@@ -329,27 +385,20 @@ void GameScene::load()
 
 void GameScene::update(double dt)
 {
+	
 	auto health_mana = player->GetComponent<HealthComponent>();
-	auto hudobject = hud->GetComponent<HudComponent>();
-	hudobject->set(health_mana->getHealth(), health_mana->getMaxHealth(), health_mana->getMana(), health_mana->getMaxMana());
-	hudobject->setText();
 	if (health_mana->getHealth()<=0)
 	{
 		health_mana->reset();
 		std::cout << "Game over!" << std::endl;
 		respawn();
 	}
-	Renderer::setCenter(player->getPosition());
 	if (Keyboard::isKeyPressed(Keyboard::Tab))
 	{
 		activeScene = menuScene;
 	}
-	
-	
-
-	hudobject->setPosition(Vector2f(player->getPosition().x - Renderer::gameWidth/2, player->getPosition().y - Renderer::gameHeight / 2));
-	hudobject->render();
 	_ents.update(dt);
+	Renderer::setCenter(player->getPosition());
 	Scene::update(dt);
 }
 void GameScene::render()

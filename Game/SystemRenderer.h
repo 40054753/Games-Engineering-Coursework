@@ -9,10 +9,11 @@ namespace  Renderer
 
 	void initialise(sf::RenderWindow &);
 	sf::RenderWindow &getWindow();
-
+	void updateView();
 	void shutdown();
 	void update(const double &);
 	void queue(const sf::Drawable *s);
+	void HUDqueue(const sf::Drawable *s);
 	void render();
 	void setCenter(sf::Vector2f pos);
 	void resizeView();
