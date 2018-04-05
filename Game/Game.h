@@ -10,6 +10,7 @@ extern std::shared_ptr<Scene> activeScene;
 extern sf::Texture playerTexture;
 extern sf::Texture zombieTexture;
 extern sf::Texture spellsTexture;
+extern sf::Texture iconsTexture;
 extern sf::SoundBuffer buffer;
 extern sf::Sound sound;
 extern sf::Texture snowEffect;

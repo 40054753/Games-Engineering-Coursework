@@ -19,7 +19,7 @@ using namespace sf;
 using namespace std;
 const int GHOSTS_COUNT = 4;
 Font font;
-Texture playerTexture, zombieTexture, spellsTexture, snowEffect;
+Texture playerTexture, zombieTexture, spellsTexture, snowEffect, iconsTexture;
 Texture menuBg;
 sf::Sprite background;
 SoundBuffer buffer;
@@ -356,6 +356,9 @@ void GameScene::load()
 	if (!zombieTexture.loadFromFile("res/img/zombie.png"))
 	{
 		cerr << "Failed to load spritesheet!" << endl;
+	}
+	if (!iconsTexture.loadFromFile("res/img/gray_icons.png")) {
+		cout << "Cannot load img!" << endl;
 	}
 	ls::loadLevelFile("res/levels/example.txt", 25.0f);
 
