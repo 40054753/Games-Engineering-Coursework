@@ -355,14 +355,19 @@ void HudComponent::update(double dt)
 					{
 					case HELMET:
 						equipped_helmet = it->getSprite();
+						break;
 					case ARMOUR:
 						equipped_armour = it->getSprite();
+						break;
 					case BOOTS:
 						equipped_boots = it->getSprite();
+						break;
 					case WEAPON:
 						equipped_weapon = it->getSprite();
+						break;
 					case SHIELD:
 						equipped_shield = it->getSprite();
+						break;
 					default:
 						break;
 					}

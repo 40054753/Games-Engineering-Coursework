@@ -26,9 +26,9 @@ void ItemGenerator::random_drop(int level, sf::Vector2f location)
 	switch (level)
 	{
 	case 0:
-		if (drop >= 0 && drop < 10)
+		if (drop >= 0 && drop < 100)
 			create_iron_helmet(location);
-		else if (drop >= 10 && drop < 40)
+		if (drop >= 0 && drop < 100)
 			create_leaf(location);
 		break;
 	case 1:
