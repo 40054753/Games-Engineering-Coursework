@@ -4,12 +4,15 @@
 #include <string>
 #include <iostream>
 #include "Game.h"
+#include "cmp_char_sheet.h"
+#include "cmp_items.h"
 #include "cmp_health.h"
 using namespace sf;
-
+Vector2f windowZero;
+std::shared_ptr<Entity> selectedItem;
+int selectedIndex;
 HudComponent::HudComponent(Entity *p) : Component(p)
 {
-
 	HP.setFillColor(sf::Color::Red);
 	HP.setSize({ Renderer::gameWidth / 5.7f,Renderer::gameHeight / 25.0f });
 	MP.setFillColor(sf::Color::Blue);
@@ -158,10 +161,38 @@ HudComponent::HudComponent(Entity *p) : Component(p)
 	icon_helmet.setTexture(iconsTexture);
 	icon_helmet.setTextureRect({ 50,0,50,50 });
 
+	icon_inventory.setTexture(iconsTexture);
+	icon_inventory.setTextureRect({ 50,0,50,50 });
+
+
+	///////////////////////ITEM INTERACTION
+	itemInfo.setFont(font);
+	itemInfo.setColor(sf::Color::White);
+	itemInfo.setOutlineColor(sf::Color::Black);
+	itemInfo.setOutlineThickness(2.0f);
+	itemInfo.setCharacterSize(16.0f);
+	infoArea.setFillColor(sf::Color(255, 255, 255, 150));
+	infoArea.setSize({ 0.17f*WX, 0.15f*WY });
+
+	itemOptionsEquip.setFont(font);
+	itemOptionsEquip.setColor(sf::Color::White);
+	itemOptionsEquip.setOutlineColor(sf::Color::Black);
+	itemOptionsEquip.setOutlineThickness(3.0f);
+	itemOptionsEquip.setCharacterSize(25.0f);
+	itemOptionsEquip.setString("Equip");
+	itemOptionsDrop.setFont(font);
+	itemOptionsDrop.setColor(sf::Color::White);
+	itemOptionsDrop.setOutlineColor(sf::Color::Black);
+	itemOptionsDrop.setOutlineThickness(3.0f);
+	itemOptionsDrop.setCharacterSize(25.0f);
+	itemOptionsDrop.setString("Drop");
+	itemOptionsArea.setFillColor(sf::Color(170, 170, 170, 255));
+	itemOptionsArea.setSize({ 0.1f*WX, 0.11f*WY });
 
 }
 void HudComponent::setPlayer(std::shared_ptr<Entity>& e) {
 	_player = e;
+	Vector2f windowZero = Vector2f(_player->getPosition().x - WX / 2, _player->getPosition().y - WY / 2);
 }
 void HudComponent::set(float h, float mh, float m, float mm)
 {
@@ -179,57 +210,195 @@ void HudComponent::resetButtons()
 	button_inventory.setFillColor(sf::Color(79, 79, 79, 255));
 	button_save.setFillColor(sf::Color(79, 79, 79, 255));
 }
+void HudComponent::resetSlot(int i)
+{
+		slots[i].setFillColor(sf::Color(79, 79, 79, 255));
+}
 void HudComponent::render() 
 {
 	
-	Renderer::HUDqueue(&HP);
-	Renderer::HUDqueue(&MP);
-	Renderer::HUDqueue(&text);
-	Renderer::HUDqueue(&buttonsBackground);	
-	Renderer::HUDqueue(&skill1);
-	Renderer::HUDqueue(&skill2);
-	Renderer::HUDqueue(&skill3);
-	Renderer::HUDqueue(&skill4);
-	Renderer::HUDqueue(&skill5);
+	Renderer::queue(0,&HP);
+	Renderer::queue(0,&MP);
+	Renderer::queue(0,&text);
+	Renderer::queue(0,&buttonsBackground);	
+	Renderer::queue(0,&skill1);
+	Renderer::queue(0,&skill2);
+	Renderer::queue(0,&skill3);
+	Renderer::queue(0,&skill4);
+	Renderer::queue(0,&skill5);
 
-	Renderer::HUDqueue(&label_skill1);
-	Renderer::HUDqueue(&label_skill2);
-	Renderer::HUDqueue(&label_skill3);
-	Renderer::HUDqueue(&label_skill4);
-	Renderer::HUDqueue(&label_skill5);
+	Renderer::queue(0,&label_skill1);
+	Renderer::queue(0,&label_skill2);
+	Renderer::queue(0,&label_skill3);
+	Renderer::queue(0,&label_skill4);
+	Renderer::queue(0,&label_skill5);
 
-	Renderer::HUDqueue(&button_inventory);
-	Renderer::HUDqueue(&button_menu);
-	Renderer::HUDqueue(&button_save);
-
+	Renderer::queue(0,&button_inventory);
+	Renderer::queue(0,&button_menu);
+	Renderer::queue(0,&button_save);
+	Renderer::queue(0,&icon_inventory);
+	
 	if (showInventory || hideInventory)
 	{
-		Renderer::HUDqueue(&inventory);
-		Renderer::HUDqueue(&backpack);
-		Renderer::HUDqueue(&label_backpack);
-		Renderer::HUDqueue(&statsArea);
-		Renderer::HUDqueue(&equippedArea);
-		Renderer::HUDqueue(&label_stats);
-		Renderer::HUDqueue(&label_equipped);
+		Renderer::queue(0,&inventory);
+		Renderer::queue(0,&backpack);
+		Renderer::queue(0,&label_backpack);
+		Renderer::queue(0,&statsArea);
+		Renderer::queue(0,&equippedArea);
+		Renderer::queue(0,&label_stats);
+		Renderer::queue(0,&label_equipped);
+
 		for (int i = 0; i<BPslots; i++)
 		{
-			Renderer::HUDqueue(&slots[i]);
+			Renderer::queue(0,&slots[i]);
 		}
-		Renderer::HUDqueue(&helmet);
-		Renderer::HUDqueue(&armour);
-		Renderer::HUDqueue(&boots);
-		Renderer::HUDqueue(&weapon);
-		Renderer::HUDqueue(&shield);
+		Renderer::queue(0,&helmet);
+		Renderer::queue(0,&armour);
+		Renderer::queue(0,&boots);
+		Renderer::queue(0,&weapon);
+		Renderer::queue(0,&shield);
 
-		Renderer::HUDqueue(&icon_weapon);
-		Renderer::HUDqueue(&icon_armour);
-		Renderer::HUDqueue(&icon_boots);
-		Renderer::HUDqueue(&icon_helmet);
-		Renderer::HUDqueue(&icon_shield);
+		auto x = _player->GetComponent<CharacterSheetComponent>();
+		if (x->getHelmet()!=nullptr)
+		{
+			if(!x->getHelmet()->is_forDeletion())
+				Renderer::queue(0, &equipped_helmet);
+			else
+				Renderer::queue(0, &icon_helmet);
+		}
+		else
+		{
+			Renderer::queue(0, &icon_helmet);
+		}
+		if (x->getArmour() != nullptr)
+		{
+			if (!x->getArmour()->is_forDeletion())
+				Renderer::queue(0, &equipped_armour);
+			else
+				Renderer::queue(0, &icon_armour);
+		}
+		else
+		{
+			Renderer::queue(0, &icon_armour);
+		}
+		if (x->getBoots() != nullptr)
+		{
+			if (!x->getBoots()->is_forDeletion())
+				Renderer::queue(0, &equipped_boots);
+			else 
+				Renderer::queue(0, &icon_boots);
+		}
+		else
+		{
+			Renderer::queue(0, &icon_boots);
+		}
+		if (x->getWeapon() != nullptr)
+		{
+			if (!x->getWeapon()->is_forDeletion())
+				Renderer::queue(0, &equipped_weapon);
+			else
+				Renderer::queue(0, &icon_weapon);
+		}
+		else
+		{
+			Renderer::queue(0, &icon_weapon);
+		}
+		if (x->getShield() != nullptr)
+		{
+			if (!x->getShield()->is_forDeletion())
+				Renderer::queue(0, &equipped_shield);
+			else
+				Renderer::queue(0, &icon_shield);
+		}
+		else
+		{
+			Renderer::queue(0, &icon_shield);
+		}
+			
+	
+
+		if (displayInfo)
+		{
+			Renderer::queue(0, &infoArea);
+			Renderer::queue(0, &itemInfo);
+		}
+		if (displayItemOptions)
+		{
+			Renderer::queue(0, &itemOptionsArea);
+			Renderer::queue(0, &itemOptionsEquip);		
+			Renderer::queue(0, &itemOptionsDrop);
+		}
+		
+		
 	}
+
 }
 void HudComponent::update(double dt)
 {
+	auto x = _player->GetComponent<CharacterSheetComponent>();
+	auto backpack = x->getBP();
+
+	if (displayItemOptions)
+	{
+		if (mousePos.x >= itemOptionsEquip.getPosition().x - windowZero.x  && mousePos.x <= itemOptionsEquip.getPosition().x + 0.08f*WX- windowZero.x)
+		{
+			if (mousePos.y >= itemOptionsEquip.getPosition().y - windowZero.y  && mousePos.y <= itemOptionsEquip.getPosition().y + 0.045f*WY - windowZero.y)
+			{
+				if (buttonDelay < 0 && sf::Mouse::isButtonPressed(Mouse::Left))
+				{
+					buttonDelay = 0.1f;
+					auto x = _player->GetComponent<CharacterSheetComponent>();
+					x->equip(selectedItem);
+					auto it = selectedItem->GetComponent<ItemComponent>();
+					ITEM_TYPE type = it->getType();
+					switch (type)
+					{
+					case HELMET:
+						equipped_helmet = it->getSprite();
+					case ARMOUR:
+						equipped_armour = it->getSprite();
+					case BOOTS:
+						equipped_boots = it->getSprite();
+					case WEAPON:
+						equipped_weapon = it->getSprite();
+					case SHIELD:
+						equipped_shield = it->getSprite();
+					default:
+						break;
+					}
+					displayItemOptions = false;
+					
+				}
+				itemOptionsEquip.setOutlineColor(Color::Green);
+				itemOptionsDrop.setOutlineColor(Color::Black);
+			}
+			else if (mousePos.y >= itemOptionsDrop.getPosition().y - windowZero.y  && mousePos.y <= itemOptionsDrop.getPosition().y + 0.045f*WY - windowZero.y)
+			{
+				itemOptionsDrop.setOutlineColor(Color::Green);
+				itemOptionsEquip.setOutlineColor(Color::Black);
+				if (buttonDelay < 0 && sf::Mouse::isButtonPressed(Mouse::Left))
+				{					
+					buttonDelay = 0.1f;
+					selectedItem->setForDelete();
+					displayItemOptions = false;
+				}
+			}
+			else
+			{
+				itemOptionsDrop.setOutlineColor(Color::Black);
+				itemOptionsEquip.setOutlineColor(Color::Black);
+			}
+		}
+		else
+		{
+			itemOptionsEquip.setOutlineColor(Color::Black);
+			if (buttonDelay<0 && sf::Mouse::isButtonPressed(Mouse::Left))
+			{
+				buttonDelay = 0.1f;
+				displayItemOptions = false;
+			}
+		}
+	}
 	if (showInventory && sliderX<= 0.39f*WX)
 	{
 		sliderX += 1.5f*WX * dt;
@@ -243,10 +412,76 @@ void HudComponent::update(double dt)
 	{
 		hideInventory = false;
 	}
-	
-	
-	Vector2i mousePos = sf::Mouse::getPosition(Renderer::getWindow());
+	if (buttonDelay<0 && Keyboard::isKeyPressed(Keyboard::I))
+	{
+		sound.play();
+		buttonDelay = 0.2f;
+		if (!showInventory)
+			showInventory = true;
+		else
+			hideInventory = true;
+
+	}
+	if (Keyboard::isKeyPressed(Keyboard::Escape)) 
+	{
+		hideInventory = true;
+		displayInfo = false;
+		displayItemOptions = false;
+	}
+	mousePos = sf::Mouse::getPosition(Renderer::getWindow());
 	buttonDelay -= dt;
+	int i = 0;
+
+	for (auto item : backpack)
+	{ 
+		if (!item->is_forDeletion())
+		{
+			auto info = item->GetComponent<ItemComponent>();
+			if (mousePos.y >= slots[i].getPosition().y - windowZero.y  && mousePos.y <= slots[i].getPosition().y + 0.07f*WY - windowZero.y)
+			{
+				if (mousePos.x >= slots[i].getPosition().x - windowZero.x  && mousePos.x <= slots[i].getPosition().x + 0.045f*WX - windowZero.x)
+				{
+					slots[i].setFillColor(Color::White);
+					if (!displayItemOptions)
+					{
+						infoDelay -= dt;
+						if (infoDelay < 0.0f)
+						{
+							itemInfo.setPosition(mousePos.x + windowZero.x + 0.015f*WX, mousePos.y + windowZero.y + 0.01f*WY);
+							infoArea.setPosition(mousePos.x + windowZero.x, mousePos.y + windowZero.y);
+							itemInfo.setString(" " + info->getName() + "\nAttack: " + std::to_string((int)info->getAtt()) + "\nDefence: " + std::to_string((int)info->getDef()) + "\nSpeed: " + std::to_string((int)info->getSpd()));
+							displayInfo = true;
+						}
+					}
+					if (buttonDelay < 0 && sf::Mouse::isButtonPressed(Mouse::Left))
+					{
+						buttonDelay = 0.1f;
+						displayInfo = false;
+						itemOptionsEquip.setPosition(mousePos.x + windowZero.x + 0.012f*WX, mousePos.y + windowZero.y + 0.01f*WY);
+						itemOptionsDrop.setPosition(mousePos.x + windowZero.x + 0.012f*WX, mousePos.y + windowZero.y + 0.06f*WY);
+						itemOptionsArea.setPosition(mousePos.x + windowZero.x, mousePos.y + windowZero.y);
+						selectedItem = item;
+						selectedIndex = i;
+						displayItemOptions = true;
+					}
+
+				}
+				else
+				{
+					infoDelay = 1.0F;
+					resetSlot(i);
+					displayInfo = false;
+				}
+			}
+			else
+			{
+				infoDelay = 1.0F;
+				resetSlot(i);
+				displayInfo = false;
+			}
+			i++;
+		}
+	}
 	if (mousePos.y >= 0.915f*WY && mousePos.y <= 0.985f*WY)
 	{
 		
@@ -324,7 +559,7 @@ void HudComponent::setText() {
 
 void HudComponent::setPosition() 
 {
-	Vector2f windowZero = Vector2f(_player->getPosition().x - WX / 2, _player->getPosition().y - WY / 2);
+	windowZero = Vector2f(_player->getPosition().x - WX / 2, _player->getPosition().y - WY / 2);
 	HP.setPosition(windowZero + Vector2f(0.052f*WX, 0.02f*WY));
 	MP.setPosition(windowZero + Vector2f(0.052f*WX, 0.06f*WY));
 	text.setPosition(windowZero + Vector2f(0.01f*WX, 0.025f*WY));
@@ -344,6 +579,7 @@ void HudComponent::setPosition()
 	//////////////////buttons
 	button_menu.setPosition(windowZero + Vector2f(0.57f*WX, 0.915f*WY));
 	button_inventory.setPosition(windowZero + Vector2f(0.63f*WX, 0.915f*WY));
+	icon_inventory.setPosition(button_inventory.getPosition());
 	button_save.setPosition(windowZero + Vector2f(0.69f*WX, 0.915f*WY));
 	////////////////////////////INVENTORY
 	inventory.setPosition(windowZero + Vector2f(WX, 0.02f*WY) - Vector2f(sliderX,0));
@@ -371,14 +607,29 @@ void HudComponent::setPosition()
 	label_equipped.setPosition(inventory.getPosition() + Vector2f(0.007f*WX, 0.01f*WY));
 
 	helmet.setPosition(equippedArea.getPosition() + Vector2f(0.08f*WX, 0.01f*WY));
+	equipped_helmet.setPosition(helmet.getPosition() + Vector2f(0.023f*WX, 0.03f*WY));
 	armour.setPosition(equippedArea.getPosition() + Vector2f(0.08f*WX, 0.17f*WY));
+	equipped_armour.setPosition(armour.getPosition() + Vector2f(0.023f*WX, 0.03f*WY));
 	boots.setPosition(equippedArea.getPosition() + Vector2f(0.08f*WX, 0.3f*WY));
+	equipped_boots.setPosition(boots.getPosition() + Vector2f(0.023f*WX, 0.03f*WY));
 	weapon.setPosition(equippedArea.getPosition() + Vector2f(0.02f*WX, 0.17f*WY));
+	equipped_weapon.setPosition(weapon.getPosition() + Vector2f(0.023f*WX, 0.03f*WY));
 	shield.setPosition(equippedArea.getPosition() + Vector2f(0.14f*WX, 0.17f*WY));
+	equipped_shield.setPosition(shield.getPosition() + Vector2f(0.023f*WX, 0.03f*WY));
 
 	icon_weapon.setPosition(weapon.getPosition());
 	icon_armour.setPosition(armour.getPosition());
 	icon_shield.setPosition(shield.getPosition());
 	icon_helmet.setPosition(helmet.getPosition());
 	icon_boots.setPosition(boots.getPosition());
+
+	auto x = _player->GetComponent<CharacterSheetComponent>();
+	auto backpack = x->getBP();
+	int i = 0;
+	for (auto item : backpack)
+	{
+		if(!item->is_forDeletion())
+		item->setPosition(slots[i++].getPosition() + Vector2f(0.023f*WX, 0.03f*WY));
+	}
+	
 }

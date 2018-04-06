@@ -4,9 +4,10 @@
 
 using namespace std;
 using namespace sf;
-
-static queue<const Drawable *>  sprites;
-static queue<const Drawable *>  HUDsprites;
+static queue<const Drawable *>  sprites0;
+static queue<const Drawable *>  sprites1;
+static queue<const Drawable *>  sprites2;
+static queue<const Drawable *>  sprites3;
 static RenderWindow *rw;
 static View playerCam(Vector2f(0.0f, 0.0f), Vector2f(1280.0f, 720.0f));
 
@@ -22,10 +23,14 @@ void Renderer::updateView()
 }
 void Renderer::shutdown()
 {
-	while (!sprites.empty())
-		sprites.pop();
-	while (!HUDsprites.empty())
-		HUDsprites.pop();
+	while (!sprites3.empty())
+		sprites3.pop();
+	while (!sprites2.empty())
+		sprites2.pop();
+	while (!sprites1.empty())
+		sprites2.pop();
+	while (!sprites0.empty())
+		sprites2.pop();
 }
 void Renderer::update(const double &) 
 {
@@ -45,21 +50,40 @@ void Renderer::render()
 	{
 		throw("No render window set! ");
 	}
-	while (!sprites.empty())
+	while (!sprites3.empty())
 	{
-		//every frame set the view to point at the player (playerCam centre gets updated in gamescene update)
-		//std::cout << rw->getDefaultView().getCenter().x << "   " <<rw->getDefaultView().getCenter().y << std::endl;
-		rw->draw(*sprites.front());
-		sprites.pop();
+		rw->draw(*sprites3.front());
+		sprites3.pop();
 	}
-	while (!HUDsprites.empty())
+	while (!sprites2.empty())
 	{
-		//every frame set the view to point at the player (playerCam centre gets updated in gamescene update)
-		//std::cout << rw->getDefaultView().getCenter().x << "   " <<rw->getDefaultView().getCenter().y << std::endl;
-		rw->draw(*HUDsprites.front());
-		HUDsprites.pop();
+		rw->draw(*sprites2.front());
+		sprites2.pop();
+	}
+	while (!sprites1.empty())
+	{
+		rw->draw(*sprites1.front());
+		sprites1.pop();
+	}
+	while (!sprites0.empty())
+	{
+		rw->draw(*sprites0.front());
+		sprites0.pop();
 	}
 	
 }
-void Renderer::queue(const sf::Drawable *s) { sprites.push(s); }
-void Renderer::HUDqueue(const sf::Drawable *s) { HUDsprites.push(s); }
+void Renderer::queue(const sf::Drawable *s)
+{
+		sprites3.push(s);
+}
+void Renderer::queue(int p ,const sf::Drawable *s) 
+{ 
+	if(p==3)
+		sprites3.push(s);
+	else if (p == 2)
+		sprites2.push(s);
+	else if (p == 1)
+		sprites1.push(s);
+	else if (p == 0)
+		sprites0.push(s);
+}	

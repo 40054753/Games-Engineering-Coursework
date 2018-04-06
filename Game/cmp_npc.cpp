@@ -22,8 +22,8 @@ void NPCComponent::setDialogue(std::string x)
 void NPCComponent::update(double dt) 
 {
 	interactionDelay -= dt;
-	dialogueBox.setPosition(_player->getPosition() + sf::Vector2f(-0.49f* Renderer::gameWidth, 0.20f*Renderer::gameHeight));
-	text.setPosition(_player->getPosition() + sf::Vector2f(-0.48f* Renderer::gameWidth, 0.21f*Renderer::gameHeight));
+	dialogueBox.setPosition(_player->getPosition() + sf::Vector2f(-0.49f* WX, 0.14f*WY));
+	text.setPosition(_player->getPosition() + sf::Vector2f(-0.48f* WX, 0.15f*WY));
 	if (interactionDelay <= 0 && (length(_parent->getPosition() - _player->getPosition()) < 21.0f) && sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
 	{
 		_player->GetComponent<PlayerMovementComponent>()->immobilize();
@@ -59,8 +59,8 @@ void NPCComponent::render()
 {
 	if (trigger)
 	{
-		Renderer::queue(&dialogueBox);
-		Renderer::queue(&text);
+		Renderer::queue(0,&dialogueBox);
+		Renderer::queue(0,&text);
 	}
 }
 void NPCComponent::interact()

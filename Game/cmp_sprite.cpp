@@ -150,7 +150,7 @@ void CharacterSpriteComponent::update(double dt)
 }
 
 void CharacterSpriteComponent::render() {
-	Renderer::queue(_sprite.get());
+	Renderer::queue(1,_sprite.get());
 }
 sf::Sprite& CharacterSpriteComponent::getSprite() const {
 	return *_sprite;
@@ -196,7 +196,7 @@ void StaticSpriteComponent::update(double dt)
 
 void StaticSpriteComponent::render()
 {
-	Renderer::queue(_sprite.get());
+	Renderer::queue(2,_sprite.get());
 }
 EnemyHealthBarComponent::EnemyHealthBarComponent(Entity *p) : Component(p) 
 {

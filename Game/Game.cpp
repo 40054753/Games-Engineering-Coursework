@@ -9,6 +9,7 @@
 #include "cmp_attack.h"
 #include "cmp_npc.h"
 #include "cmp_hud.h"
+#include "cmp_char_sheet.h"
 #include "cmp_enemy_attack.h"
 #include "cmp_ai_steering.h"
 #include <string>
@@ -19,13 +20,14 @@ using namespace sf;
 using namespace std;
 const int GHOSTS_COUNT = 4;
 Font font;
-Texture playerTexture, zombieTexture, spellsTexture, snowEffect, iconsTexture;
+Texture playerTexture, zombieTexture, spellsTexture, snowEffect, iconsTexture, itemsTexture;
 Texture menuBg;
 sf::Sprite background;
 SoundBuffer buffer;
 Sound sound;
 RectangleShape rect;
 Vector2i mousePos;
+
 MenuScene::MenuScene() {
 }
 void MenuScene::load() {
@@ -275,6 +277,7 @@ void GameScene::respawn()
 		ghost->addComponent<HealthComponent>();
 		ghost->addComponent<EnemyHealthBarComponent>();
 		auto p = ghost->addComponent<EnemyAttackComponent>();
+		p->setLevel(0);
 		p->setPlayer(player);
 		ghost->addComponent<SteeringComponent>(player.get());
 		std::cout << player.get()->getPosition().x;
@@ -292,6 +295,7 @@ void GameScene::respawn()
 	s->getSprite().setOrigin(8.0f, 12.0f);
 	ghost->addComponent<HealthComponent>();
 	auto p = ghost->addComponent<EnemyAttackComponent>();
+	p->setLevel(0);
 	p->setPlayer(player);
 	ghost->addComponent<EnemyHealthBarComponent>();
 	_ents.list.push_back(ghost);
@@ -345,7 +349,12 @@ void GameScene::respawn()
 }
 void GameScene::load()
 {
+
 	if (!playerTexture.loadFromFile("res/img/player.png"))
+	{
+		cerr << "Failed to load spritesheet!" << endl;
+	}
+	if (!itemsTexture.loadFromFile("res/img/items.png"))
 	{
 		cerr << "Failed to load spritesheet!" << endl;
 	}
@@ -363,6 +372,7 @@ void GameScene::load()
 	ls::loadLevelFile("res/levels/example.txt", 25.0f);
 
 	auto pl = make_shared<Entity>();
+	pl->addComponent<CharacterSheetComponent>();
 	auto mp = pl->addComponent<PlayerMovementComponent>();
 	mp->setSpeed(100.0f);
 	pl->addComponent<HealthComponent>();
@@ -390,7 +400,6 @@ void GameScene::load()
 
 void GameScene::update(double dt)
 {
-	
 	auto health_mana = player->GetComponent<HealthComponent>();
 	if (health_mana->getHealth()<=0)
 	{

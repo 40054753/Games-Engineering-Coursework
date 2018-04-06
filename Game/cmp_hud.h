@@ -52,6 +52,8 @@ protected:
 	sf::Sprite icon_boots;
 	sf::Sprite icon_helmet;
 	sf::Sprite icon_shield;
+
+	sf::Sprite icon_inventory;
 	float sliderX=0;
 	float slideTime = 0.2f;
 
@@ -60,13 +62,37 @@ protected:
 	float health;
 	float maxMana;
 	float mana;
+
 	sf::Text text;
+	
+
+	///////////////////////ITEM INTERACTION
+	sf::RectangleShape infoArea;
+	float infoDelay = 1.0f;
+	bool displayInfo = false;
+	bool displayItemOptions = false;
+	sf::Text itemInfo;
+	//////////////item options
+	sf::RectangleShape itemOptionsArea;
+	sf::Text itemOptionsEquip;
+	sf::Text itemOptionsDrop;
+
+	///////////////EQUIPPED ITEMS///////////
+	sf::Sprite equipped_weapon;
+	sf::Sprite equipped_armour;
+	sf::Sprite equipped_boots;
+	sf::Sprite equipped_helmet;
+	sf::Sprite equipped_shield;
+
+
 public:
 	void resetButtons();
+	void resetSlot(int i);
 	void set(float health, float maxhealth, float mana, float maxmana);
 	explicit HudComponent(Entity *p);
 	HudComponent() = delete;
 	void setPlayer(std::shared_ptr<Entity>& e);
+	void displayBackpack();
 	void setMaxHealth(float maxHealth);
 	void setHealth(float health);
 	void setMaxMana(float maxMana);

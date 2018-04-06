@@ -37,9 +37,6 @@ void Update(RenderWindow &window)
 			return;
 		}
 	}	
-	if (Keyboard::isKeyPressed(Keyboard::Escape)) {
-		window.close();
-	}
 }
 
 void Render(RenderWindow &window)
