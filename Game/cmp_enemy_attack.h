@@ -5,11 +5,13 @@
 class EnemyAttackComponent : public Component {
 
 protected:
+	int level=0;
 	float cooldown = 0.3f;
 	std::shared_ptr<Entity> _player;
 public:
 	explicit EnemyAttackComponent(Entity *p);
 	EnemyAttackComponent() = delete;
+	void setLevel(int x) { level = x; }
 	void render() override;
 	void update(double dt) override;
 	void setPlayer(std::shared_ptr<Entity>& e);

@@ -26,6 +26,7 @@ SoundBuffer buffer;
 Sound sound;
 RectangleShape rect;
 Vector2i mousePos;
+
 MenuScene::MenuScene() {
 }
 void MenuScene::load() {
@@ -276,6 +277,7 @@ void GameScene::respawn()
 		ghost->addComponent<HealthComponent>();
 		ghost->addComponent<EnemyHealthBarComponent>();
 		auto p = ghost->addComponent<EnemyAttackComponent>();
+		p->setLevel(0);
 		p->setPlayer(player);
 		_ents.list.push_back(ghost);
 		ghosts.push_back(ghost);
@@ -291,6 +293,7 @@ void GameScene::respawn()
 	s->getSprite().setOrigin(8.0f, 12.0f);
 	ghost->addComponent<HealthComponent>();
 	auto p = ghost->addComponent<EnemyAttackComponent>();
+	p->setLevel(0);
 	p->setPlayer(player);
 	ghost->addComponent<EnemyHealthBarComponent>();
 	_ents.list.push_back(ghost);
@@ -344,6 +347,7 @@ void GameScene::respawn()
 }
 void GameScene::load()
 {
+
 	if (!playerTexture.loadFromFile("res/img/player.png"))
 	{
 		cerr << "Failed to load spritesheet!" << endl;
