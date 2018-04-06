@@ -185,51 +185,51 @@ void HudComponent::resetButtons()
 void HudComponent::render() 
 {
 	
-	Renderer::HUDqueue(&HP);
-	Renderer::HUDqueue(&MP);
-	Renderer::HUDqueue(&text);
-	Renderer::HUDqueue(&buttonsBackground);	
-	Renderer::HUDqueue(&skill1);
-	Renderer::HUDqueue(&skill2);
-	Renderer::HUDqueue(&skill3);
-	Renderer::HUDqueue(&skill4);
-	Renderer::HUDqueue(&skill5);
+	Renderer::queue(0,&HP);
+	Renderer::queue(0,&MP);
+	Renderer::queue(0,&text);
+	Renderer::queue(0,&buttonsBackground);	
+	Renderer::queue(0,&skill1);
+	Renderer::queue(0,&skill2);
+	Renderer::queue(0,&skill3);
+	Renderer::queue(0,&skill4);
+	Renderer::queue(0,&skill5);
 
-	Renderer::HUDqueue(&label_skill1);
-	Renderer::HUDqueue(&label_skill2);
-	Renderer::HUDqueue(&label_skill3);
-	Renderer::HUDqueue(&label_skill4);
-	Renderer::HUDqueue(&label_skill5);
+	Renderer::queue(0,&label_skill1);
+	Renderer::queue(0,&label_skill2);
+	Renderer::queue(0,&label_skill3);
+	Renderer::queue(0,&label_skill4);
+	Renderer::queue(0,&label_skill5);
 
-	Renderer::HUDqueue(&button_inventory);
-	Renderer::HUDqueue(&button_menu);
-	Renderer::HUDqueue(&button_save);
-	Renderer::HUDqueue(&icon_inventory);
+	Renderer::queue(0,&button_inventory);
+	Renderer::queue(0,&button_menu);
+	Renderer::queue(0,&button_save);
+	Renderer::queue(0,&icon_inventory);
 	if (showInventory || hideInventory)
 	{
-		Renderer::HUDqueue(&inventory);
-		Renderer::HUDqueue(&backpack);
-		Renderer::HUDqueue(&label_backpack);
-		Renderer::HUDqueue(&statsArea);
-		Renderer::HUDqueue(&equippedArea);
-		Renderer::HUDqueue(&label_stats);
-		Renderer::HUDqueue(&label_equipped);
+		Renderer::queue(0,&inventory);
+		Renderer::queue(0,&backpack);
+		Renderer::queue(0,&label_backpack);
+		Renderer::queue(0,&statsArea);
+		Renderer::queue(0,&equippedArea);
+		Renderer::queue(0,&label_stats);
+		Renderer::queue(0,&label_equipped);
 
 		for (int i = 0; i<BPslots; i++)
 		{
-			Renderer::HUDqueue(&slots[i]);
+			Renderer::queue(0,&slots[i]);
 		}
-		Renderer::HUDqueue(&helmet);
-		Renderer::HUDqueue(&armour);
-		Renderer::HUDqueue(&boots);
-		Renderer::HUDqueue(&weapon);
-		Renderer::HUDqueue(&shield);
+		Renderer::queue(0,&helmet);
+		Renderer::queue(0,&armour);
+		Renderer::queue(0,&boots);
+		Renderer::queue(0,&weapon);
+		Renderer::queue(0,&shield);
 
-		Renderer::HUDqueue(&icon_weapon);
-		Renderer::HUDqueue(&icon_armour);
-		Renderer::HUDqueue(&icon_boots);
-		Renderer::HUDqueue(&icon_helmet);
-		Renderer::HUDqueue(&icon_shield);
+		Renderer::queue(0,&icon_weapon);
+		Renderer::queue(0,&icon_armour);
+		Renderer::queue(0,&icon_boots);
+		Renderer::queue(0,&icon_helmet);
+		Renderer::queue(0,&icon_shield);
 	}
 }
 void HudComponent::update(double dt)

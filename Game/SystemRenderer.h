@@ -13,7 +13,8 @@ namespace  Renderer
 	void shutdown();
 	void update(const double &);
 	void queue(const sf::Drawable *s);
-	void HUDqueue(const sf::Drawable *s);
+	void queue(int priority, const sf::Drawable *s);
+	void queue(const sf::Drawable *s);
 	void render();
 	void setCenter(sf::Vector2f pos);
 	void resizeView();

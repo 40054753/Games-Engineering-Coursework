@@ -33,18 +33,18 @@ void AttackComponent::update(double dt)
 			health_mana->reduceMana(20);
 			cooldown = 0.3f;
 			auto bullet = std::make_shared<Entity>();
+			bullet->setPosition(_parent->getPosition());
 			auto pr = bullet->addComponent<ProjectileMovementComponent>();
 			bullet->setFace(_parent->getFace());
 		    auto c2 = bullet->addComponent<ProjectileComponent>();
 			c2->setEntities(_entities);
 			auto s = bullet->addComponent<StaticSpriteComponent>();
-			s->addSpin();
 			s->getSprite().setTexture(spellsTexture);
+			s->addSpin();
 			s->getSprite().setTextureRect({ 0,0,30,30 });
 			s->getSprite().setScale({ 1.0f, 1.0f });
 			s->getSprite().setOrigin({ 8.0f, 12.0f });
-			s->getSprite().setPosition({ 100.0f, 100.0f });
-			bullet->setPosition(_parent->getPosition());
+
 			activeScene->getEnts().push_back(bullet);
 		}
 	}
