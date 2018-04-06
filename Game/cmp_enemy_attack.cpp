@@ -5,6 +5,7 @@
 #include "cmp_projectile.h"
 #include "cmp_sprite.h"
 #include "SystemRenderer.h"
+#include "cmp_items.h"
 #include "Game.h"
 #include <string>
 
@@ -22,7 +23,29 @@ void EnemyAttackComponent::render()
 void EnemyAttackComponent::update(double dt)
 {
 	auto hp = _parent->GetComponent<HealthComponent>();
-	if (hp->getHealth() < 0) _parent->setForDelete();
+	//////////////WHEN ENEMY DIES////////////////////////
+	if (hp->getHealth() < 0)
+	{
+		int drop = rand() % 10;
+		if (drop >= 0)
+		{
+			auto item = std::make_shared<Entity>();
+			item->setPosition(_parent->getPosition());
+			auto it = item->addComponent<ItemComponent>();
+			it->point(item);
+			it->setName("IRON HELMET");
+			it->setType(HELMET);
+			it->setDef(10);
+			it->setPlayer(_player);
+			it->getSprite().setTexture(itemsTexture);
+			it->getSprite().setTextureRect({0,144,16,16});
+			it->getSprite().setScale({ 2, 2 });
+			it->getSprite().setOrigin({8,8});
+			activeScene->getEnts().push_back(item);
+		}
+		_parent->setForDelete();
+	}
+	
 	if (!_parent->is_forDeletion())
 	{
 		///////////////////////////////////////////////////////WHEN PLAYER TOUCHES THE ENEMY//////////////////////////////////

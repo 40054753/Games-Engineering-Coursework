@@ -9,6 +9,7 @@
 #include "cmp_attack.h"
 #include "cmp_npc.h"
 #include "cmp_hud.h"
+#include "cmp_char_sheet.h"
 #include "cmp_enemy_attack.h"
 #include <string>
 
@@ -18,7 +19,7 @@ using namespace sf;
 using namespace std;
 const int GHOSTS_COUNT = 4;
 Font font;
-Texture playerTexture, zombieTexture, spellsTexture, snowEffect, iconsTexture;
+Texture playerTexture, zombieTexture, spellsTexture, snowEffect, iconsTexture, itemsTexture;
 Texture menuBg;
 sf::Sprite background;
 SoundBuffer buffer;
@@ -347,6 +348,10 @@ void GameScene::load()
 	{
 		cerr << "Failed to load spritesheet!" << endl;
 	}
+	if (!itemsTexture.loadFromFile("res/img/items.png"))
+	{
+		cerr << "Failed to load spritesheet!" << endl;
+	}
 	if (!spellsTexture.loadFromFile("res/img/spells.png"))
 	{
 		cerr << "Failed to load spritesheet!" << endl;
@@ -361,6 +366,7 @@ void GameScene::load()
 	ls::loadLevelFile("res/levels/example.txt", 25.0f);
 
 	auto pl = make_shared<Entity>();
+	pl->addComponent<CharacterSheetComponent>();
 	auto mp = pl->addComponent<PlayerMovementComponent>();
 	mp->setSpeed(100.0f);
 	pl->addComponent<HealthComponent>();

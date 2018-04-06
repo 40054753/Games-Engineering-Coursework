@@ -8,8 +8,6 @@
 #include "Game.h"
 #include <string>
 
-
-
 AttackComponent::AttackComponent(Entity *p) : Component(p) {}
 
 void AttackComponent::setEntities(std::vector <std::shared_ptr<Entity>>& e) {
@@ -17,7 +15,6 @@ void AttackComponent::setEntities(std::vector <std::shared_ptr<Entity>>& e) {
 }
 void AttackComponent::render() 
 {
-
 }
 void AttackComponent::update(double dt) 
 {

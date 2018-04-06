@@ -69,6 +69,7 @@ public:
 	explicit HudComponent(Entity *p);
 	HudComponent() = delete;
 	void setPlayer(std::shared_ptr<Entity>& e);
+	void displayBackpack();
 	void setMaxHealth(float maxHealth);
 	void setHealth(float health);
 	void setMaxMana(float maxMana);

@@ -4,6 +4,9 @@
 #define MAX_NUMBER_OF_ITEMS 4
 #define WX  1.0f*Renderer::gameWidth
 #define WY 1.0f*Renderer::gameHeight
+
+enum ITEM_TYPE { WEAPON, SHIELD, HELMET, ARMOUR, BOOTS, POTION, POWERUP, KEYITEM };
+
 extern std::shared_ptr<Scene> gameScene;
 extern std::shared_ptr<Scene> menuScene;
 extern std::shared_ptr<Scene> activeScene;
@@ -11,6 +14,7 @@ extern sf::Texture playerTexture;
 extern sf::Texture zombieTexture;
 extern sf::Texture spellsTexture;
 extern sf::Texture iconsTexture;
+extern sf::Texture itemsTexture;
 extern sf::SoundBuffer buffer;
 extern sf::Sound sound;
 extern sf::Texture snowEffect;

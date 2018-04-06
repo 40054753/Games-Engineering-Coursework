@@ -4,6 +4,7 @@
 #include <string>
 #include <iostream>
 #include "Game.h"
+#include "cmp_char_sheet.h"
 #include "cmp_health.h"
 using namespace sf;
 
@@ -163,6 +164,10 @@ HudComponent::HudComponent(Entity *p) : Component(p)
 
 
 }
+void HudComponent::displayBackpack()
+{
+	
+}
 void HudComponent::setPlayer(std::shared_ptr<Entity>& e) {
 	_player = e;
 }
@@ -234,6 +239,7 @@ void HudComponent::render()
 }
 void HudComponent::update(double dt)
 {
+	displayBackpack();
 	if (showInventory && sliderX<= 0.39f*WX)
 	{
 		sliderX += 1.5f*WX * dt;
@@ -399,4 +405,12 @@ void HudComponent::setPosition()
 	icon_shield.setPosition(shield.getPosition());
 	icon_helmet.setPosition(helmet.getPosition());
 	icon_boots.setPosition(boots.getPosition());
+
+	auto x = _player->GetComponent<CharacterSheetComponent>();
+	auto backpack = x->getBP();
+	int i = 0;
+	for (auto item : backpack)
+	{
+		item->setPosition(slots[i++].getPosition() + Vector2f(0.023f*WX, 0.03f*WY));
+	}
 }
