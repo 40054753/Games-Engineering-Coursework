@@ -19,6 +19,7 @@ extern sf::SoundBuffer buffer;
 extern sf::Sound sound;
 extern sf::Texture snowEffect;
 extern sf::Font font;
+extern sf::Vector2i mousePos;
 class MenuScene : public Scene
 {
 private:

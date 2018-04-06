@@ -394,7 +394,6 @@ void GameScene::load()
 
 void GameScene::update(double dt)
 {
-	
 	auto health_mana = player->GetComponent<HealthComponent>();
 	if (health_mana->getHealth()<=0)
 	{

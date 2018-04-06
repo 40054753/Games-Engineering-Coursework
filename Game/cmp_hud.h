@@ -70,7 +70,21 @@ protected:
 	sf::RectangleShape infoArea;
 	float infoDelay = 1.0f;
 	bool displayInfo = false;
+	bool displayItemOptions = false;
 	sf::Text itemInfo;
+	//////////////item options
+	sf::RectangleShape itemOptionsArea;
+	sf::Text itemOptionsEquip;
+	sf::Text itemOptionsDrop;
+
+	///////////////EQUIPPED ITEMS///////////
+	sf::Sprite equipped_weapon;
+	sf::Sprite equipped_armour;
+	sf::Sprite equipped_boots;
+	sf::Sprite equipped_helmet;
+	sf::Sprite equipped_shield;
+
+
 public:
 	void resetButtons();
 	void resetSlot(int i);
