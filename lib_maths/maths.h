@@ -56,5 +56,4 @@ namespace sf {
 		os << '(' << v.x << ", " << v.y << ')';
 		return os;
 	}
-
 }

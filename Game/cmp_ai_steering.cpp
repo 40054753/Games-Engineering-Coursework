@@ -1,5 +1,6 @@
 #include "cmp_ai_steering.h"
 #include "SystemRenderer.h"
+#include <maths.h>
 
 using namespace sf;
 
@@ -12,11 +13,31 @@ SteeringComponent::SteeringComponent(Entity * p, Entity* player)
 void SteeringComponent::update(double dt)
 {
 	const auto mva = (float)(dt * _speed);
-	// If target (player) is more than 100 pixels away seek
+	// If target (player) is within 300 pixels seek
 	if (length(_parent->getPosition() - _player->getPosition()) < 300.0f)
 	{
+		double pi = 3.14159265359;
 		auto output = _seek.getSteering();
 		move(output.direction * mva);
+
+		Vector2f j(_parent->getPosition());
+		Vector2f k(_player->getPosition());
+
+		float angle = atan2f(k.y-j.y, k.x-j.x) * 180 / pi;
+
+
+		if (angle >= 45 && angle < 135) {
+			_parent->setFace(3);
+		}
+		if (angle >= 135 && angle <= 180 || angle >= -180 && angle < -135) {
+			_parent->setFace(4);
+		}
+		if (angle >= -135 && angle < -45) {
+			_parent->setFace(1);
+		}
+		if (angle >= -45 && angle < 45) {
+			_parent->setFace(2);
+		}
 	}
 }
 
