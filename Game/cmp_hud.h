@@ -62,9 +62,18 @@ protected:
 	float health;
 	float maxMana;
 	float mana;
+
 	sf::Text text;
+	
+
+	///////////////////////ITEM INTERACTION
+	sf::RectangleShape infoArea;
+	float infoDelay = 1.0f;
+	bool displayInfo = false;
+	sf::Text itemInfo;
 public:
 	void resetButtons();
+	void resetSlot(int i);
 	void set(float health, float maxhealth, float mana, float maxmana);
 	explicit HudComponent(Entity *p);
 	HudComponent() = delete;

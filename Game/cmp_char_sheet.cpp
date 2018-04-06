@@ -14,5 +14,8 @@ void CharacterSheetComponent::update(double dt)
 }
 void CharacterSheetComponent::pickUp(std::shared_ptr<Entity>& item)
 {
-	_backpack.push_back(item);	
+	if (_backpack.size() < 21)
+	{
+		_backpack.push_back(item);
+	}
 }

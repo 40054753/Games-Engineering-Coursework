@@ -5,12 +5,12 @@
 #include <iostream>
 #include "Game.h"
 #include "cmp_char_sheet.h"
+#include "cmp_items.h"
 #include "cmp_health.h"
 using namespace sf;
-
+Vector2f windowZero;
 HudComponent::HudComponent(Entity *p) : Component(p)
 {
-
 	HP.setFillColor(sf::Color::Red);
 	HP.setSize({ Renderer::gameWidth / 5.7f,Renderer::gameHeight / 25.0f });
 	MP.setFillColor(sf::Color::Blue);
@@ -163,13 +163,19 @@ HudComponent::HudComponent(Entity *p) : Component(p)
 	icon_inventory.setTextureRect({ 50,0,50,50 });
 
 
-}
-void HudComponent::displayBackpack()
-{
-	
+	///////////////////////ITEM INTERACTION
+	itemInfo.setFont(font);
+	itemInfo.setColor(sf::Color::White);
+	itemInfo.setOutlineColor(sf::Color::Black);
+	itemInfo.setOutlineThickness(2.0f);
+	itemInfo.setCharacterSize(16.0f);
+	infoArea.setFillColor(sf::Color(255, 255, 255, 150));
+	infoArea.setSize({ 0.17f*WX, 0.15f*WY });
+
 }
 void HudComponent::setPlayer(std::shared_ptr<Entity>& e) {
 	_player = e;
+	Vector2f windowZero = Vector2f(_player->getPosition().x - WX / 2, _player->getPosition().y - WY / 2);
 }
 void HudComponent::set(float h, float mh, float m, float mm)
 {
@@ -186,6 +192,10 @@ void HudComponent::resetButtons()
 	button_menu.setFillColor(sf::Color(79, 79, 79, 255));
 	button_inventory.setFillColor(sf::Color(79, 79, 79, 255));
 	button_save.setFillColor(sf::Color(79, 79, 79, 255));
+}
+void HudComponent::resetSlot(int i)
+{
+		slots[i].setFillColor(sf::Color(79, 79, 79, 255));
 }
 void HudComponent::render() 
 {
@@ -210,6 +220,7 @@ void HudComponent::render()
 	Renderer::queue(0,&button_menu);
 	Renderer::queue(0,&button_save);
 	Renderer::queue(0,&icon_inventory);
+	
 	if (showInventory || hideInventory)
 	{
 		Renderer::queue(0,&inventory);
@@ -235,11 +246,19 @@ void HudComponent::render()
 		Renderer::queue(0,&icon_boots);
 		Renderer::queue(0,&icon_helmet);
 		Renderer::queue(0,&icon_shield);
+		if (displayInfo)
+		{
+			Renderer::queue(0, &infoArea);
+			Renderer::queue(0, &itemInfo);
+		}
 	}
+
 }
 void HudComponent::update(double dt)
 {
-	displayBackpack();
+	auto x = _player->GetComponent<CharacterSheetComponent>();
+	auto backpack = x->getBP();
+
 	if (showInventory && sliderX<= 0.39f*WX)
 	{
 		sliderX += 1.5f*WX * dt;
@@ -267,9 +286,44 @@ void HudComponent::update(double dt)
 	{
 		hideInventory = true;
 	}
-	
 	Vector2i mousePos = sf::Mouse::getPosition(Renderer::getWindow());
+	Vector2i mousePosWorld = sf::Mouse::getPosition();
 	buttonDelay -= dt;
+	int i = 0;
+	for (auto item : backpack)
+	{ 
+		auto info = item->GetComponent<ItemComponent>();
+		if (mousePos.y >=  slots[i].getPosition().y - windowZero.y  && mousePos.y <= slots[i].getPosition().y + 0.07f*WY - windowZero.y)
+		{
+			if (mousePos.x >= slots[i].getPosition().x - windowZero.x  && mousePos.x <= slots[i].getPosition().x + 0.045f*WX - windowZero.x)
+			{
+				slots[i].setFillColor(Color::White);
+				infoDelay -=dt;
+				if (infoDelay < 0.0f)
+				{
+					itemInfo.setPosition(mousePos.x + windowZero.x + 0.015f*WX, mousePos.y + windowZero.y+0.01f*WY);
+					infoArea.setPosition(mousePos.x + windowZero.x, mousePos.y + windowZero.y);
+					itemInfo.setString(" " + info->getName() +"\nAttack: " + std::to_string((int)info->getAtt()) + "\nDefence: " + std::to_string((int)info->getDef()) + "\nSpeed: " + std::to_string((int)info->getSpd()));
+					displayInfo = true;
+				}
+				
+			}
+			else
+			{
+				infoDelay = 1.0F;
+				resetSlot(i);
+				displayInfo = false;
+			}
+		}
+		else
+		{
+			infoDelay = 1.0F;
+			resetSlot(i);
+			displayInfo = false;
+		}
+		i++;
+
+	}
 	if (mousePos.y >= 0.915f*WY && mousePos.y <= 0.985f*WY)
 	{
 		
@@ -347,7 +401,7 @@ void HudComponent::setText() {
 
 void HudComponent::setPosition() 
 {
-	Vector2f windowZero = Vector2f(_player->getPosition().x - WX / 2, _player->getPosition().y - WY / 2);
+	windowZero = Vector2f(_player->getPosition().x - WX / 2, _player->getPosition().y - WY / 2);
 	HP.setPosition(windowZero + Vector2f(0.052f*WX, 0.02f*WY));
 	MP.setPosition(windowZero + Vector2f(0.052f*WX, 0.06f*WY));
 	text.setPosition(windowZero + Vector2f(0.01f*WX, 0.025f*WY));
