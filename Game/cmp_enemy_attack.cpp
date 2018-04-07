@@ -18,10 +18,6 @@ EnemyAttackComponent::EnemyAttackComponent(Entity *p) : Component(p)
 	
 }
 
-void EnemyAttackComponent::setPlayer(std::shared_ptr<Entity>& e) {
-	_player = e;
-	items->setPlayer(e);
-}
 void EnemyAttackComponent::render()
 {
 
@@ -39,12 +35,12 @@ void EnemyAttackComponent::update(double dt)
 	if (!_parent->is_forDeletion())
 	{
 		///////////////////////////////////////////////////////WHEN PLAYER TOUCHES THE ENEMY//////////////////////////////////
-		if (length(_parent->getPosition() - _player->getPosition()) < 20.0f)
+		if (length(_parent->getPosition() - player->getPosition()) < 20.0f)
 		{
-			auto hp = _player->GetComponent<HealthComponent>();
-			auto d = _player->GetComponent<PlayerMovementComponent>();
-			d->push((_player->getPosition() - _parent->getPosition()));
-			auto pp = _player->GetComponent<CharacterSpriteComponent>();
+			auto hp = player->GetComponent<HealthComponent>();
+			auto d = player->GetComponent<PlayerMovementComponent>();
+			d->push((player->getPosition() - _parent->getPosition()));
+			auto pp = player->GetComponent<CharacterSpriteComponent>();
 			hp->reduceHealth(30);
 
 		}

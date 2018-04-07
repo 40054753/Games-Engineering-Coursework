@@ -1,16 +1,12 @@
 
 #include "EventSystem.h"
 #include "cmp_char_sheet.h"
-
+#include "Game.h"
 
 EventSystem* EventSystem::instance;
 EventSystem::EventSystem()
 {
 	
-}
-void EventSystem::setPlayer(std::shared_ptr<Entity>& e)
-{
-	_player = e;
 }
 EventSystem* EventSystem::getInstance()
 {
@@ -26,6 +22,6 @@ EventSystem::~EventSystem()
 }
 void EventSystem::addExp(int a, float b)
 {
-	auto exp = _player->GetComponent<CharacterSheetComponent>();
+	auto exp = player->GetComponent<CharacterSheetComponent>();
 	exp->addEXP(a, b);
 }

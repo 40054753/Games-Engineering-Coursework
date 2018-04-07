@@ -1,18 +1,23 @@
 #include "Game.h"
 #include "ecm.h"
 #include "cmp_items.h"
+#include <string>
 
 class ItemGenerator
 {
 private:
 	ItemGenerator();
 	static ItemGenerator* instance;
-	std::shared_ptr<Entity> _player;
 public:
+	void load(int id, bool equipped);
 	static ItemGenerator* getInstance();
-	void setPlayer(std::shared_ptr<Entity>& e);
 	~ItemGenerator();
+
+
 	void create_iron_helmet(sf::Vector2f location);
 	void create_leaf(sf::Vector2f location);
+
+	void recreate_iron_helmet(bool equipped);
+	void recreate_leaf(bool equipped);
 	void random_drop(int level,sf::Vector2f location);
 };

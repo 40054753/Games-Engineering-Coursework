@@ -15,6 +15,7 @@ extern sf::Texture zombieTexture;
 extern sf::Texture spellsTexture;
 extern sf::Texture iconsTexture;
 extern sf::Texture itemsTexture;
+extern std::shared_ptr<Entity> player;
 extern sf::SoundBuffer buffer;
 extern sf::Sound sound;
 extern sf::Texture snowEffect;

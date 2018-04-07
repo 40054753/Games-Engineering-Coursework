@@ -32,7 +32,7 @@ Vector2i mousePos;
 MenuScene::MenuScene() {
 }
 void MenuScene::load() {
-
+	setID(0);
 	if (!buffer.loadFromFile("res/sound/click.wav")) {
 		cout << "Cannot load font!" << endl;
 	}
@@ -154,7 +154,7 @@ void MenuScene::update(double dt)
 			if (sf::Mouse::isButtonPressed(Mouse::Left))
 			{
 				activeScene = gameScene; //switch to game
-				std::cout << "New game button has been pressed" << std::endl;
+				std::cout << "Active Scene: " + std::to_string(activeScene->getID()) << std::endl;
 			}
 		}
 		else if (moveTime <= 0 && mousePos.y >= menu[1].getPosition().y && mousePos.y <  menu[2].getPosition().y)
@@ -202,7 +202,7 @@ void MenuScene::update(double dt)
 		moveTime = 0.2f;
 		if (selectedItemIndex == 0) {
 			activeScene = gameScene; //switch to game
-			std::cout << "New game button has been pressed" << std::endl;
+			std::cout << "Active Scene: " + std::to_string(activeScene->getID()) << std::endl;
 		}
 		if (selectedItemIndex == 1) {
 			std::cout << "Load button has been pressed" << std::endl;
@@ -279,7 +279,6 @@ void GameScene::respawn()
 		ghost->addComponent<EnemyHealthBarComponent>();
 		auto p = ghost->addComponent<EnemyAttackComponent>();
 		p->setLevel(0);
-		p->setPlayer(player);
 		ghost->addComponent<SteeringComponent>(player.get());
 		std::cout << player.get()->getPosition().x;
 		_ents.list.push_back(ghost);
@@ -297,7 +296,6 @@ void GameScene::respawn()
 	ghost->addComponent<HealthComponent>();
 	auto p = ghost->addComponent<EnemyAttackComponent>();
 	p->setLevel(0);
-	p->setPlayer(player);
 	ghost->addComponent<EnemyHealthBarComponent>();
 	_ents.list.push_back(ghost);
 	ghosts.push_back(ghost);
@@ -310,7 +308,6 @@ void GameScene::respawn()
 	n->getSprite().setOrigin(8.0f, 12.0f);
 	auto d = npc->addComponent<NPCComponent>();
 	d->setDialogue("HELLO THERE, ADVENTURER! HELLO THERE, \nADVENTURER! HELLO THERE, ADVENTURER! ");
-	d->setEntities(player); ///////////TEMP SOLUTION /// need to update setEntities to take one entity, not vector
 	_ents.list.push_back(npc);
 	npcs.push_back(npc);
 
@@ -350,6 +347,7 @@ void GameScene::respawn()
 }
 void GameScene::load()
 {
+	setID(1);
 	EventSystem* events = EventSystem::getInstance();
 	if (!playerTexture.loadFromFile("res/img/player.png"))
 	{
@@ -388,11 +386,9 @@ void GameScene::load()
 
 	auto hd = make_shared<Entity>();
 	auto hb = hd->addComponent<HudComponent>();
-	hb->setPlayer(player);
 	hud = hd;
 	_ents.list.push_back(hud);
 
-	events->setPlayer(pl);
 	eatingEnts.push_back(player);
 	respawn();
 	
@@ -411,6 +407,7 @@ void GameScene::update(double dt)
 	if (Keyboard::isKeyPressed(Keyboard::Tab))
 	{
 		activeScene = menuScene;
+		std::cout << "Active Scene: " + std::to_string(activeScene->getID()) << std::endl;
 	}
 	_ents.update(dt);
 	Renderer::setCenter(player->getPosition());

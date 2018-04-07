@@ -10,7 +10,6 @@ protected:
 	bool showInventory = false;
 	bool hideInventory = false;
 	float buttonDelay = 0.0f;
-	std::shared_ptr<Entity> _player;
 	sf::RectangleShape HP;
 	sf::RectangleShape MP;
 	////////////SKILL INTICATORS////////////////////////////////////
@@ -54,6 +53,8 @@ protected:
 	sf::Sprite icon_shield;
 
 	sf::Sprite icon_inventory;
+	sf::Sprite icon_menu;
+	sf::Sprite icon_save;
 	float sliderX=0;
 	float slideTime = 0.2f;
 
@@ -68,7 +69,6 @@ protected:
 
 	///////////////////////ITEM INTERACTION
 	sf::RectangleShape infoArea;
-	float infoDelay = 1.0f;
 	bool displayInfo = false;
 	bool displayItemOptions = false;
 	sf::Text itemInfo;
@@ -108,8 +108,6 @@ public:
 	void set(float health, float maxhealth, float mana, float maxmana);
 	explicit HudComponent(Entity *p);
 	HudComponent() = delete;
-	void setPlayer(std::shared_ptr<Entity>& e);
-	void displayBackpack();
 	void setMaxHealth(float maxHealth);
 	void setHealth(float health);
 	void setMaxMana(float maxMana);

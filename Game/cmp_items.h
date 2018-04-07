@@ -7,9 +7,12 @@
 
 class ItemComponent : public Component {
 protected:
+	bool equipped = false;
+	bool pickedUp = false;
+	sf::RectangleShape highlight;
+	int id = 0;
 	std::string name = "?";
 	std::shared_ptr<sf::Sprite> _sprite;
-	std::shared_ptr<Entity> _player;
 	std::shared_ptr<Entity> _this;
 	ITEM_TYPE type;
 	float att=0;  // adds to physical attack
@@ -18,8 +21,12 @@ protected:
 public:
 	explicit ItemComponent(Entity *p);
 	ItemComponent() = delete;
+	void setID(int i) { id = i; }
 	//////////////////////SET/GET ITEM PROPERTIES///////////////////
 	void setName(std::string a) { name = a; }
+	bool isEquipped() { return equipped; }
+	void equip() { equipped = true;  }
+	void unequip() { equipped = false;  }
 	std::string getName() { return name; }
 	void setType(ITEM_TYPE x) { type = x; }
 	void point(std::shared_ptr<Entity>& x) { _this = x; };
@@ -31,7 +38,6 @@ public:
 	void setSpd(float a) { spd = a; }
 	float getSpd() { return spd; }
 
-	void setPlayer(std::shared_ptr<Entity>& e);
 	sf::Sprite &getSprite() const;
 	void render() override;
 	void update(double dt) override;

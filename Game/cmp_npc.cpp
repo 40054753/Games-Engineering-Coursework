@@ -22,11 +22,11 @@ void NPCComponent::setDialogue(std::string x)
 void NPCComponent::update(double dt) 
 {
 	interactionDelay -= dt;
-	dialogueBox.setPosition(_player->getPosition() + sf::Vector2f(-0.49f* WX, 0.14f*WY));
-	text.setPosition(_player->getPosition() + sf::Vector2f(-0.48f* WX, 0.15f*WY));
-	if (interactionDelay <= 0 && (length(_parent->getPosition() - _player->getPosition()) < 21.0f) && sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+	dialogueBox.setPosition(player->getPosition() + sf::Vector2f(-0.49f* WX, 0.14f*WY));
+	text.setPosition(player->getPosition() + sf::Vector2f(-0.48f* WX, 0.15f*WY));
+	if (interactionDelay <= 0 && (length(_parent->getPosition() - player->getPosition()) < 21.0f) && sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
 	{
-		_player->GetComponent<PlayerMovementComponent>()->immobilize();
+		player->GetComponent<PlayerMovementComponent>()->immobilize();
 		interact();
 	}
 		
@@ -48,12 +48,9 @@ void NPCComponent::update(double dt)
 		trigger = false;
 		dialogueFinished = false;
 		interactionDelay = 0.4f;
-		_player->GetComponent<PlayerMovementComponent>()->mobilize();
+		player->GetComponent<PlayerMovementComponent>()->mobilize();
 	}
 	
-}
-void NPCComponent::setEntities(std::shared_ptr<Entity>& e) {
-	_player = e;
 }
 void NPCComponent::render() 
 {

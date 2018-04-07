@@ -43,22 +43,32 @@ void CharacterSheetComponent::addEXP(int stat, float amount)
 void CharacterSheetComponent::equip(std::shared_ptr<Entity>& item)
 {
 	auto x = item->GetComponent<ItemComponent>();
-	
+	x->equip();
 	switch (x->getType())
 	{
 	case WEAPON:
+		if(weapon!=nullptr)
+			weapon->GetComponent<ItemComponent>()->unequip();
 		weapon = item;
 		break;
 	case SHIELD:
+		if (shield != nullptr)
+			shield->GetComponent<ItemComponent>()->unequip();
 		shield = item;
 		break;
 	case HELMET:
+		if (helmet != nullptr)
+			helmet->GetComponent<ItemComponent>()->unequip();
 		helmet = item;
 		break;
 	case ARMOUR:
+		if (armour != nullptr)
+			armour->GetComponent<ItemComponent>()->unequip();
 		armour = item;
 		break;
 	case BOOTS:
+		if (boots != nullptr)
+			boots->GetComponent<ItemComponent>()->unequip();
 		boots = item;
 		break;
 	default:
@@ -126,6 +136,16 @@ void CharacterSheetComponent::update(double dt)
 		experience_earth = experience_earth - experience_thresholds[(int)level_earth];
 		level_earth++;
 	}
+}
+std::vector<std::string> CharacterSheetComponent::getBPINFO()
+{
+	std::vector<std::string> temp;
+	for (auto item : _backpack)
+	{
+		auto text = item->GetComponent<ItemComponent>();
+		temp.push_back(" " + text->getName() + "\nAttack: " + std::to_string((int)text->getAtt()) + "\nDefence: " + std::to_string((int)text->getDef()) + "\nSpeed: " + std::to_string((int)text->getSpd()));
+	}
+	return temp;
 }
 void CharacterSheetComponent::pickUp(std::shared_ptr<Entity>& item)
 {

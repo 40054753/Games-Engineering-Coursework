@@ -164,6 +164,13 @@ HudComponent::HudComponent(Entity *p) : Component(p)
 	icon_inventory.setTexture(iconsTexture);
 	icon_inventory.setTextureRect({ 50,0,50,50 });
 
+	icon_save.setTexture(iconsTexture);
+	icon_save.setTextureRect({ 250,0,50,50 });
+
+	icon_menu.setTexture(iconsTexture);
+	icon_menu.setTextureRect({ 300,0,50,50 });
+
+
 
 	///////////////////////ITEM INTERACTION
 	itemInfo.setFont(font);
@@ -229,10 +236,11 @@ HudComponent::HudComponent(Entity *p) : Component(p)
 	progressBar_Earth_BG.setOutlineThickness(3.0f);
 	progressBar_Earth_BG.setSize({ WX / 5.2f,WY / 30.0f });
 
+
 }
 void HudComponent::getStats()
 {
-	auto x = _player->GetComponent<CharacterSheetComponent>();
+	auto x = player->GetComponent<CharacterSheetComponent>();
 
 	experience_levels.setString("Meele LV: " + std::to_string((int)x->getLevelMeele())
 							+ "\n\n\nFire LV: " + std::to_string((int)x->getLevelFire())
@@ -250,10 +258,6 @@ void HudComponent::getStats()
 
 }
 
-void HudComponent::setPlayer(std::shared_ptr<Entity>& e) {
-	_player = e;
-	Vector2f windowZero = Vector2f(_player->getPosition().x - WX / 2, _player->getPosition().y - WY / 2);
-}
 void HudComponent::set(float h, float mh, float m, float mm)
 {
 	health = h;
@@ -297,6 +301,8 @@ void HudComponent::render()
 	Renderer::queue(0,&button_menu);
 	Renderer::queue(0,&button_save);
 	Renderer::queue(0,&icon_inventory);
+	Renderer::queue(0, &icon_save);
+	Renderer::queue(0, &icon_menu);
 
 	if (showInventory || hideInventory)
 	{
@@ -329,7 +335,7 @@ void HudComponent::render()
 		Renderer::queue(0,&weapon);
 		Renderer::queue(0,&shield);
 
-		auto x = _player->GetComponent<CharacterSheetComponent>();
+		auto x = player->GetComponent<CharacterSheetComponent>();
 		if (x->getHelmet()!=nullptr)
 		{
 			if(!x->getHelmet()->is_forDeletion())
@@ -390,14 +396,14 @@ void HudComponent::render()
 
 		if (displayInfo)
 		{
-			Renderer::queue(0, &infoArea);
-			Renderer::queue(0, &itemInfo);
+			Renderer::queue(-1, &infoArea);
+			Renderer::queue(-1, &itemInfo);
 		}
 		if (displayItemOptions)
 		{
-			Renderer::queue(0, &itemOptionsArea);
-			Renderer::queue(0, &itemOptionsEquip);		
-			Renderer::queue(0, &itemOptionsDrop);
+			Renderer::queue(-1, &itemOptionsArea);
+			Renderer::queue(-1, &itemOptionsEquip);		
+			Renderer::queue(-1, &itemOptionsDrop);
 		}
 		
 		
@@ -406,8 +412,9 @@ void HudComponent::render()
 }
 void HudComponent::update(double dt)
 {
-	auto x = _player->GetComponent<CharacterSheetComponent>();
+	auto x = player->GetComponent<CharacterSheetComponent>();
 	auto backpack = x->getBP();
+	auto info = x->getBPINFO();
 	getStats();
 	if (displayItemOptions)
 	{
@@ -418,7 +425,7 @@ void HudComponent::update(double dt)
 				if (buttonDelay < 0 && sf::Mouse::isButtonPressed(Mouse::Left))
 				{
 					buttonDelay = 0.1f;
-					auto x = _player->GetComponent<CharacterSheetComponent>();
+					auto x = player->GetComponent<CharacterSheetComponent>();
 					x->equip(selectedItem);
 					auto it = selectedItem->GetComponent<ItemComponent>();
 					ITEM_TYPE type = it->getType();
@@ -468,7 +475,7 @@ void HudComponent::update(double dt)
 		else
 		{
 			itemOptionsEquip.setOutlineColor(Color::Black);
-			if (buttonDelay<0 && sf::Mouse::isButtonPressed(Mouse::Left))
+			if (buttonDelay<0 && (sf::Mouse::isButtonPressed(Mouse::Left) || sf::Keyboard::isKeyPressed(sf::Keyboard::W) || sf::Keyboard::isKeyPressed(sf::Keyboard::A) || sf::Keyboard::isKeyPressed(sf::Keyboard::S) || sf::Keyboard::isKeyPressed(sf::Keyboard::D)))
 			{
 				buttonDelay = 0.1f;
 				displayItemOptions = false;
@@ -507,53 +514,59 @@ void HudComponent::update(double dt)
 	mousePos = sf::Mouse::getPosition(Renderer::getWindow());
 	buttonDelay -= dt;
 	int i = 0;
-
 	for (auto item : backpack)
-	{ 
+	{
 		if (!item->is_forDeletion())
 		{
-			auto info = item->GetComponent<ItemComponent>();
 			if (mousePos.y >= slots[i].getPosition().y - windowZero.y  && mousePos.y <= slots[i].getPosition().y + 0.07f*WY - windowZero.y)
 			{
 				if (mousePos.x >= slots[i].getPosition().x - windowZero.x  && mousePos.x <= slots[i].getPosition().x + 0.045f*WX - windowZero.x)
 				{
 					slots[i].setFillColor(Color::White);
-					if (!displayItemOptions)
+					if (buttonDelay < 0 && sf::Mouse::isButtonPressed(Mouse::Right))
 					{
-						infoDelay -= dt;
-						if (infoDelay < 0.0f)
-						{
+							selectedItem = item;
+							selectedIndex = i;
+							buttonDelay = 0.1f;					
 							itemInfo.setPosition(mousePos.x + windowZero.x + 0.015f*WX, mousePos.y + windowZero.y + 0.01f*WY);
 							infoArea.setPosition(mousePos.x + windowZero.x, mousePos.y + windowZero.y);
-							itemInfo.setString(" " + info->getName() + "\nAttack: " + std::to_string((int)info->getAtt()) + "\nDefence: " + std::to_string((int)info->getDef()) + "\nSpeed: " + std::to_string((int)info->getSpd()));
+							itemInfo.setString(info[selectedIndex]);
 							displayInfo = true;
+							displayItemOptions = false;
 						}
-					}
+
 					if (buttonDelay < 0 && sf::Mouse::isButtonPressed(Mouse::Left))
 					{
 						buttonDelay = 0.1f;
-						displayInfo = false;
+						
 						itemOptionsEquip.setPosition(mousePos.x + windowZero.x + 0.012f*WX, mousePos.y + windowZero.y + 0.01f*WY);
 						itemOptionsDrop.setPosition(mousePos.x + windowZero.x + 0.012f*WX, mousePos.y + windowZero.y + 0.06f*WY);
 						itemOptionsArea.setPosition(mousePos.x + windowZero.x, mousePos.y + windowZero.y);
 						selectedItem = item;
 						selectedIndex = i;
+						displayInfo = false;
 						displayItemOptions = true;
 					}
 
 				}
 				else
 				{
-					infoDelay = 1.0F;
+					
 					resetSlot(i);
-					displayInfo = false;
+					if (buttonDelay < 0 && sf::Mouse::isButtonPressed(Mouse::Left))
+					{
+						displayInfo = false;
+					}
 				}
 			}
 			else
 			{
-				infoDelay = 1.0F;
+				
 				resetSlot(i);
-				displayInfo = false;
+				if (buttonDelay < 0 && sf::Mouse::isButtonPressed(Mouse::Left))
+				{
+					displayInfo = false;
+				}
 			}
 			i++;
 		}
@@ -561,7 +574,7 @@ void HudComponent::update(double dt)
 	if (mousePos.y >= 0.915f*WY && mousePos.y <= 0.985f*WY)
 	{
 		
-		if (mousePos.x >= 0.57f*WX && mousePos.x <= 0.615f*WX)
+		if (mousePos.x >= 0.69f*WX && mousePos.x <= 0.735f*WX)
 		{
 			button_menu.setFillColor(sf::Color::White);
 			if(!highlighted)sound.play();
@@ -570,6 +583,7 @@ void HudComponent::update(double dt)
 			{
 				buttonDelay = 0.2f;
 				activeScene = menuScene; //switch to game
+				std::cout << "Active Scene: " + std::to_string(activeScene->getID()) << std::endl;
 			}
 		}
 		else if (mousePos.x >= 0.63f*WX  && mousePos.x <= 0.675f*WX)
@@ -587,7 +601,7 @@ void HudComponent::update(double dt)
 				
 			}
 		}
-		else if (mousePos.x >= 0.69f*WX && mousePos.x <= 0.735f*WX)
+		else if (mousePos.x >= 0.57f*WX && mousePos.x <= 0.615f*WX)
 		{
 			button_save.setFillColor(sf::Color::White);
 			if (!highlighted)sound.play();
@@ -608,7 +622,7 @@ void HudComponent::update(double dt)
 	{
 		resetButtons();
 	}
-	auto health_mana = _player->GetComponent<HealthComponent>();
+	auto health_mana = player->GetComponent<HealthComponent>();
 	set(health_mana->getHealth(), health_mana->getMaxHealth(), health_mana->getMana(), health_mana->getMaxMana());
 	setText();
 	setPosition();
@@ -635,7 +649,7 @@ void HudComponent::setText() {
 
 void HudComponent::setPosition() 
 {
-	windowZero = Vector2f(_player->getPosition().x - WX / 2, _player->getPosition().y - WY / 2);
+	windowZero = Vector2f(player->getPosition().x - WX / 2, player->getPosition().y - WY / 2);
 	HP.setPosition(windowZero + Vector2f(0.052f*WX, 0.02f*WY));
 	MP.setPosition(windowZero + Vector2f(0.052f*WX, 0.06f*WY));
 	text.setPosition(windowZero + Vector2f(0.01f*WX, 0.025f*WY));
@@ -653,10 +667,12 @@ void HudComponent::setPosition()
 	label_skill4.setPosition(windowZero + Vector2f(0.415f*WX, 0.92f*WY));
 	label_skill5.setPosition(windowZero + Vector2f(0.465f*WX, 0.92f*WY));
 	//////////////////buttons
-	button_menu.setPosition(windowZero + Vector2f(0.57f*WX, 0.915f*WY));
+	button_save.setPosition(windowZero + Vector2f(0.57f*WX, 0.915f*WY));
+	icon_menu.setPosition(button_menu.getPosition());
 	button_inventory.setPosition(windowZero + Vector2f(0.63f*WX, 0.915f*WY));
 	icon_inventory.setPosition(button_inventory.getPosition());
-	button_save.setPosition(windowZero + Vector2f(0.69f*WX, 0.915f*WY));
+	button_menu.setPosition(windowZero + Vector2f(0.69f*WX, 0.915f*WY));
+	icon_save.setPosition(button_save.getPosition());
 	////////////////////////////INVENTORY
 	inventory.setPosition(windowZero + Vector2f(WX, 0.02f*WY) - Vector2f(sliderX,0));
 	////backpack
@@ -712,7 +728,7 @@ void HudComponent::setPosition()
 	icon_helmet.setPosition(helmet.getPosition());
 	icon_boots.setPosition(boots.getPosition());
 
-	auto x = _player->GetComponent<CharacterSheetComponent>();
+	auto x = player->GetComponent<CharacterSheetComponent>();
 	auto backpack = x->getBP();
 	int i = 0;
 	for (auto item : backpack)

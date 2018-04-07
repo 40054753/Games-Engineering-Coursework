@@ -49,6 +49,7 @@ public:
 	std::shared_ptr<Entity> getShield() { return shield; }
 	void equip( std::shared_ptr<Entity>& item);
 	std::vector<std::shared_ptr<Entity>> &getBP() { return _backpack; };
+	std::vector<std::string> getBPINFO();
 	void pickUp(std::shared_ptr<Entity>& item);
 	explicit CharacterSheetComponent(Entity *p);
 	CharacterSheetComponent() = delete;

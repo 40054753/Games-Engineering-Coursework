@@ -4,6 +4,7 @@
 
 using namespace std;
 using namespace sf;
+static queue<const Drawable *>  spritesInt;
 static queue<const Drawable *>  sprites0;
 static queue<const Drawable *>  sprites1;
 static queue<const Drawable *>  sprites2;
@@ -31,6 +32,8 @@ void Renderer::shutdown()
 		sprites2.pop();
 	while (!sprites0.empty())
 		sprites2.pop();
+	while (!spritesInt.empty())
+		spritesInt.pop();
 }
 void Renderer::update(const double &) 
 {
@@ -70,6 +73,11 @@ void Renderer::render()
 		rw->draw(*sprites0.front());
 		sprites0.pop();
 	}
+	while (!spritesInt.empty())
+	{
+		rw->draw(*spritesInt.front());
+		spritesInt.pop();
+	}
 	
 }
 void Renderer::queue(const sf::Drawable *s)
@@ -78,7 +86,7 @@ void Renderer::queue(const sf::Drawable *s)
 }
 void Renderer::queue(int p ,const sf::Drawable *s) 
 { 
-	if(p==3)
+	if (p == 3)
 		sprites3.push(s);
 	else if (p == 2)
 		sprites2.push(s);
@@ -86,4 +94,6 @@ void Renderer::queue(int p ,const sf::Drawable *s)
 		sprites1.push(s);
 	else if (p == 0)
 		sprites0.push(s);
+	else if (p == -1)
+		spritesInt.push(s);
 }	
