@@ -77,12 +77,7 @@ protected:
 	sf::Text itemOptionsEquip;
 	sf::Text itemOptionsDrop;
 
-	///////////////EQUIPPED ITEMS///////////
-	sf::Sprite equipped_weapon;
-	sf::Sprite equipped_armour;
-	sf::Sprite equipped_boots;
-	sf::Sprite equipped_helmet;
-	sf::Sprite equipped_shield;
+	
 
 
 
@@ -102,6 +97,13 @@ protected:
 
 
 public:
+	///////////////EQUIPPED ITEMS///////////
+	sf::Sprite equipped_weapon;
+	sf::Sprite equipped_armour;
+	sf::Sprite equipped_boots;
+	sf::Sprite equipped_helmet;
+	sf::Sprite equipped_shield;
+	void reload();
 	void getStats();
 	void resetButtons();
 	void resetSlot(int i);

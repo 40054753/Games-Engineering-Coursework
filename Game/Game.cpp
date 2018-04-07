@@ -29,6 +29,7 @@ Sound sound;
 RectangleShape rect;
 Vector2i mousePos;
 
+
 MenuScene::MenuScene() {
 }
 void MenuScene::load() {
@@ -143,6 +144,7 @@ void MenuScene::moveDown()
 
 void MenuScene::update(double dt) 
 {
+	EventSystem* evs = EventSystem::getInstance();
 	mousePos = sf::Mouse::getPosition(Renderer::getWindow());
 	moveTime -= dt;
 	if (mousePos.x >=  0.78f * Renderer::gameWidth && mousePos.x <= 0.94f * Renderer::gameWidth )
@@ -164,9 +166,8 @@ void MenuScene::update(double dt)
 			if (sf::Mouse::isButtonPressed(Mouse::Left))
 			{
 				moveTime = 0.2f;
-				std::cout << "Load button has been pressed" << std::endl;
+				evs->LoadGame();
 			}
-
 		}
 		else if (moveTime <= 0 && mousePos.y >= menu[2].getPosition().y && mousePos.y <  menu[3].getPosition().y)
 		{
@@ -370,7 +371,8 @@ void GameScene::load()
 	}
 	ls::loadLevelFile("res/levels/example.txt", 25.0f);
 
-	auto pl = make_shared<Entity>();
+
+	auto pl = std::make_shared<Entity>();
 	pl->addComponent<CharacterSheetComponent>();
 	auto mp = pl->addComponent<PlayerMovementComponent>();
 	mp->setSpeed(100.0f);
@@ -379,9 +381,9 @@ void GameScene::load()
 	s->getSprite().setTexture(playerTexture);
 	s->getSprite().setTextureRect({ 0,0,16,21 });
 	s->getSprite().setScale({ 2.0f, 2.0f });
-	s->getSprite().setOrigin({8.0f, 12.0f});
+	s->getSprite().setOrigin({ 8.0f, 12.0f });
 	s->getSprite().setPosition({ 100.0f, 100.0f });
-	_ents.list.push_back(pl);
+	gameScene->getEnts().push_back(pl);
 	player = pl;
 
 	auto hd = make_shared<Entity>();

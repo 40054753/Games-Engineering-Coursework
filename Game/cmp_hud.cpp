@@ -7,10 +7,13 @@
 #include "cmp_char_sheet.h"
 #include "cmp_items.h"
 #include "cmp_health.h"
+#include "EventSystem.h"
+
 using namespace sf;
 Vector2f windowZero;
 std::shared_ptr<Entity> selectedItem;
 int selectedIndex;
+EventSystem* evs = EventSystem::getInstance();
 HudComponent::HudComponent(Entity *p) : Component(p)
 {
 	HP.setFillColor(sf::Color::Red);
@@ -410,6 +413,16 @@ void HudComponent::render()
 	}
 
 }
+void HudComponent::reload()
+{
+//	auto items = player->GetComponent<CharacterSheetComponent>();
+//	auto sprite = items->getHelmet()->GetComponent<ItemComponent>();
+//	if (items->getHelmet() != nullptr)
+//		equipped_helmet = sprite->getSprite();
+			
+				
+	
+}
 void HudComponent::update(double dt)
 {
 	auto x = player->GetComponent<CharacterSheetComponent>();
@@ -609,7 +622,7 @@ void HudComponent::update(double dt)
 			if (buttonDelay<0 && sf::Mouse::isButtonPressed(Mouse::Left))
 			{
 				buttonDelay = 0.2f;
-				///////////////
+				evs->SaveGame();
 			}
 		}
 		else

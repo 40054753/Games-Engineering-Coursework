@@ -78,6 +78,7 @@ void ItemGenerator::recreate_iron_helmet(bool equipped)
 {
 	auto item = std::make_shared<Entity>();
 	auto it = item->addComponent<ItemComponent>();
+	item->setPosition({ 100,100 });
 	it->setID(0);
 	it->point(item);
 	it->setName("IRON HELMET");
@@ -87,6 +88,7 @@ void ItemGenerator::recreate_iron_helmet(bool equipped)
 	it->getSprite().setTextureRect({ 0,144,16,16 });
 	it->getSprite().setScale({ 2, 2 });
 	it->getSprite().setOrigin({ 8,8 });
+	activeScene->getEnts().push_back(item);
 	auto x = player->GetComponent<CharacterSheetComponent>();
 	x->pickUp(item);
 	if (equipped) x->equip(item);
@@ -120,6 +122,7 @@ void ItemGenerator::recreate_leaf(bool equipped)
 	it->getSprite().setTextureRect({ 16,192,16,16 });
 	it->getSprite().setScale({ 2, 2 });
 	it->getSprite().setOrigin({ 8,8 });
+	activeScene->getEnts().push_back(item);
 	auto x = player->GetComponent<CharacterSheetComponent>();
 	x->pickUp(item);
 	if (equipped) x->equip(item);

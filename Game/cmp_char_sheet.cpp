@@ -47,27 +47,27 @@ void CharacterSheetComponent::equip(std::shared_ptr<Entity>& item)
 	switch (x->getType())
 	{
 	case WEAPON:
-		if(weapon!=nullptr)
+		if(weapon!=nullptr && weapon !=item)
 			weapon->GetComponent<ItemComponent>()->unequip();
 		weapon = item;
 		break;
 	case SHIELD:
-		if (shield != nullptr)
+		if (shield != nullptr && shield != item)
 			shield->GetComponent<ItemComponent>()->unequip();
 		shield = item;
 		break;
 	case HELMET:
-		if (helmet != nullptr)
+		if (helmet != nullptr && helmet != item)
 			helmet->GetComponent<ItemComponent>()->unequip();
 		helmet = item;
 		break;
 	case ARMOUR:
-		if (armour != nullptr)
+		if (armour != nullptr && armour != item)
 			armour->GetComponent<ItemComponent>()->unequip();
 		armour = item;
 		break;
 	case BOOTS:
-		if (boots != nullptr)
+		if (boots != nullptr && boots!=item)
 			boots->GetComponent<ItemComponent>()->unequip();
 		boots = item;
 		break;
@@ -78,7 +78,58 @@ void CharacterSheetComponent::equip(std::shared_ptr<Entity>& item)
 void CharacterSheetComponent::render()
 {
 }
+std::string CharacterSheetComponent::saveLocation()
+{
+	return std::to_string((int)activeScene->getID()) + "," + std::to_string((int)player->getPosition().x) + "," + std::to_string((int)player->getPosition().y);
+}
+std::string CharacterSheetComponent::saveLevels()
+{
+	return std::to_string((int)level_melee) + "," + std::to_string((int)level_fire) + "," + std::to_string((int)level_water) + "," + std::to_string((int)level_wind) + "," + std::to_string((int)level_earth);
+}
+std::string CharacterSheetComponent::saveExperience()
+{
+	return std::to_string((int)experience_melee) + "," + std::to_string((int)experience_fire) + "," + std::to_string((int)experience_water) + "," + std::to_string((int)experience_wind) + "," + std::to_string((int)experience_earth);
+}
+std::string CharacterSheetComponent::saveItems()
+{
+	std::string temp="";
+	for (auto items : _backpack)
+	{
+		auto inf = items->GetComponent<ItemComponent>();
+		temp.append(std::to_string((int)inf->getID())+",");
+		if(inf->isEquipped())
+			temp.append(std::to_string(1)+",");
+		else
+			temp.append(std::to_string(0) + ",");
 
+	}
+	return temp;
+}
+void CharacterSheetComponent::reset()
+{
+	for (auto n : _backpack)
+	{
+		n->setForDelete();
+		n.reset();
+	}
+}
+void CharacterSheetComponent::setLevels(int a, int b, int c, int d, int e) 
+{
+	reset();
+	level_melee = a;
+	level_fire = b;
+	level_water = c;
+	level_wind = d;
+	level_earth = e;
+}
+void CharacterSheetComponent::setExperience(int a, int b, int c, int d, int e)
+{
+	experience_melee = a;
+	experience_fire = b;
+	experience_water = c;
+	experience_wind = d;
+	experience_earth = e;
+}
 void CharacterSheetComponent::update(double dt)
 {	
 	if (weapon != nullptr)

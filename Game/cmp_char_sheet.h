@@ -53,6 +53,13 @@ public:
 	void pickUp(std::shared_ptr<Entity>& item);
 	explicit CharacterSheetComponent(Entity *p);
 	CharacterSheetComponent() = delete;
+	void setLevels(int a, int b, int c, int d, int e);
+	void setExperience(int a, int b, int c, int d, int e);
+	void reset();
+	std::string saveLevels();
+	std::string saveExperience();
+	std::string saveItems();
+	std::string saveLocation();
 	void render() override;
 	void update(double dt) override;
 	

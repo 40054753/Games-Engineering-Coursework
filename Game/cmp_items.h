@@ -22,6 +22,7 @@ public:
 	explicit ItemComponent(Entity *p);
 	ItemComponent() = delete;
 	void setID(int i) { id = i; }
+	int getID() { return id; }
 	//////////////////////SET/GET ITEM PROPERTIES///////////////////
 	void setName(std::string a) { name = a; }
 	bool isEquipped() { return equipped; }
@@ -38,7 +39,7 @@ public:
 	void setSpd(float a) { spd = a; }
 	float getSpd() { return spd; }
 
-	sf::Sprite &getSprite() const;
+	sf::Sprite &getSprite();
 	void render() override;
 	void update(double dt) override;
 	

@@ -6,7 +6,7 @@ ItemComponent::ItemComponent(Entity *p) : Component(p) ,_sprite(std::make_shared
 	highlight.setSize({ 0.045f*WX, 0.07f * WY });
 }
 
-sf::Sprite& ItemComponent::getSprite() const {
+sf::Sprite& ItemComponent::getSprite()  {
 	return *_sprite;
 }
 void ItemComponent::render()
