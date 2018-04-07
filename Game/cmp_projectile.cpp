@@ -29,12 +29,13 @@ void ProjectileComponent::update(double dt)
 	if (length(g->getPosition() - _parent->getPosition()) < 30.0f)
 	{
 		auto health_mana = g->GetComponent<HealthComponent>();
-		health_mana->reduceHealth(30); //should be changed to the player's attack damage
+		health_mana->reduceHealth(damage); //should be changed to the player's attack damage
 		auto dmg = std::make_shared<Entity>();
-		dmg->addComponent<DamageTextComponent>();
+		auto txt = dmg->addComponent<DamageTextComponent>();
 		dmg->setPosition(g->getPosition());
+		txt->setText(damage);
 		gameScene->getEnts().push_back(dmg);
-		events->addExp(1, 10);
+		events->addExp(type, 10);
 		_parent->setForDelete();
 	}
 	

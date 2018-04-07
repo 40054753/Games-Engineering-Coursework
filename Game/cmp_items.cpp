@@ -25,9 +25,9 @@ void ItemComponent::update(double dt)
 	if(!pickedUp)
 	if(length(_parent->getPosition() - player->getPosition()) < 20.0f)
 	{
-		pickedUp = true;
 		auto x= player->GetComponent<CharacterSheetComponent>();
-		x->pickUp(_this);
+		if(x->pickUp(_this));
+			pickedUp = true;
 	}
 
 }

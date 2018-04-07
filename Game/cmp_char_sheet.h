@@ -4,6 +4,7 @@
 class CharacterSheetComponent : public Component {
 
 protected:
+	int dropped_items = 0;
 	std::shared_ptr<Entity> helmet;
 	std::shared_ptr<Entity> armour;
 	std::shared_ptr<Entity> boots;
@@ -27,6 +28,7 @@ protected:
 	float stat_defence = 0;
 	float stat_speed = 0;
 public:
+	void dropOne() { dropped_items++; }
 	float getRequiredExp(int level) { return experience_thresholds[level]; }
 	float getLevelMeele() { return level_melee; }
 	float getLevelFire() { return level_fire; }
@@ -50,7 +52,7 @@ public:
 	void equip( std::shared_ptr<Entity>& item);
 	std::vector<std::shared_ptr<Entity>> &getBP() { return _backpack; };
 	std::vector<std::string> getBPINFO();
-	void pickUp(std::shared_ptr<Entity>& item);
+	bool pickUp(std::shared_ptr<Entity>& item);
 	explicit CharacterSheetComponent(Entity *p);
 	CharacterSheetComponent() = delete;
 	void setLevels(int a, int b, int c, int d, int e);

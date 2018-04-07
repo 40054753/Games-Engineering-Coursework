@@ -13,7 +13,7 @@
 
 AttackComponent::AttackComponent(Entity *p) : Component(p) 
 {
-
+	
 }
 
 void AttackComponent::setEntities(std::vector <std::shared_ptr<Entity>>& e) {
@@ -43,6 +43,9 @@ void AttackComponent::update(double dt)
 			bullet->setFace(_parent->getFace());
 		    auto c2 = bullet->addComponent<ProjectileComponent>();
 			c2->setEntities(_entities);
+			auto dmg = player->GetComponent<CharacterSheetComponent>();
+			c2->setDamage(((dmg->getLevelFire() + 1)*1.5f) + 20.0f);
+			c2->setType(1);
 			auto s = bullet->addComponent<StaticSpriteComponent>();
 			s->getSprite().setTexture(spellsTexture);
 			s->addSpin();
@@ -53,6 +56,7 @@ void AttackComponent::update(double dt)
 			activeScene->getEnts().push_back(bullet);
 		}
 	}
+
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) 
 	{
 		for (auto e : _entities) 
@@ -62,11 +66,13 @@ void AttackComponent::update(double dt)
 				attackTime = 0.2f;
 				//this should take the hp of the entity, reduce it by the AD of whatever hits it
 				auto health_mana = e->GetComponent<HealthComponent>();
-				health_mana->reduceHealth(30); //should be changed to the player's attack damage
+				auto att = player->GetComponent<CharacterSheetComponent>();
+				health_mana->reduceHealth(att->getStatAttack()); //should be changed to the player's attack damage
 				events->addExp(0, 10.0f);
 				auto dmg = std::make_shared<Entity>();
-				dmg->addComponent<DamageTextComponent>();
+				auto txt = dmg->addComponent<DamageTextComponent>();
 				dmg->setPosition(e->getPosition());
+				txt->setText(att->getStatAttack());
 				activeScene->getEnts().push_back(dmg);
 			}
 		}

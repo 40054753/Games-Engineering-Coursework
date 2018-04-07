@@ -51,6 +51,7 @@ protected:
 public:
 	DamageTextComponent() = delete;
 	explicit DamageTextComponent(Entity *p);
+	void setText(int x);
 	void update(double dt) override;
 	void render() override;
 

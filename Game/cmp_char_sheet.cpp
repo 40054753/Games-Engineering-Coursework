@@ -198,10 +198,12 @@ std::vector<std::string> CharacterSheetComponent::getBPINFO()
 	}
 	return temp;
 }
-void CharacterSheetComponent::pickUp(std::shared_ptr<Entity>& item)
+bool CharacterSheetComponent::pickUp(std::shared_ptr<Entity>& item)
 {
-	if (_backpack.size() < 21)
+	if (_backpack.size() < 21+dropped_items)
 	{
 		_backpack.push_back(item);
-	}
+		return true;
+	}		
+	return false;
 }

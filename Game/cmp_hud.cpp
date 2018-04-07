@@ -506,6 +506,7 @@ void HudComponent::update(double dt)
 				{					
 					buttonDelay = 0.1f;
 					selectedItem->setForDelete();
+					player->GetComponent<CharacterSheetComponent>()->dropOne();
 					displayItemOptions = false;
 				}
 			}

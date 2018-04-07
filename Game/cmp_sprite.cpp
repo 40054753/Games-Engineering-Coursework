@@ -158,12 +158,15 @@ sf::Sprite& CharacterSpriteComponent::getSprite() const {
 
 DamageTextComponent::DamageTextComponent(Entity *p) : Component(p) 
 {
-	damageText.setString(std::to_string(30));
 	damageText.setFont(font);
 	damageText.setCharacterSize(15);
 	damageText.setColor(sf::Color::Red);
 	
 
+}
+void DamageTextComponent::setText(int x)
+{
+	damageText.setString(std::to_string(x));
 }
 void DamageTextComponent::update(double dt)
 {
