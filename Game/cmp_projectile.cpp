@@ -4,8 +4,15 @@
 #include "Game.h"
 #include "SystemRenderer.h"
 #include "cmp_sprite.h"
+#include "cmp_char_sheet.h"
+#include "EventSystem.h"
 
-ProjectileComponent::ProjectileComponent(Entity *p) : Component(p) {}
+EventSystem* events = EventSystem::getInstance();
+
+ProjectileComponent::ProjectileComponent(Entity *p) : Component(p) 
+{
+
+}
 
 void ProjectileComponent::setEntities(std::vector <std::shared_ptr<Entity>>& e) {
 	_entities = e;
@@ -27,6 +34,7 @@ void ProjectileComponent::update(double dt)
 		dmg->addComponent<DamageTextComponent>();
 		dmg->setPosition(g->getPosition());
 		gameScene->getEnts().push_back(dmg);
+		events->addExp(1, 10);
 		_parent->setForDelete();
 	}
 	

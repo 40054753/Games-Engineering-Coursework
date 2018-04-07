@@ -85,7 +85,24 @@ protected:
 	sf::Sprite equipped_shield;
 
 
+
+
+	/////////////STATS TEXT
+	sf::Text experience_levels;
+	sf::RectangleShape progressBar_Melee;
+	sf::RectangleShape progressBar_Melee_BG;
+	sf::RectangleShape progressBar_Fire;
+	sf::RectangleShape progressBar_Fire_BG;
+	sf::RectangleShape progressBar_Water;
+	sf::RectangleShape progressBar_Water_BG;
+	sf::RectangleShape progressBar_Wind;
+	sf::RectangleShape progressBar_Wind_BG;
+	sf::RectangleShape progressBar_Earth;
+	sf::RectangleShape progressBar_Earth_BG;
+
+
 public:
+	void getStats();
 	void resetButtons();
 	void resetSlot(int i);
 	void set(float health, float maxhealth, float mana, float maxmana);

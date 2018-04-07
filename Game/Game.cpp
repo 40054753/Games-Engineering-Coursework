@@ -12,6 +12,7 @@
 #include "cmp_char_sheet.h"
 #include "cmp_enemy_attack.h"
 #include "cmp_ai_steering.h"
+#include "EventSystem.h"
 #include <string>
 
 
@@ -349,7 +350,7 @@ void GameScene::respawn()
 }
 void GameScene::load()
 {
-
+	EventSystem* events = EventSystem::getInstance();
 	if (!playerTexture.loadFromFile("res/img/player.png"))
 	{
 		cerr << "Failed to load spritesheet!" << endl;
@@ -391,7 +392,7 @@ void GameScene::load()
 	hud = hd;
 	_ents.list.push_back(hud);
 
-
+	events->setPlayer(pl);
 	eatingEnts.push_back(player);
 	respawn();
 	

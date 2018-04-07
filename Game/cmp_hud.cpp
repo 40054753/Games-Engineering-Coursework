@@ -14,9 +14,9 @@ int selectedIndex;
 HudComponent::HudComponent(Entity *p) : Component(p)
 {
 	HP.setFillColor(sf::Color::Red);
-	HP.setSize({ Renderer::gameWidth / 5.7f,Renderer::gameHeight / 25.0f });
+	HP.setSize({ WX / 5.7f,WY / 25.0f });
 	MP.setFillColor(sf::Color::Blue);
-	MP.setSize({ Renderer::gameWidth / 5.7f,Renderer::gameHeight / 25.0f });
+	MP.setSize({ WX / 5.7f,WY / 25.0f });
 	text.setCharacterSize(22);
 	text.setColor(sf::Color::White);
 	text.setFont(font);
@@ -97,7 +97,7 @@ HudComponent::HudComponent(Entity *p) : Component(p)
 
 	/////stats area
 	statsArea.setFillColor(sf::Color(120, 120, 120, 150));
-	statsArea.setSize({ 0.17f*WX, 0.47f*WY });
+	statsArea.setSize({ 0.205f*WX, 0.475f*WY });
 	statsArea.setOutlineColor(sf::Color::Black);
 	statsArea.setOutlineThickness(3.0f);
 	label_stats.setFont(font);
@@ -109,7 +109,7 @@ HudComponent::HudComponent(Entity *p) : Component(p)
 
 	///////////////equipped///////////
 	equippedArea.setFillColor(sf::Color(120, 120, 120, 150));
-	equippedArea.setSize({ 0.2f*WX, 0.42f*WY });
+	equippedArea.setSize({ 0.165f*WX, 0.42f*WY });
 	equippedArea.setOutlineColor(sf::Color::Black);
 	equippedArea.setOutlineThickness(3.0f);
 
@@ -189,7 +189,67 @@ HudComponent::HudComponent(Entity *p) : Component(p)
 	itemOptionsArea.setFillColor(sf::Color(170, 170, 170, 255));
 	itemOptionsArea.setSize({ 0.1f*WX, 0.11f*WY });
 
+	//////////////////STATS AREA
+	experience_levels.setFont(font);
+	experience_levels.setColor(sf::Color::White);
+	experience_levels.setCharacterSize(13.0f);
+	//////progress bars
+	progressBar_Melee.setFillColor(sf::Color::Cyan);
+	progressBar_Melee.setSize({ WX / 5.2f,WY / 30.0f });
+	progressBar_Melee_BG.setFillColor(sf::Color::Black);
+	progressBar_Melee_BG.setOutlineColor(sf::Color::Black);
+	progressBar_Melee_BG.setOutlineThickness(3.0f);
+	progressBar_Melee_BG.setSize({ WX / 5.2f,WY / 30.0f });
+
+	progressBar_Fire.setFillColor(sf::Color::Cyan);
+	progressBar_Fire.setSize({ WX / 5.2f,WY / 30.0f });
+	progressBar_Fire_BG.setFillColor(sf::Color::Black);
+	progressBar_Fire_BG.setOutlineColor(sf::Color::Black);
+	progressBar_Fire_BG.setOutlineThickness(3.0f);
+	progressBar_Fire_BG.setSize({ WX / 5.2f,WY / 30.0f });
+
+	progressBar_Water.setFillColor(sf::Color::Cyan);
+	progressBar_Water.setSize({ WX / 5.2f,WY / 30.0f });
+	progressBar_Water_BG.setFillColor(sf::Color::Black);
+	progressBar_Water_BG.setOutlineColor(sf::Color::Black);
+	progressBar_Water_BG.setOutlineThickness(3.0f);
+	progressBar_Water_BG.setSize({ WX / 5.2f,WY / 30.0f });
+
+	progressBar_Wind.setFillColor(sf::Color::Cyan);
+	progressBar_Wind.setSize({ WX / 5.2f,WY / 30.0f });
+	progressBar_Wind_BG.setFillColor(sf::Color::Black);
+	progressBar_Wind_BG.setOutlineColor(sf::Color::Black);
+	progressBar_Wind_BG.setOutlineThickness(3.0f);
+	progressBar_Wind_BG.setSize({ WX / 5.2f,WY / 30.0f });
+
+	progressBar_Earth.setFillColor(sf::Color::Cyan);
+	progressBar_Earth.setSize({ WX / 5.2f,WY / 30.0f });
+	progressBar_Earth_BG.setFillColor(sf::Color::Black);
+	progressBar_Earth_BG.setOutlineColor(sf::Color::Black);
+	progressBar_Earth_BG.setOutlineThickness(3.0f);
+	progressBar_Earth_BG.setSize({ WX / 5.2f,WY / 30.0f });
+
 }
+void HudComponent::getStats()
+{
+	auto x = _player->GetComponent<CharacterSheetComponent>();
+
+	experience_levels.setString("Meele LV: " + std::to_string((int)x->getLevelMeele())
+							+ "\n\n\nFire LV: " + std::to_string((int)x->getLevelFire())
+							+ "\n\n\nWater LV: " + std::to_string((int)x->getLevelWater())
+							+ "\n\n\nWind LV: " + std::to_string((int)x->getLevelWind())
+							+ "\n\n\nEarth LV: " + std::to_string((int)x->getLevelEarth())
+							+ "\n\n\nAttack: " + std::to_string((int)x->getStatAttack())
+							+ "\nDefence: " + std::to_string((int)x->getStatDefence())
+							+ "\nSpeed: " + std::to_string((int)x->getStatSpeed()));
+	progressBar_Melee.setScale((x->getExpMeele()/x->getRequiredExp(x->getLevelMeele())), 1.0f);
+	progressBar_Fire.setScale((x->getExpFire() / x->getRequiredExp(x->getLevelFire())), 1.0f);
+	progressBar_Water.setScale((x->getExpWater() / x->getRequiredExp(x->getLevelWater())), 1.0f);
+	progressBar_Wind.setScale((x->getExpWind() / x->getRequiredExp(x->getLevelWind())), 1.0f);
+	progressBar_Earth.setScale((x->getExpEarth() / x->getRequiredExp(x->getLevelEarth())), 1.0f);
+
+}
+
 void HudComponent::setPlayer(std::shared_ptr<Entity>& e) {
 	_player = e;
 	Vector2f windowZero = Vector2f(_player->getPosition().x - WX / 2, _player->getPosition().y - WY / 2);
@@ -237,13 +297,24 @@ void HudComponent::render()
 	Renderer::queue(0,&button_menu);
 	Renderer::queue(0,&button_save);
 	Renderer::queue(0,&icon_inventory);
-	
+
 	if (showInventory || hideInventory)
 	{
 		Renderer::queue(0,&inventory);
 		Renderer::queue(0,&backpack);
 		Renderer::queue(0,&label_backpack);
 		Renderer::queue(0,&statsArea);
+		Renderer::queue(0, &progressBar_Melee_BG);
+		Renderer::queue(0, &progressBar_Melee);
+		Renderer::queue(0, &progressBar_Fire_BG);
+		Renderer::queue(0, &progressBar_Fire);
+		Renderer::queue(0, &progressBar_Water_BG);
+		Renderer::queue(0, &progressBar_Water);
+		Renderer::queue(0, &progressBar_Wind_BG);
+		Renderer::queue(0, &progressBar_Wind);
+		Renderer::queue(0, &progressBar_Earth_BG);
+		Renderer::queue(0, &progressBar_Earth);
+		Renderer::queue(0, &experience_levels);
 		Renderer::queue(0,&equippedArea);
 		Renderer::queue(0,&label_stats);
 		Renderer::queue(0,&label_equipped);
@@ -337,7 +408,7 @@ void HudComponent::update(double dt)
 {
 	auto x = _player->GetComponent<CharacterSheetComponent>();
 	auto backpack = x->getBP();
-
+	getStats();
 	if (displayItemOptions)
 	{
 		if (mousePos.x >= itemOptionsEquip.getPosition().x - windowZero.x  && mousePos.x <= itemOptionsEquip.getPosition().x + 0.08f*WX- windowZero.x)
@@ -604,22 +675,35 @@ void HudComponent::setPosition()
 		column++;
 	}
 	////stats
-	statsArea.setPosition(inventory.getPosition() + Vector2f(0.215f*WX, 0.06f*WY));
-	label_stats.setPosition(inventory.getPosition() + Vector2f(0.215f*WX, 0.01f*WY));
+	statsArea.setPosition(inventory.getPosition() + Vector2f(0.18f*WX, 0.06f*WY));
+	label_stats.setPosition(inventory.getPosition() + Vector2f(0.18f*WX, 0.01f*WY));
+	experience_levels.setPosition(statsArea.getPosition() + Vector2f(0.005f*WX, 0.005f*WY));
+	///////////level bars///////////
+	progressBar_Melee.setPosition(statsArea.getPosition() + Vector2f(0.005f*WX, 0.035f*WY));
+	progressBar_Melee_BG.setPosition(statsArea.getPosition() + Vector2f(0.005f*WX, 0.035f*WY));
+	progressBar_Fire.setPosition(statsArea.getPosition() + Vector2f(0.005f*WX, 0.115f*WY));
+	progressBar_Fire_BG.setPosition(statsArea.getPosition() + Vector2f(0.005f*WX, 0.115f*WY));
+	progressBar_Water.setPosition(statsArea.getPosition() + Vector2f(0.005f*WX, 0.195f*WY));
+	progressBar_Water_BG.setPosition(statsArea.getPosition() + Vector2f(0.005f*WX, 0.195f*WY));
+	progressBar_Wind.setPosition(statsArea.getPosition() + Vector2f(0.005f*WX, 0.275f*WY));
+	progressBar_Wind_BG.setPosition(statsArea.getPosition() + Vector2f(0.005f*WX, 0.275f*WY));
+	progressBar_Earth.setPosition(statsArea.getPosition() + Vector2f(0.005f*WX, 0.355f*WY));
+	progressBar_Earth_BG.setPosition(statsArea.getPosition() + Vector2f(0.005f*WX, 0.355f*WY));
+
 
 	///////////////equipped///////////
 	equippedArea.setPosition(inventory.getPosition() + Vector2f(0.007f*WX, 0.06f*WY));
 	label_equipped.setPosition(inventory.getPosition() + Vector2f(0.007f*WX, 0.01f*WY));
 
-	helmet.setPosition(equippedArea.getPosition() + Vector2f(0.08f*WX, 0.01f*WY));
+	helmet.setPosition(equippedArea.getPosition() + Vector2f(0.06f*WX, 0.01f*WY));
 	equipped_helmet.setPosition(helmet.getPosition() + Vector2f(0.023f*WX, 0.03f*WY));
-	armour.setPosition(equippedArea.getPosition() + Vector2f(0.08f*WX, 0.17f*WY));
+	armour.setPosition(equippedArea.getPosition() + Vector2f(0.06f*WX, 0.17f*WY));
 	equipped_armour.setPosition(armour.getPosition() + Vector2f(0.023f*WX, 0.03f*WY));
-	boots.setPosition(equippedArea.getPosition() + Vector2f(0.08f*WX, 0.3f*WY));
+	boots.setPosition(equippedArea.getPosition() + Vector2f(0.06f*WX, 0.3f*WY));
 	equipped_boots.setPosition(boots.getPosition() + Vector2f(0.023f*WX, 0.03f*WY));
-	weapon.setPosition(equippedArea.getPosition() + Vector2f(0.02f*WX, 0.17f*WY));
+	weapon.setPosition(equippedArea.getPosition() + Vector2f(0.005f*WX, 0.17f*WY));
 	equipped_weapon.setPosition(weapon.getPosition() + Vector2f(0.023f*WX, 0.03f*WY));
-	shield.setPosition(equippedArea.getPosition() + Vector2f(0.14f*WX, 0.17f*WY));
+	shield.setPosition(equippedArea.getPosition() + Vector2f(0.115f*WX, 0.17f*WY));
 	equipped_shield.setPosition(shield.getPosition() + Vector2f(0.023f*WX, 0.03f*WY));
 
 	icon_weapon.setPosition(weapon.getPosition());

@@ -1,14 +1,20 @@
 #include <iostream>
+#include "EventSystem.h"
 #include "cmp_attack.h"
 #include "cmp_health.h"
 #include "cmp_actor_movement.h"
 #include "cmp_projectile.h"
 #include "cmp_sprite.h"
 #include "SystemRenderer.h"
+#include "cmp_char_sheet.h"
 #include "Game.h"
 #include <string>
 
-AttackComponent::AttackComponent(Entity *p) : Component(p) {}
+
+AttackComponent::AttackComponent(Entity *p) : Component(p) 
+{
+
+}
 
 void AttackComponent::setEntities(std::vector <std::shared_ptr<Entity>>& e) {
 	_entities = e;
@@ -18,6 +24,8 @@ void AttackComponent::render()
 }
 void AttackComponent::update(double dt) 
 {
+	EventSystem* events = EventSystem::getInstance();
+	auto char_cheet = _parent->GetComponent<CharacterSheetComponent>();
 	auto health_mana = _parent->GetComponent<HealthComponent>();
 	static float attackTime = 0.0f;
 	attackTime -= dt;
@@ -55,7 +63,7 @@ void AttackComponent::update(double dt)
 				//this should take the hp of the entity, reduce it by the AD of whatever hits it
 				auto health_mana = e->GetComponent<HealthComponent>();
 				health_mana->reduceHealth(30); //should be changed to the player's attack damage
-
+				events->addExp(0, 10.0f);
 				auto dmg = std::make_shared<Entity>();
 				dmg->addComponent<DamageTextComponent>();
 				dmg->setPosition(e->getPosition());
