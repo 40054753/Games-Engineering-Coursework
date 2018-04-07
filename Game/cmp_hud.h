@@ -95,14 +95,9 @@ protected:
 	sf::RectangleShape progressBar_Earth;
 	sf::RectangleShape progressBar_Earth_BG;
 
-
 public:
 	///////////////EQUIPPED ITEMS///////////
-	sf::Sprite equipped_weapon;
-	sf::Sprite equipped_armour;
-	sf::Sprite equipped_boots;
-	sf::Sprite equipped_helmet;
-	sf::Sprite equipped_shield;
+	
 	void reload();
 	void getStats();
 	void resetButtons();

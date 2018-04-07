@@ -14,6 +14,12 @@ Vector2f windowZero;
 std::shared_ptr<Entity> selectedItem;
 int selectedIndex;
 EventSystem* evs = EventSystem::getInstance();
+
+sf::Sprite equipped_weapon;
+sf::Sprite equipped_armour;
+sf::Sprite equipped_boots;
+sf::Sprite equipped_helmet;
+sf::Sprite equipped_shield;
 HudComponent::HudComponent(Entity *p) : Component(p)
 {
 	HP.setFillColor(sf::Color::Red);
@@ -415,11 +421,35 @@ void HudComponent::render()
 }
 void HudComponent::reload()
 {
-//	auto items = player->GetComponent<CharacterSheetComponent>();
-//	auto sprite = items->getHelmet()->GetComponent<ItemComponent>();
-//	if (items->getHelmet() != nullptr)
-//		equipped_helmet = sprite->getSprite();
-			
+	auto x = player->GetComponent<CharacterSheetComponent>();
+
+	if (x->getHelmet() != nullptr)
+	{
+		auto sprite = x->getHelmet()->GetComponent<ItemComponent>();
+		equipped_helmet = sprite->getSprite();
+	}
+	if (x->getArmour() != nullptr)
+	{
+		auto sprite = x->getArmour()->GetComponent<ItemComponent>();
+		equipped_armour = sprite->getSprite();
+	}
+	if (x->getBoots() != nullptr)
+	{
+		auto sprite = x->getBoots()->GetComponent<ItemComponent>();
+		equipped_boots = sprite->getSprite();
+	}
+	if (x->getWeapon() != nullptr)
+	{
+		auto sprite = x->getWeapon()->GetComponent<ItemComponent>();
+		equipped_weapon = sprite->getSprite();
+	}
+	if (x->getShield() != nullptr)
+	{
+		auto sprite = x->getShield()->GetComponent<ItemComponent>();
+		equipped_shield = sprite->getSprite();
+	}
+	
+	
 				
 	
 }
