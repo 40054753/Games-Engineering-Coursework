@@ -47,7 +47,19 @@ void MenuScene::load() {
 	if (!snowEffect.loadFromFile("res/img/snow.png")) {
 		cout << "Cannot load img!" << endl;
 	}
-	for (int i = 0; i < 50; i++)
+	button_return.setOutlineColor(sf::Color::Black);
+	button_return.setOutlineThickness(5.0f);
+	button_return.setFillColor(sf::Color(79, 79, 79, 255));
+	button_return.setSize({ 0.35f*WX, 0.07f * WY });
+	button_return.setPosition({0.70f*WX, 0.01f * WY });
+	text_return.setFont(font);
+	text_return.setColor(sf::Color::Black);
+	text_return.setString("Return to game");
+	text_return.setOutlineColor(sf::Color::Red);
+	text_return.setOutlineThickness(3.0f);
+	text_return.setPosition(button_return.getPosition() + Vector2f(0.01f*WX, 0.015f*WY));
+
+	for (int i = 0; i < 35; i++)
 	{
 		float scale = (float)(rand() % 10) / 50.0f;
 		auto snow = make_shared<Entity>();
@@ -147,6 +159,27 @@ void MenuScene::update(double dt)
 	EventSystem* evs = EventSystem::getInstance();
 	mousePos = sf::Mouse::getPosition(Renderer::getWindow());
 	moveTime -= dt;
+	//if(evs->isLoaded())
+	if (mousePos.x >= button_return.getPosition().x  && mousePos.x <= WX)
+	{
+		if (mousePos.y >= button_return.getPosition().y && mousePos.y <= button_return.getPosition().y + 0.07f*WY)
+		{
+			
+			text_return.setOutlineColor(sf::Color::Green);
+			if (sf::Mouse::isButtonPressed(Mouse::Left))
+			{
+				activeScene = gameScene;
+			}
+		}
+		else
+		{
+			text_return.setOutlineColor(sf::Color::Red);
+		}
+	}
+	else
+	{
+		text_return.setOutlineColor(sf::Color::Red);
+	}
 	if (mousePos.x >=  0.78f * Renderer::gameWidth && mousePos.x <= 0.94f * Renderer::gameWidth )
 	{
 		if (moveTime <= 0 && mousePos.y >= menu[0].getPosition().y && mousePos.y <  menu[1].getPosition().y)
@@ -155,6 +188,8 @@ void MenuScene::update(double dt)
 			moveTo(0);
 			if (sf::Mouse::isButtonPressed(Mouse::Left))
 			{
+				gameScene.reset(new GameScene());
+				gameScene->load();
 				activeScene = gameScene; //switch to game
 				std::cout << "Active Scene: " + std::to_string(activeScene->getID()) << std::endl;
 			}
@@ -202,6 +237,8 @@ void MenuScene::update(double dt)
 	if (moveTime <= 0 && (Keyboard::isKeyPressed(Keyboard::Return) || Keyboard::isKeyPressed(Keyboard::Space)) ) {
 		moveTime = 0.2f;
 		if (selectedItemIndex == 0) {
+			gameScene.reset(new GameScene());
+			gameScene->load();
 			activeScene = gameScene; //switch to game
 			std::cout << "Active Scene: " + std::to_string(activeScene->getID()) << std::endl;
 		}
@@ -221,11 +258,17 @@ void MenuScene::update(double dt)
 }
 void MenuScene::render() 
 {
+	EventSystem* evs = EventSystem::getInstance();
 	Scene::render();
 	Renderer::queue(&background);
 	Renderer::queue(&title);
 	Renderer::queue(&rect);
 	Renderer::queue(&text);
+	if (evs->isLoaded())
+	{
+		Renderer::queue(0,&button_return);
+		Renderer::queue(0,&text_return);
+	}
 	_ents.render();
 	for (int i = 0; i < MAX_NUMBER_OF_ITEMS; i++) { //for every menu item		
 		Renderer::queue(&menu[i]);
@@ -350,6 +393,7 @@ void GameScene::load()
 {
 	setID(1);
 	EventSystem* events = EventSystem::getInstance();
+	events->gameLoad();
 	if (!playerTexture.loadFromFile("res/img/player.png"))
 	{
 		cerr << "Failed to load spritesheet!" << endl;

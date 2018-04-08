@@ -9,6 +9,7 @@ enum ITEM_TYPE { WEAPON, SHIELD, HELMET, ARMOUR, BOOTS, POTION, POWERUP, KEYITEM
 
 extern std::shared_ptr<Scene> gameScene;
 extern std::shared_ptr<Scene> menuScene;
+extern std::shared_ptr<Scene> optionsScene;
 extern std::shared_ptr<Scene> activeScene;
 extern sf::Texture playerTexture;
 extern sf::Texture zombieTexture;
@@ -28,6 +29,8 @@ private:
 	int selectedItemIndex;
 	sf::Text menu[MAX_NUMBER_OF_ITEMS];
 	sf::Text text;
+	sf::RectangleShape button_return;
+	sf::Text text_return;
 	sf::Text title;
 public:
 	MenuScene();
@@ -41,12 +44,12 @@ public:
 
 class GameScene : public Scene
 {
-private:
+private:	
 	sf::Clock scoreClock;
 	sf::Text text;
 	void respawn();
 public:
-	GameScene() = default;
+	GameScene() { }
 	void update(double dt) override;
 	void render() override;
 	void load() override;

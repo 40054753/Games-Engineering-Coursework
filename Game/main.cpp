@@ -14,9 +14,7 @@ std::shared_ptr<Scene> menuScene;
 std::shared_ptr<Scene> activeScene;
 void Load()
 {
-	gameScene.reset(new GameScene());
 	menuScene.reset(new MenuScene());
-	gameScene->load();
 	menuScene->load();
 
 	activeScene = menuScene;

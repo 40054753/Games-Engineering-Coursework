@@ -31,6 +31,8 @@ EventSystem::~EventSystem()
 
 void EventSystem::LoadGame()
 {
+	gameScene.reset(new GameScene());
+	gameScene->load();
 	std::vector<int> location;
 	std::vector<int> levels;
 	std::vector<int> experience;

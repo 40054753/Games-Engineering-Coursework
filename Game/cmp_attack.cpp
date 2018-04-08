@@ -44,7 +44,7 @@ void AttackComponent::update(double dt)
 		    auto c2 = bullet->addComponent<ProjectileComponent>();
 			c2->setEntities(_entities);
 			auto dmg = player->GetComponent<CharacterSheetComponent>();
-			c2->setDamage(((dmg->getLevelFire() + 1)*1.5f) + 20.0f);
+			c2->setDamage((dmg->getLevelFire()*5.0f) + 20.0f);
 			c2->setType(1);
 			auto s = bullet->addComponent<StaticSpriteComponent>();
 			s->getSprite().setTexture(spellsTexture);
