@@ -22,62 +22,74 @@ sf::Sprite equipped_helmet;
 sf::Sprite equipped_shield;
 HudComponent::HudComponent(Entity *p) : Component(p)
 {
+	equipped_weapon.setScale(WX / 1280, WY / 720);
+	equipped_armour.setScale(WX / 1280, WY / 720);
+	equipped_boots.setScale(WX / 1280, WY / 720);
+	equipped_helmet.setScale(WX / 1280, WY / 720);
+	equipped_shield.setScale(WX / 1280, WY / 720);
+
 	HP.setFillColor(sf::Color::Red);
 	HP.setSize({ WX / 5.7f,WY / 25.0f });
 	MP.setFillColor(sf::Color::Blue);
 	MP.setSize({ WX / 5.7f,WY / 25.0f });
 	text.setCharacterSize(22);
+	text.setScale(WX / 1280, WY / 720);
 	text.setColor(sf::Color::White);
 	text.setFont(font);
 	/////////////////////////////////    BOTTOM HUD BG ////////////////////////////////////////////
 	buttonsBackground.setFillColor(sf::Color(255,255,255,150));
-	buttonsBackground.setSize({ 0.5f*Renderer::gameWidth, 0.1f * Renderer::gameHeight});
+	buttonsBackground.setSize({ 0.5f*WX, 0.1f * WY});
 	/////////////////////////////////   SKILLL BUTTONS ////////////////////////////////////////////
 	skill1.setFillColor(sf::Color::Black);
-	skill1.setSize({ 0.045f*Renderer::gameWidth, 0.07f * Renderer::gameHeight });
+	skill1.setSize({ 0.045f*WX, 0.07f * WY });
 	skill2.setFillColor(sf::Color::Black);
-	skill2.setSize({ 0.045f*Renderer::gameWidth, 0.07f * Renderer::gameHeight });
+	skill2.setSize({ 0.045f*WX, 0.07f * WY });
 	skill3.setFillColor(sf::Color::Black);
-	skill3.setSize({ 0.045f*Renderer::gameWidth, 0.07f * Renderer::gameHeight });
+	skill3.setSize({ 0.045f*WX, 0.07f * WY });
 	skill4.setFillColor(sf::Color::Black);
-	skill4.setSize({ 0.045f*Renderer::gameWidth, 0.07f * Renderer::gameHeight });
+	skill4.setSize({ 0.045f*WX, 0.07f * WY });
 	skill5.setFillColor(sf::Color::Black);
-	skill5.setSize({ 0.045f*Renderer::gameWidth, 0.07f * Renderer::gameHeight });
+	skill5.setSize({ 0.045f*WX, 0.07f * WY });
 
 	label_skill1.setFont(font);
 	label_skill1.setColor(sf::Color::Red);
 	label_skill1.setCharacterSize(15.0f);
+	label_skill1.setScale(WX / 1280, WY / 720);
 	label_skill1.setString("1");
 	label_skill2.setFont(font);
 	label_skill2.setColor(sf::Color::Red);
 	label_skill2.setCharacterSize(15.0f);
+	label_skill2.setScale(WX / 1280, WY / 720);
 	label_skill2.setString("2");
 	label_skill3.setFont(font);
 	label_skill3.setColor(sf::Color::Red);
 	label_skill3.setCharacterSize(15.0f);
+	label_skill3.setScale(WX / 1280, WY / 720);
 	label_skill3.setString("3");
 	label_skill4.setFont(font);
 	label_skill4.setColor(sf::Color::Red);
 	label_skill4.setCharacterSize(15.0f);
+	label_skill4.setScale(WX / 1280, WY / 720);
 	label_skill4.setString("4");
 	label_skill5.setFont(font);
 	label_skill5.setColor(sf::Color::Red);
 	label_skill5.setCharacterSize(15.0f);
+	label_skill5.setScale(WX / 1280, WY / 720);
 	label_skill5.setString("5");
 
 	////////////////////////BUTTONS
 	button_menu.setOutlineColor(sf::Color::Black);
 	button_menu.setOutlineThickness(5.0f);
 	button_menu.setFillColor(sf::Color(79,79,79,255));
-	button_menu.setSize({ 0.045f*Renderer::gameWidth, 0.07f * Renderer::gameHeight });
+	button_menu.setSize({ 0.045f*WX, 0.07f * WY });
 	button_save.setOutlineColor(sf::Color::Black);
 	button_save.setOutlineThickness(5.0f);
 	button_save.setFillColor(sf::Color(79, 79, 79, 255));
-	button_save.setSize({ 0.045f*Renderer::gameWidth, 0.07f * Renderer::gameHeight });
+	button_save.setSize({ 0.045f*WX, 0.07f * WY });
 	button_inventory.setOutlineColor(sf::Color::Black);
 	button_inventory.setOutlineThickness(5.0f);
 	button_inventory.setFillColor(sf::Color(79, 79, 79, 255));
-	button_inventory.setSize({ 0.045f*Renderer::gameWidth, 0.07f * Renderer::gameHeight });
+	button_inventory.setSize({ 0.045f*WX, 0.07f * WY });
 
 	///////////////////////////////INVENTORY/////////////////////////////
 	inventory.setFillColor(sf::Color(255, 255, 255, 150));
@@ -93,6 +105,7 @@ HudComponent::HudComponent(Entity *p) : Component(p)
 	label_backpack.setOutlineColor(sf::Color::Black);
 	label_backpack.setOutlineThickness(3.0f);
 	label_backpack.setCharacterSize(25.0f);
+	label_backpack.setScale(WX / 1280, WY / 720);
 	label_backpack.setString("Backpack");
 	/////////BP slots///////////
 	for(int i=0;i<BPslots;i++)
@@ -114,6 +127,7 @@ HudComponent::HudComponent(Entity *p) : Component(p)
 	label_stats.setOutlineColor(sf::Color::Black);
 	label_stats.setOutlineThickness(3.0f);
 	label_stats.setCharacterSize(25.0f);
+	label_stats.setScale(WX / 1280, WY / 720);
 	label_stats.setString("Stats");
 
 	///////////////equipped///////////
@@ -127,6 +141,7 @@ HudComponent::HudComponent(Entity *p) : Component(p)
 	label_equipped.setOutlineColor(sf::Color::Black);
 	label_equipped.setOutlineThickness(3.0f);
 	label_equipped.setCharacterSize(25.0f);
+	label_equipped.setScale(WX / 1280, WY / 720);
 	label_equipped.setString("Equipment");
 
 	helmet.setOutlineColor(sf::Color::Black);
@@ -157,27 +172,35 @@ HudComponent::HudComponent(Entity *p) : Component(p)
 	///////////////////////////////////ICONS
 	icon_weapon.setTexture(iconsTexture);
 	icon_weapon.setTextureRect({0,0,50,50});
+	icon_weapon.setScale(WX / 1280, WY / 720);
 
 	icon_armour.setTexture(iconsTexture);
 	icon_armour.setTextureRect({ 200,0,50,50 });
+	icon_armour.setScale(WX / 1280, WY / 720);
 
 	icon_shield.setTexture(iconsTexture);
 	icon_shield.setTextureRect({ 100,0,50,50 });
+	icon_shield.setScale(WX / 1280, WY / 720);
 
 	icon_boots.setTexture(iconsTexture);
 	icon_boots.setTextureRect({ 150,0,50,50 });
+	icon_boots.setScale(WX / 1280, WY / 720);
 
 	icon_helmet.setTexture(iconsTexture);
 	icon_helmet.setTextureRect({ 50,0,50,50 });
+	icon_helmet.setScale(WX / 1280, WY / 720);
 
 	icon_inventory.setTexture(iconsTexture);
 	icon_inventory.setTextureRect({ 50,0,50,50 });
+	icon_inventory.setScale(WX / 1280, WY / 720);
 
 	icon_save.setTexture(iconsTexture);
 	icon_save.setTextureRect({ 250,0,50,50 });
+	icon_save.setScale(WX / 1280, WY / 720);
 
 	icon_menu.setTexture(iconsTexture);
 	icon_menu.setTextureRect({ 300,0,50,50 });
+	icon_menu.setScale(WX / 1280, WY / 720);
 
 
 
@@ -187,6 +210,7 @@ HudComponent::HudComponent(Entity *p) : Component(p)
 	itemInfo.setOutlineColor(sf::Color::Black);
 	itemInfo.setOutlineThickness(2.0f);
 	itemInfo.setCharacterSize(16.0f);
+	itemInfo.setScale(WX / 1280, WY / 720);
 	infoArea.setFillColor(sf::Color(255, 255, 255, 150));
 	infoArea.setSize({ 0.17f*WX, 0.15f*WY });
 
@@ -195,12 +219,14 @@ HudComponent::HudComponent(Entity *p) : Component(p)
 	itemOptionsEquip.setOutlineColor(sf::Color::Black);
 	itemOptionsEquip.setOutlineThickness(3.0f);
 	itemOptionsEquip.setCharacterSize(25.0f);
+	itemOptionsEquip.setScale(WX / 1280, WY / 720);
 	itemOptionsEquip.setString("Equip");
 	itemOptionsDrop.setFont(font);
 	itemOptionsDrop.setColor(sf::Color::White);
 	itemOptionsDrop.setOutlineColor(sf::Color::Black);
 	itemOptionsDrop.setOutlineThickness(3.0f);
 	itemOptionsDrop.setCharacterSize(25.0f);
+	itemOptionsDrop.setScale(WX / 1280, WY / 720);
 	itemOptionsDrop.setString("Drop");
 	itemOptionsArea.setFillColor(sf::Color(170, 170, 170, 255));
 	itemOptionsArea.setSize({ 0.1f*WX, 0.11f*WY });
@@ -209,6 +235,7 @@ HudComponent::HudComponent(Entity *p) : Component(p)
 	experience_levels.setFont(font);
 	experience_levels.setColor(sf::Color::White);
 	experience_levels.setCharacterSize(13.0f);
+	experience_levels.setScale(WX / 1280, WY / 720);
 	//////progress bars
 	progressBar_Melee.setFillColor(sf::Color::Cyan);
 	progressBar_Melee.setSize({ WX / 5.2f,WY / 30.0f });

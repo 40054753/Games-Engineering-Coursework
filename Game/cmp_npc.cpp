@@ -9,8 +9,8 @@ int y = 0;
 NPCComponent::NPCComponent(Entity *p) : Component(p) 
 {
 	dialogueBox.setFillColor(sf::Color(255,255,255,200));
-	dialogueBox.setSize(sf::Vector2f(0.98f*Renderer::gameWidth, 0.25f*Renderer::gameHeight));
-	dialogueBox.setPosition(sf::Vector2f(0.025f* Renderer::gameWidth, 0.75f*Renderer::gameHeight));
+	dialogueBox.setSize(sf::Vector2f(0.98f*WX, 0.25f*WY));
+	dialogueBox.setPosition(sf::Vector2f(0.025f* WX, 0.75f*WY));
 	text.setColor(sf::Color::Black);
 	text.setFont(font);
 	text.setCharacterSize(27.0f);

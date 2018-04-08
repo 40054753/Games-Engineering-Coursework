@@ -1,6 +1,7 @@
 #include "SystemRenderer.h"
 #include <queue>
 #include <iostream>
+#include "Game.h"
 
 using namespace std;
 using namespace sf;
@@ -10,11 +11,10 @@ static queue<const Drawable *>  sprites1;
 static queue<const Drawable *>  sprites2;
 static queue<const Drawable *>  sprites3;
 static RenderWindow *rw;
-static View playerCam(Vector2f(0.0f, 0.0f), Vector2f(1280.0f, 720.0f));
+static View playerCam(Vector2f(0.0f, 0.0f), Vector2f(Renderer::gameWidth[resolution_index], Renderer::gameHeight[resolution_index]));
 
 void Renderer::initialise(RenderWindow &r) { 
 	rw = &r; 
-	
 }
 
 sf::RenderWindow &Renderer::getWindow() { return *rw; }
@@ -44,7 +44,8 @@ void Renderer::setCenter(Vector2f pos)
 }
 void Renderer::resizeView()
 {
-		rw->setSize(Vector2u(1280.0f , 720.0f));
+		rw->setSize(Vector2u(gameWidth[resolution_index], gameHeight[resolution_index]));
+		playerCam = View(Vector2f(0.0f, 0.0f), Vector2f(Renderer::gameWidth[resolution_index], Renderer::gameHeight[resolution_index]));
 }
 void Renderer::render()
 {

@@ -11,12 +11,14 @@ using namespace std;
 
 std::shared_ptr<Scene> gameScene;
 std::shared_ptr<Scene> menuScene;
+std::shared_ptr<Scene> optionsScene;
 std::shared_ptr<Scene> activeScene;
 void Load()
 {
 	menuScene.reset(new MenuScene());
 	menuScene->load();
-
+	optionsScene.reset(new OptionsScene());
+	optionsScene->load();
 	activeScene = menuScene;
 }
 
@@ -48,7 +50,8 @@ int main()
 {
 	sf::Clock clock;
 	float lastTime = 0;
-	RenderWindow window(VideoMode(Renderer::gameWidth, Renderer::gameHeight), "Icy Dead People v0.01 : ");
+	
+	RenderWindow window(VideoMode(Renderer::gameWidth[resolution_index], Renderer::gameHeight[resolution_index]), "Icy Dead People v0.01 : ");
 	Renderer::initialise(window);
 	Load();
 	while (window.isOpen())
@@ -56,7 +59,7 @@ int main()
 		float currentTime = clock.restart().asSeconds();
 		float fps = 1.f / currentTime;
 		lastTime = currentTime;
-		window.setTitle("Icy Dead People v0.01 : " + std::to_string(fps));
+		window.setTitle("Icy Dead People v0.01 : " + std::to_string((int)fps));
 		window.clear();
 		Update(window);
 		Render(window);

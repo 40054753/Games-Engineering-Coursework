@@ -6,15 +6,15 @@ CharacterSheetComponent::CharacterSheetComponent(Entity *p) : Component(p)
 {
 	//////////////////////exp to progress befween levels
 	experience_thresholds[0] = 100;
-	experience_thresholds[1] = 100;
-	experience_thresholds[2] = 100;
-	experience_thresholds[3] = 100;
-	experience_thresholds[4] = 100;
-	experience_thresholds[5] = 100;
-	experience_thresholds[6] = 100;
-	experience_thresholds[7] = 100;
-	experience_thresholds[8] = 100;
-	experience_thresholds[9] = 100;
+	experience_thresholds[1] = 200;
+	experience_thresholds[2] = 400;
+	experience_thresholds[3] = 500;
+	experience_thresholds[4] = 600;
+	experience_thresholds[5] = 700;
+	experience_thresholds[6] = 800;
+	experience_thresholds[7] = 900;
+	experience_thresholds[8] = 1000;
+	experience_thresholds[9] = 2000;
 
 }
 void CharacterSheetComponent::addEXP(int stat, float amount)
@@ -22,18 +22,23 @@ void CharacterSheetComponent::addEXP(int stat, float amount)
 	switch (stat)
 	{
 	case 0:
+		if(level_melee<MAX_LEVEL)
 		experience_melee += amount;
 	break;
 	case 1:
+		if (level_fire<MAX_LEVEL)
 		experience_fire += amount;
 		break;
 	case 2:
+		if (level_water<MAX_LEVEL)
 		experience_water += amount;
 		break;
 	case 3:
+		if (level_wind<MAX_LEVEL)
 		experience_wind += amount;
 		break;
 	case 4:
+		if (level_earth<MAX_LEVEL)
 		experience_earth += amount;
 		break;
 	default:
@@ -95,12 +100,15 @@ std::string CharacterSheetComponent::saveItems()
 	std::string temp="";
 	for (auto items : _backpack)
 	{
-		auto inf = items->GetComponent<ItemComponent>();
-		temp.append(std::to_string((int)inf->getID())+",");
-		if(inf->isEquipped())
-			temp.append(std::to_string(1)+",");
-		else
-			temp.append(std::to_string(0) + ",");
+		if (!items->is_forDeletion())
+		{
+			auto inf = items->GetComponent<ItemComponent>();
+			temp.append(std::to_string((int)inf->getID()) + ",");
+			if (inf->isEquipped())
+				temp.append(std::to_string(1) + ",");
+			else
+				temp.append(std::to_string(0) + ",");
+		}
 
 	}
 	return temp;

@@ -1,12 +1,13 @@
 #pragma once
 #include "Scene.h"
 #include "SFML\Audio.hpp"
-#define MAX_NUMBER_OF_ITEMS 4
-#define WX  1.0f*Renderer::gameWidth
-#define WY 1.0f*Renderer::gameHeight
+
+
+
+
 
 enum ITEM_TYPE { WEAPON, SHIELD, HELMET, ARMOUR, BOOTS, POTION, POWERUP, KEYITEM };
-
+extern int resolution_index;
 extern std::shared_ptr<Scene> gameScene;
 extern std::shared_ptr<Scene> menuScene;
 extern std::shared_ptr<Scene> optionsScene;
@@ -22,6 +23,9 @@ extern sf::Sound sound;
 extern sf::Texture snowEffect;
 extern sf::Font font;
 extern sf::Vector2i mousePos;
+#define MAX_NUMBER_OF_ITEMS 4
+#define WX  1.0f*Renderer::gameWidth[resolution_index]
+#define WY 1.0f*Renderer::gameHeight[resolution_index]
 class MenuScene : public Scene
 {
 private:
@@ -45,11 +49,34 @@ public:
 class GameScene : public Scene
 {
 private:	
-	sf::Clock scoreClock;
 	sf::Text text;
 	void respawn();
 public:
 	GameScene() { }
+	void update(double dt) override;
+	void render() override;
+	void load() override;
+};
+
+class OptionsScene : public Scene
+{
+private:
+	sf::CircleShape button_resolution_right;
+	sf::CircleShape button_resolution_left;
+	sf::RectangleShape button_return;
+	sf::Text text_resolution;
+	sf::RectangleShape bg_resolution;
+	sf::Text text_screenmode;
+	sf::RectangleShape bg_screenmode;
+	sf::Text text_move_up;
+	sf::RectangleShape bg_move_up;
+	sf::RectangleShape rect;
+	sf::Text text_return;
+	sf::Text title;
+	sf::Text left_list;
+	sf::Text right_list;
+public:
+	OptionsScene();
 	void update(double dt) override;
 	void render() override;
 	void load() override;

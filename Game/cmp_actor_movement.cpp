@@ -2,6 +2,7 @@
 #include "levelsystem.h"
 #include "SystemRenderer.h"
 #include "cmp_sprite.h"
+#include "Game.h"
 
 using namespace sf;
 static const Vector2i directions[] = { Vector2i{ 0, 1 }, Vector2i{ 1, 0 }, Vector2i{ 0, -1 }, Vector2i{ -1, 0 } };
@@ -99,9 +100,9 @@ void SnowComponent::update(double dt)
 		move(Vector2f(_speed/3.0f*dt, _speed * dt));
 	else
 		move(Vector2f(-_speed / 3.0f*dt, _speed * dt));
-		if (pos.y > Renderer::gameHeight)
+		if (pos.y > WY)
 		{
-			_parent->setPosition(Vector2f(rand() % Renderer::gameWidth, -55.0f));
+			_parent->setPosition(Vector2f(rand() % (int)WX, -55.0f));
 		}
 	
 }

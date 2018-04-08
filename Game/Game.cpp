@@ -28,7 +28,7 @@ SoundBuffer buffer;
 Sound sound;
 RectangleShape rect;
 Vector2i mousePos;
-
+int resolution_index = 0;
 
 MenuScene::MenuScene() {
 }
@@ -59,54 +59,61 @@ void MenuScene::load() {
 	text_return.setOutlineThickness(3.0f);
 	text_return.setPosition(button_return.getPosition() + Vector2f(0.01f*WX, 0.015f*WY));
 
-	for (int i = 0; i < 35; i++)
+	for (int i = 0; i < 45; i++)
 	{
 		float scale = (float)(rand() % 10) / 50.0f;
 		auto snow = make_shared<Entity>();
 		auto s = snow->addComponent<StaticSpriteComponent>();
 		s->getSprite().setTexture(snowEffect);
 		s->getSprite().setScale({ scale,scale});
-		snow->setPosition(Vector2f((rand() % Renderer::gameWidth), rand() % Renderer::gameHeight));
+		snow->setPosition(Vector2f((rand() % (int)WX), rand() % (int)WY));
 		snow->addComponent<SnowComponent>();
 		_ents.list.push_back(snow);
 	}
 	background.setTexture(menuBg);
-	rect.setPosition(sf::Vector2f(3.92f * Renderer::gameWidth / 5, Renderer::gameHeight / (MAX_NUMBER_OF_ITEMS)  * 2.15f));
+	background.setScale(WX/1280,WY/720);
+	rect.setPosition(sf::Vector2f(3.92f * WX / 5, WY / (MAX_NUMBER_OF_ITEMS)  * 2.15f));
 	//rect.setScale({ 3.0f,3.0f });
-	rect.setSize({ Renderer::gameWidth / 5.3f,Renderer::gameHeight / 2.8f });
+	rect.setSize({ WX / 5.3f,WY / 2.8f });
 	rect.setFillColor(sf::Color(1,1,1,130));
 
-	title.setPosition(sf::Vector2f(Renderer::gameWidth / 5.5f, Renderer::gameHeight / 5.5f));
+	title.setPosition(sf::Vector2f(WX / 6.0f, WY / 5.5f));
 	title.setString("ICY DEAD PEOPLE");
 	title.setFont(font);
-	title.setScale({ 2.0f,3.5f });
+	title.setCharacterSize(60.0f*WX/1280);
+	title.setScale(1.0f, 2.0f);
 	title.setColor(sf::Color::Black);
 	//list of menu items
 	menu[0].setFont(font);
 	menu[0].setColor(sf::Color::Red);
 	menu[0].setString("New Game");
-	menu[0].setPosition(sf::Vector2f(4*Renderer::gameWidth / 5, Renderer::gameHeight / (MAX_NUMBER_OF_ITEMS)  * 2.5f));
+	menu[0].setCharacterSize(30 * WX / 1280);
+	menu[0].setPosition(sf::Vector2f(4*WX / 5, WY / (MAX_NUMBER_OF_ITEMS)  * 2.5f));
 
 	menu[1].setFont(font);
 	menu[1].setColor(sf::Color::White);
 	menu[1].setString("Load");
-	menu[1].setPosition(sf::Vector2f(4*Renderer::gameWidth / 5, Renderer::gameHeight / (MAX_NUMBER_OF_ITEMS ) *2.75f));
+	menu[1].setCharacterSize(30 * WX / 1280);
+	menu[1].setPosition(sf::Vector2f(4*WX / 5, WY / (MAX_NUMBER_OF_ITEMS ) *2.75f));
 
 	menu[2].setFont(font);
 	menu[2].setColor(sf::Color::White);
 	menu[2].setString("Options");
-	menu[2].setPosition(sf::Vector2f(4*Renderer::gameWidth / 5, Renderer::gameHeight / (MAX_NUMBER_OF_ITEMS) * 3.0f));
+	menu[2].setCharacterSize(30 * WX / 1280);
+	menu[2].setPosition(sf::Vector2f(4*WX / 5, WY / (MAX_NUMBER_OF_ITEMS) * 3.0f));
 
 	menu[3].setFont(font);
 	menu[3].setColor(sf::Color::White);
 	menu[3].setString("Close");
-	menu[3].setPosition(sf::Vector2f(4*Renderer::gameWidth / 5, Renderer::gameHeight / (MAX_NUMBER_OF_ITEMS ) *3.25f));
+	menu[3].setCharacterSize(30 * WX / 1280);
+	menu[3].setPosition(sf::Vector2f(4*WX / 5, WY / (MAX_NUMBER_OF_ITEMS ) *3.25f));
 
 	selectedItemIndex = 0;
 
-	text.setPosition(sf::Vector2f(4 * Renderer::gameWidth / 5, Renderer::gameHeight / (MAX_NUMBER_OF_ITEMS) *2.25f));
+	text.setPosition(sf::Vector2f(4 * WX / 5, WY / (MAX_NUMBER_OF_ITEMS) *2.25f));
 	text.setString("Menu");
 	text.setFont(font);
+	text.setCharacterSize(30 * WX / 1280);
 	text.setColor(sf::Color::Green);
 }
 
@@ -159,7 +166,7 @@ void MenuScene::update(double dt)
 	EventSystem* evs = EventSystem::getInstance();
 	mousePos = sf::Mouse::getPosition(Renderer::getWindow());
 	moveTime -= dt;
-	//if(evs->isLoaded())
+	if(evs->isLoaded())
 	if (mousePos.x >= button_return.getPosition().x  && mousePos.x <= WX)
 	{
 		if (mousePos.y >= button_return.getPosition().y && mousePos.y <= button_return.getPosition().y + 0.07f*WY)
@@ -180,7 +187,7 @@ void MenuScene::update(double dt)
 	{
 		text_return.setOutlineColor(sf::Color::Red);
 	}
-	if (mousePos.x >=  0.78f * Renderer::gameWidth && mousePos.x <= 0.94f * Renderer::gameWidth )
+	if (mousePos.x >=  0.78f * WX && mousePos.x <= 0.94f * WX )
 	{
 		if (moveTime <= 0 && mousePos.y >= menu[0].getPosition().y && mousePos.y <  menu[1].getPosition().y)
 		{
@@ -211,7 +218,7 @@ void MenuScene::update(double dt)
 			if (sf::Mouse::isButtonPressed(Mouse::Left))
 			{
 				moveTime = 0.2f;
-				std::cout << "Options button has been pressed" << std::endl;
+				activeScene = optionsScene;
 			}
 		}
 		else if (moveTime <= 0 && mousePos.y >= menu[3].getPosition().y && mousePos.y <  menu[3].getPosition().y+30.0f)
@@ -243,16 +250,17 @@ void MenuScene::update(double dt)
 			std::cout << "Active Scene: " + std::to_string(activeScene->getID()) << std::endl;
 		}
 		if (selectedItemIndex == 1) {
-			std::cout << "Load button has been pressed" << std::endl;
+			moveTime = 0.2f;
+			evs->LoadGame();
 		}
 		if (selectedItemIndex == 2) {
-			std::cout << "Options button has been pressed" << std::endl;
+			activeScene = optionsScene;
 		}
 		if (selectedItemIndex == 3) {
 			Renderer::getWindow().close();
 		}
 	}
-	Renderer::setCenter(Vector2f(Renderer::gameWidth / 2 + 25, Renderer::gameHeight/2));
+	Renderer::setCenter(Vector2f(WX / 2 + 25, WY/2));
 	Scene::update(dt);
 	_ents.update(dt);
 }
@@ -464,4 +472,213 @@ void GameScene::render()
 	ls::Render(Renderer::getWindow());
 	_ents.render();
 	Scene::render();
+}
+
+OptionsScene::OptionsScene() {
+}
+
+void OptionsScene::load() 
+{
+	setID(2);
+	for (int i = 0; i < 45; i++)
+	{
+		float scale = (float)(rand() % 10) / 50.0f;
+		auto snow = make_shared<Entity>();
+		auto s = snow->addComponent<StaticSpriteComponent>();
+		s->getSprite().setTexture(snowEffect);
+		s->getSprite().setScale({ scale,scale });
+		snow->setPosition(Vector2f((rand() %(int) WX), rand() %(int) WY));
+		snow->addComponent<SnowComponent>();
+		_ents.list.push_back(snow);
+	}
+	button_return.setOutlineColor(sf::Color::Black);
+	button_return.setOutlineThickness(5.0f);
+	button_return.setFillColor(sf::Color(79, 79, 79, 255));
+	button_return.setSize({ 0.3f*WX, 0.07f * WY });
+	button_return.setPosition({ 0.03f*WX, 0.01f * WY });
+
+	text_return.setFont(font);
+	text_return.setColor(sf::Color::Black);
+	text_return.setString("Return to menu");
+	text_return.setOutlineColor(sf::Color::Red);
+	text_return.setOutlineThickness(3.0f);
+	text_return.setPosition(button_return.getPosition() + Vector2f(0.01f*WX, 0.015f*WY));
+
+	
+	background.setTexture(menuBg);
+	background.setScale(WX / 1280, WY / 720);
+
+	rect.setPosition({ 0.1f*WX, 0.1f * WY });
+	rect.setSize({ 0.8f*WX,0.8f*WY });
+	rect.setFillColor(sf::Color(79, 79, 79, 255));
+	rect.setOutlineColor(sf::Color::Black);
+	rect.setOutlineThickness(5.0f);
+
+	title.setPosition(rect.getPosition() + Vector2f(0.01f*WX,0.01f*WY));
+	title.setString("Options");
+	title.setFont(font);
+	title.setCharacterSize(30.0f*WY/720);
+	title.setColor(sf::Color::White);
+	title.setScale(WX / 1280, WY / 720);
+	title.setOutlineColor(sf::Color::Black);
+	title.setOutlineThickness(4.0f);
+
+	left_list.setPosition(rect.getPosition() + Vector2f(0.01f*WX, 0.1f*WY));
+	left_list.setString("Resolution\n\n\nScreen Mode\n\n\nOption3\n\n\nOption4");
+	left_list.setFont(font);
+	left_list.setCharacterSize(25.0f);
+	left_list.setScale(WX/1280, WY/720);
+	left_list.setColor(sf::Color::White);
+	left_list.setOutlineColor(sf::Color::Black);
+	left_list.setOutlineThickness(3.0f);
+
+	right_list.setPosition(rect.getPosition() + Vector2f(0.41f*WX, 0.1f*WY));
+	right_list.setString("Controls");
+	right_list.setFont(font);
+	right_list.setCharacterSize(25.0f);
+	right_list.setScale(WX / 1280, WY / 720);
+	right_list.setColor(sf::Color::White);
+	right_list.setOutlineColor(sf::Color::Black);
+	right_list.setOutlineThickness(3.0f);
+
+
+	bg_resolution.setOutlineColor(sf::Color::Black);
+	bg_resolution.setOutlineThickness(5.0f);
+	bg_resolution.setFillColor(sf::Color(50, 50, 50, 255));
+	bg_resolution.setSize({ 0.3f*WX, 0.07f * WY });
+	bg_resolution.setPosition(left_list.getPosition() + Vector2f(0.0f*WX, 0.07f*WY));
+
+	text_resolution.setFont(font);
+	text_resolution.setColor(sf::Color::White);
+	text_resolution.setScale(WX / 1280, WY / 720);
+	text_resolution.setString(to_string((int)WX) + "x"+to_string((int)WY));
+	text_resolution.setPosition(bg_resolution.getPosition() + Vector2f(0.07f*WX, 0.015f*WY));
+	
+	button_resolution_right = sf::CircleShape(17, 3);
+	button_resolution_right.rotate(-30.0f);
+	button_resolution_right.setFillColor(sf::Color(79, 79, 79, 255));
+	button_resolution_right.setOutlineColor(sf::Color::White);
+	button_resolution_right.setOutlineThickness(5.0f);
+	button_resolution_right.setPosition(bg_resolution.getPosition() + Vector2f(0.24f*WX, 0.025f*WY));
+
+	button_resolution_left = sf::CircleShape(17, 3);
+	button_resolution_left.rotate(30.0f);
+	button_resolution_left.setFillColor(sf::Color(79, 79, 79, 255));
+	button_resolution_left.setOutlineColor(sf::Color::White);
+	button_resolution_left.setOutlineThickness(5.0f);
+	button_resolution_left.setPosition(bg_resolution.getPosition() + Vector2f(0.04f*WX, 0.0045f*WY));
+	
+}
+void OptionsScene::update(double dt)
+{
+	EventSystem* evs = EventSystem::getInstance();
+	mousePos = sf::Mouse::getPosition(Renderer::getWindow());
+	//if(evs->isLoaded())
+	if (mousePos.x >= button_return.getPosition().x  && mousePos.x <= button_return.getPosition().x + 0.3f*WX)
+	{
+		if (mousePos.y >= button_return.getPosition().y && mousePos.y <= button_return.getPosition().y + 0.07f*WY)
+		{
+
+			text_return.setOutlineColor(sf::Color::Green);
+			if (sf::Mouse::isButtonPressed(Mouse::Left))
+			{
+				activeScene = menuScene;
+			}
+		}
+		else
+		{
+			text_return.setOutlineColor(sf::Color::Red);
+		}
+	}
+	else
+	{
+		text_return.setOutlineColor(sf::Color::Red);
+	}
+	if (mousePos.x >= button_resolution_right.getPosition().x- 0.013f*WX  && mousePos.x <= button_resolution_right.getPosition().x + 0.013f*WX)
+	{
+		if (mousePos.y >= button_resolution_right.getPosition().y - 0.025f*WY && mousePos.y <= button_resolution_right.getPosition().y + 0.025f*WY)
+		{
+	
+			button_resolution_right.setOutlineColor(sf::Color::Green);
+			if (sf::Mouse::isButtonPressed(Mouse::Left))
+			{
+				if (resolution_index < 2)
+				{
+					resolution_index++;
+					menuScene.reset(new MenuScene());
+					menuScene->load();
+					optionsScene.reset(new OptionsScene());
+					optionsScene->load();
+					activeScene = menuScene;
+					Renderer::resizeView();
+				}
+			}
+			
+		}
+		else
+		{
+			button_resolution_right.setOutlineColor(sf::Color::Red);
+		}
+	}
+	else
+	{
+		button_resolution_right.setOutlineColor(sf::Color::Red);
+	}
+	if (mousePos.x >= button_resolution_left.getPosition().x - 0.03f*WX && mousePos.x <= button_resolution_left.getPosition().x + 0.01f*WX)
+	{
+		if (mousePos.y >= button_resolution_left.getPosition().y  && mousePos.y <= button_resolution_left.getPosition().y + 0.06f*WY)
+		{
+
+			button_resolution_left.setOutlineColor(sf::Color::Green);
+			if (sf::Mouse::isButtonPressed(Mouse::Left))
+			{
+				if (resolution_index > 0)
+				{
+					resolution_index--;
+					menuScene.reset(new MenuScene());
+					menuScene->load();
+					optionsScene.reset(new OptionsScene());
+					optionsScene->load();
+					if (evs->isLoaded())
+					{
+						evs->SaveGame();
+						evs->LoadGame();
+					}
+
+					activeScene = menuScene;
+					Renderer::resizeView();
+				}
+			}
+
+		}
+		else
+		{
+			button_resolution_left.setOutlineColor(sf::Color::Red);
+		}
+	}
+	else
+	{
+		button_resolution_left.setOutlineColor(sf::Color::Red);
+	}
+	Renderer::setCenter(Vector2f(WX / 2 + 25, WY / 2));
+	Scene::update(dt);
+	_ents.update(dt);
+}
+void OptionsScene::render()
+{
+	Scene::render();
+	Renderer::queue(&background);
+	_ents.render();
+	Renderer::queue(0,&rect);
+	Renderer::queue(0,&title);
+	Renderer::queue(0,&left_list);
+	Renderer::queue(0,&bg_resolution);
+	Renderer::queue(0,&text_resolution);
+	Renderer::queue(0,&right_list);
+	Renderer::queue(0, &button_return);
+	Renderer::queue(0, &text_return);
+	Renderer::queue(0, &button_resolution_right);
+	Renderer::queue(0, &button_resolution_left);
+	
+
 }
