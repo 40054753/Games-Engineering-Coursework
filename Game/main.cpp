@@ -50,7 +50,6 @@ int main()
 {
 	sf::Clock clock;
 	float lastTime = 0;
-	
 	RenderWindow window(VideoMode(Renderer::gameWidth[resolution_index], Renderer::gameHeight[resolution_index]), "Icy Dead People v0.01 : ");
 	Renderer::initialise(window);
 	Load();

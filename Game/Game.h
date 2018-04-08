@@ -23,6 +23,7 @@ extern sf::Sound sound;
 extern sf::Texture snowEffect;
 extern sf::Font font;
 extern sf::Vector2i mousePos;
+extern bool fullscreen;
 #define MAX_NUMBER_OF_ITEMS 4
 #define WX  1.0f*Renderer::gameWidth[resolution_index]
 #define WY 1.0f*Renderer::gameHeight[resolution_index]
@@ -68,6 +69,7 @@ private:
 	sf::RectangleShape bg_resolution;
 	sf::Text text_screenmode;
 	sf::RectangleShape bg_screenmode;
+	sf::CircleShape button_screenmode_dot;
 	sf::Text text_move_up;
 	sf::RectangleShape bg_move_up;
 	sf::RectangleShape rect;

@@ -29,10 +29,11 @@ Sound sound;
 RectangleShape rect;
 Vector2i mousePos;
 int resolution_index = 0;
-
+bool fullscreen = false;
 MenuScene::MenuScene() {
 }
 void MenuScene::load() {
+
 	setID(0);
 	if (!buffer.loadFromFile("res/sound/click.wav")) {
 		cout << "Cannot load font!" << endl;
@@ -66,7 +67,7 @@ void MenuScene::load() {
 		auto s = snow->addComponent<StaticSpriteComponent>();
 		s->getSprite().setTexture(snowEffect);
 		s->getSprite().setScale({ scale,scale});
-		snow->setPosition(Vector2f((rand()%(int)WX), rand() % (int)WY));
+		snow->setPosition(Vector2f(rand()% ((int)WX), rand() % ((int)WY)));
 		snow->addComponent<SnowComponent>();
 		_ents.list.push_back(snow);
 	}
@@ -164,7 +165,9 @@ void MenuScene::moveDown()
 void MenuScene::update(double dt) 
 {
 	EventSystem* evs = EventSystem::getInstance();
+
 	mousePos = sf::Mouse::getPosition(Renderer::getWindow());
+
 	moveTime -= dt;
 	if(evs->isLoaded())
 	if (mousePos.x >= button_return.getPosition().x  && mousePos.x <= WX)
@@ -270,16 +273,17 @@ void MenuScene::render()
 	Scene::render();
 	Renderer::queue(&background);
 	Renderer::queue(&title);
-	Renderer::queue(&rect);
-	Renderer::queue(&text);
+	_ents.render();
+	Renderer::queue(0,&rect);
+	Renderer::queue(0,&text);
 	if (evs->isLoaded())
 	{
 		Renderer::queue(0,&button_return);
 		Renderer::queue(0,&text_return);
 	}
-	_ents.render();
+
 	for (int i = 0; i < MAX_NUMBER_OF_ITEMS; i++) { //for every menu item		
-		Renderer::queue(&menu[i]);
+		Renderer::queue(0,&menu[i]);
 	}
 }
 vector<shared_ptr<Entity>> ghosts;
@@ -546,7 +550,7 @@ void OptionsScene::load()
 	bg_resolution.setOutlineThickness(5.0f);
 	bg_resolution.setFillColor(sf::Color(50, 50, 50, 255));
 	bg_resolution.setSize({ 0.3f*WX, 0.07f * WY });
-	bg_resolution.setPosition(left_list.getPosition() + Vector2f(0.0f*WX, 0.07f*WY));
+	bg_resolution.setPosition(left_list.getPosition() + Vector2f(0.0f*WX, 0.06f*WY));
 
 	text_resolution.setFont(font);
 	text_resolution.setColor(sf::Color::White);
@@ -567,12 +571,33 @@ void OptionsScene::load()
 	button_resolution_left.setOutlineColor(sf::Color::White);
 	button_resolution_left.setOutlineThickness(5.0f);
 	button_resolution_left.setPosition(bg_resolution.getPosition() + Vector2f(0.04f*WX, 0.0045f*WY));
+
+	bg_screenmode.setOutlineColor(sf::Color::Black);
+	bg_screenmode.setOutlineThickness(5.0f);
+	bg_screenmode.setFillColor(sf::Color(50, 50, 50, 255));
+	bg_screenmode.setSize({ 0.3f*WX, 0.07f * WY });
+	bg_screenmode.setPosition(left_list.getPosition() + Vector2f(0.0f*WX, 0.2f*WY));
+
+	text_screenmode.setFont(font);
+	text_screenmode.setColor(sf::Color::White);
+	text_screenmode.setScale(WX / 1280, WY / 720);
+	text_screenmode.setString("Window");
+	text_screenmode.setPosition(bg_screenmode.getPosition() + Vector2f(0.02f*WX, 0.015f*WY));
+
+	button_screenmode_dot = sf::CircleShape(17, 8);
+	button_screenmode_dot.setFillColor(sf::Color(79, 79, 79, 255));
+	button_screenmode_dot.setOutlineColor(sf::Color::White);
+	button_screenmode_dot.setOutlineThickness(5.0f);
+	button_screenmode_dot.setPosition(bg_screenmode.getPosition() + Vector2f(0.24f*WX, 0.013f*WY));
 	
 }
 void OptionsScene::update(double dt)
 {
 	EventSystem* evs = EventSystem::getInstance();
+	if(!fullscreen)
 	mousePos = sf::Mouse::getPosition(Renderer::getWindow());
+	else
+	mousePos = sf::Mouse::getPosition();
 	//if(evs->isLoaded())
 	if (mousePos.x >= button_return.getPosition().x  && mousePos.x <= button_return.getPosition().x + 0.3f*WX)
 	{
@@ -611,6 +636,7 @@ void OptionsScene::update(double dt)
 					optionsScene->load();
 					activeScene = menuScene;
 					Renderer::resizeView();
+					activeScene = optionsScene;
 				}
 			}
 			
@@ -647,6 +673,8 @@ void OptionsScene::update(double dt)
 
 					activeScene = menuScene;
 					Renderer::resizeView();
+					activeScene = optionsScene;
+					
 				}
 			}
 
@@ -659,6 +687,40 @@ void OptionsScene::update(double dt)
 	else
 	{
 		button_resolution_left.setOutlineColor(sf::Color::Red);
+	}
+	if (mousePos.x >= button_screenmode_dot.getPosition().x - 0.03f*WX && mousePos.x <= button_screenmode_dot.getPosition().x + 0.01f*WX)
+	{
+		if (mousePos.y >= button_screenmode_dot.getPosition().y - 0.02f*WY && mousePos.y <= button_screenmode_dot.getPosition().y + 0.06f*WY)
+		{
+
+			button_screenmode_dot.setOutlineColor(sf::Color::Green);
+			if (sf::Mouse::isButtonPressed(Mouse::Left))
+			{
+				
+				if (!fullscreen)
+				{
+					Renderer::fullscreen();
+					fullscreen = true;
+					text_screenmode.setString("Fullscreen");
+				}
+				else
+				{
+					Renderer::not_fullscreen();
+					fullscreen = false;
+					text_screenmode.setString("Window");
+				}
+				
+			}
+
+		}
+		else
+		{
+			button_screenmode_dot.setOutlineColor(sf::Color::Red);
+		}
+	}
+	else
+	{
+		button_screenmode_dot.setOutlineColor(sf::Color::Red);
 	}
 	Renderer::setCenter(Vector2f(WX / 2 + 25, WY / 2));
 	Scene::update(dt);
@@ -679,6 +741,9 @@ void OptionsScene::render()
 	Renderer::queue(0, &text_return);
 	Renderer::queue(0, &button_resolution_right);
 	Renderer::queue(0, &button_resolution_left);
+	Renderer::queue(0, &bg_screenmode);
+	Renderer::queue(0, &text_screenmode);
+	Renderer::queue(0, &button_screenmode_dot);
 	
 
 }

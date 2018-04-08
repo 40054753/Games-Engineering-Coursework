@@ -18,10 +18,7 @@ void Renderer::initialise(RenderWindow &r) {
 }
 
 sf::RenderWindow &Renderer::getWindow() { return *rw; }
-void Renderer::updateView()
-{
-	
-}
+
 void Renderer::shutdown()
 {
 	while (!sprites3.empty())
@@ -47,7 +44,17 @@ void Renderer::resizeView()
 		rw->setSize(Vector2u(gameWidth[resolution_index], gameHeight[resolution_index]));
 		playerCam = View(Vector2f(0.0f, 0.0f), Vector2f(Renderer::gameWidth[resolution_index], Renderer::gameHeight[resolution_index]));
 }
-
+void Renderer::fullscreen()
+{
+	rw->create(sf::VideoMode::getFullscreenModes()[0], "Icy Dead People v0.01 ", sf::Style::Fullscreen);
+	rw->setSize(Vector2u(VideoMode::getDesktopMode().width, VideoMode::getDesktopMode().height));
+	playerCam = View(Vector2f(0.0f, 0.0f), Vector2f(VideoMode::getDesktopMode().width, VideoMode::getDesktopMode().height));
+}
+void Renderer::not_fullscreen()
+{
+	rw->create(VideoMode(Renderer::gameWidth[resolution_index], Renderer::gameHeight[resolution_index]), "Icy Dead People v0.01 : ");
+	resizeView();
+}
 void Renderer::render()
 {
 	rw->setView(playerCam);

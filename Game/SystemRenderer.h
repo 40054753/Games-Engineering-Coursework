@@ -10,7 +10,8 @@ namespace  Renderer
 	sf::RenderWindow &getWindow();
 	void updateView();
 	void shutdown();
-
+	void fullscreen();
+	void not_fullscreen();
 	void update(const double &);
 	void queue(const sf::Drawable *s);
 	void queue(int priority, const sf::Drawable *s);

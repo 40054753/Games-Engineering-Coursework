@@ -11,7 +11,7 @@ void ActorMovementComponent::render() {}
 
 void ActorMovementComponent::update(double dt) {}
 
-ActorMovementComponent::ActorMovementComponent(Entity *p) : _speed(100.0f), Component(p) {}
+ActorMovementComponent::ActorMovementComponent(Entity *p) : _speed(100.0f*WX/1280), Component(p) {}
 
 bool ActorMovementComponent::validMove(const sf::Vector2f &pos) {
 	return (LevelSystem::getTileAt(pos) != LevelSystem::WALL);
@@ -50,7 +50,7 @@ void ActorMovementComponent::increaseSpeed(float speed) {
 	_speed += speed;
 }
 
-ProjectileMovementComponent::ProjectileMovementComponent(Entity *p) : ActorMovementComponent(p) { _speed = 200.0f; }
+ProjectileMovementComponent::ProjectileMovementComponent(Entity *p) : ActorMovementComponent(p) { _speed = 200.0f*WX/1280; }
 void ProjectileMovementComponent::render() {}
 
 void ProjectileMovementComponent::update(double dt)
@@ -82,7 +82,7 @@ void ProjectileMovementComponent::move(const Vector2f &p)
 }
 SnowComponent::SnowComponent(Entity *p) : ActorMovementComponent(p) 
 { 
-	_speed = 50.0f; 
+	_speed = 50.0f*WX/1280; 
 	dir = rand() % 2 -1;
 }
 void SnowComponent::render() {}
@@ -102,7 +102,7 @@ void SnowComponent::update(double dt)
 		move(Vector2f(-_speed / 3.0f*dt, _speed * dt));
 		if (pos.y > WY)
 		{
-			_parent->setPosition(Vector2f(rand() % (int)WX, -55.0f));
+			_parent->setPosition(Vector2f(rand()%((int)WX), -55.0f*WX/1280));
 		}
 	
 }
