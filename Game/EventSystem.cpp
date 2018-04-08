@@ -37,6 +37,7 @@ void EventSystem::LoadGame()
 	std::vector<int> levels;
 	std::vector<int> experience;
 	std::vector<int> items;
+	std::vector<int> keys;
 	auto character = player->GetComponent<CharacterSheetComponent>();
 	std::ifstream save("save.txt");
 	if (save.good())
@@ -57,6 +58,8 @@ void EventSystem::LoadGame()
 					experience.push_back(i);
 				else if (line_number == 3)
 					items.push_back(i);
+				else if (line_number == 4)
+					keys.push_back(i);
 
 				if (ss.peek() == ',')
 					ss.ignore();
@@ -74,6 +77,10 @@ void EventSystem::LoadGame()
 		}
 		auto x = player->GetComponent<HudComponent>();
 		x->reload();
+		for (int i = 0; i < 12; i++)
+			controls[i] = (sf::Keyboard::Key)keys[i];
+		
+		refreshKeyLabels = true;
 
 	}
 	
@@ -88,6 +95,7 @@ void EventSystem::SaveGame()
 		save << character->saveLevels() + "\n";
 		save << character->saveExperience() + "\n";
 		save << character->saveItems() + "\n";
+		save << character->saveControls() + "\n";
 		save.close();
 	}
 	else std::cout << "Unable to open file";

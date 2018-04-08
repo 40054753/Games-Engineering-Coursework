@@ -94,10 +94,8 @@ protected:
 	sf::RectangleShape progressBar_Wind_BG;
 	sf::RectangleShape progressBar_Earth;
 	sf::RectangleShape progressBar_Earth_BG;
-
 public:
 	///////////////EQUIPPED ITEMS///////////
-	
 	void reload();
 	void getStats();
 	void resetButtons();

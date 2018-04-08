@@ -62,6 +62,7 @@ public:
 	std::string saveExperience();
 	std::string saveItems();
 	std::string saveLocation();
+	std::string saveControls();
 	void render() override;
 	void update(double dt) override;
 	

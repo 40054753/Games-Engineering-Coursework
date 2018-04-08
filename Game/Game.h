@@ -27,6 +27,9 @@ extern bool fullscreen;
 #define MAX_NUMBER_OF_ITEMS 4
 #define WX  1.0f*Renderer::gameWidth[resolution_index]
 #define WY 1.0f*Renderer::gameHeight[resolution_index]
+
+extern std::string codes[101];
+extern sf::Keyboard::Key controls[12];
 class MenuScene : public Scene
 {
 private:
@@ -77,6 +80,13 @@ private:
 	sf::Text title;
 	sf::Text left_list;
 	sf::Text right_list;
+	sf::Text right_list2;
+	sf::Text control_labels[12];
+	float delay = 0.2f;
+	bool keySelected[12] = { false,false,false,false,false,false,false,false,false,false,false,false };
+	bool anyKeySelected=false;
+	int selectedKey = 0;
+
 public:
 	OptionsScene();
 	void update(double dt) override;

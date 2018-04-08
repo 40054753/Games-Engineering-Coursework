@@ -137,19 +137,19 @@ void PlayerMovementComponent::update(double dt)
 	if (!immobilized)
 	{
 		int xdir = 0, ydir = 0;
-		if (Keyboard::isKeyPressed(Keyboard::W)) {
+		if (Keyboard::isKeyPressed(controls[0])) {
 			_parent->setFace(1);
 			move(Vector2f(0, -_speed * dt));
 		}
-		else if (Keyboard::isKeyPressed(Keyboard::S)) {
+		else if (Keyboard::isKeyPressed(controls[1])) {
 			_parent->setFace(3);
 			move(Vector2f(0, _speed * dt));
 		}
-		else if (Keyboard::isKeyPressed(Keyboard::A)) {
+		else if (Keyboard::isKeyPressed(controls[3])) {
 			_parent->setFace(4);
 			move(Vector2f(-_speed * dt, 0));
 		}
-		else if (Keyboard::isKeyPressed(Keyboard::D)) {
+		else if (Keyboard::isKeyPressed(controls[2])) {
 			_parent->setFace(2);
 			move(Vector2f(_speed * dt, 0));
 		}

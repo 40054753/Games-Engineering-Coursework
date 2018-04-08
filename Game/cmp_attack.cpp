@@ -31,7 +31,7 @@ void AttackComponent::update(double dt)
 	attackTime -= dt;
 	cooldown -= dt;
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::C))
+	if (sf::Keyboard::isKeyPressed(controls[5]))
 	{
 		if (cooldown < 0.0f && health_mana->getMana()>20 )
 		{
@@ -57,7 +57,7 @@ void AttackComponent::update(double dt)
 		}
 	}
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) 
+	if (sf::Keyboard::isKeyPressed(controls[4]))
 	{
 		for (auto e : _entities) 
 		{

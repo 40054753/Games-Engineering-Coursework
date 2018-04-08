@@ -113,6 +113,15 @@ std::string CharacterSheetComponent::saveItems()
 	}
 	return temp;
 }
+std::string CharacterSheetComponent::saveControls()
+{
+	std::string temp = "";
+	for (int i=0;i<12;i++)
+	{
+		temp.append(std::to_string((int)controls[i]) + ",");
+	}
+	return temp;
+}
 void CharacterSheetComponent::reset()
 {
 	for (auto n : _backpack)

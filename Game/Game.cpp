@@ -30,6 +30,47 @@ RectangleShape rect;
 Vector2i mousePos;
 int resolution_index = 0;
 bool fullscreen = false;
+sf::Keyboard::Key controls[12] =
+{
+	sf::Keyboard::W,
+	sf::Keyboard::S,
+	sf::Keyboard::D,
+	sf::Keyboard::A,
+	sf::Keyboard::Space,
+	sf::Keyboard::Num1,
+	sf::Keyboard::Num2,
+	sf::Keyboard::Num3,
+	sf::Keyboard::Num4,
+	sf::Keyboard::Num5,
+	sf::Keyboard::I,
+	sf::Keyboard::Escape
+};
+std::string codes[101] = {
+
+	"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q",
+	"R", "S", "T", "U", "V", "W", "X", "Y", "Z",
+
+	"0", "1", "2", "3","4", "5", "6", "7", "8", "9",
+
+	"Esc",
+	"Left Ctrl", "Left Shift", "Left Alt", "L. System",
+	"Right Ctrl.", "Right Shift", "Right Alt", "R. System",
+
+	"Menu", "(", ")", ";", ",", ".",
+	"quot", "/", "BackSlash", "Tilde", "=", "Dash",
+
+	"Space", "Enter", "Backspace", "Tab", "Page Up", "Page Down",
+	"End", "Home", "Insert", "Delete",
+	"Add", "Substract", "Multipy", "Divide",
+
+	"Left", "Right", "Up", "Down",
+	"0 Num", "1 Num", "2 Num", "3 Num", "4 Num",
+	"5 Num", "6 Num", "7 Num", "8 Num", "9 Num",
+
+	"F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8", "F9", "F10",
+	"F11", "F12", "F13", "F14", "F15", "Pause"
+
+};
 MenuScene::MenuScene() {
 }
 void MenuScene::load() {
@@ -179,6 +220,7 @@ void MenuScene::update(double dt)
 			if (sf::Mouse::isButtonPressed(Mouse::Left))
 			{
 				activeScene = gameScene;
+				evs->refresh();
 			}
 		}
 		else
@@ -221,7 +263,9 @@ void MenuScene::update(double dt)
 			if (sf::Mouse::isButtonPressed(Mouse::Left))
 			{
 				moveTime = 0.2f;
+				evs->refresh();
 				activeScene = optionsScene;
+
 			}
 		}
 		else if (moveTime <= 0 && mousePos.y >= menu[3].getPosition().y && mousePos.y <  menu[3].getPosition().y+30.0f)
@@ -255,8 +299,10 @@ void MenuScene::update(double dt)
 		if (selectedItemIndex == 1) {
 			moveTime = 0.2f;
 			evs->LoadGame();
+			evs->refresh();
 		}
 		if (selectedItemIndex == 2) {
+			evs->refresh();
 			activeScene = optionsScene;
 		}
 		if (selectedItemIndex == 3) {
@@ -536,15 +582,45 @@ void OptionsScene::load()
 	left_list.setOutlineColor(sf::Color::Black);
 	left_list.setOutlineThickness(3.0f);
 
-	right_list.setPosition(rect.getPosition() + Vector2f(0.41f*WX, 0.1f*WY));
-	right_list.setString("Controls");
+	right_list.setPosition(rect.getPosition() + Vector2f(0.33f*WX, 0.01f*WY));
+	right_list.setString("Controls\n\nWalk Up\n\nWalk Down\n\nWalk Right\n\nWalk Left\n\nMelee Attack\n\nSpell 1\n\nSpell 2\n\nSpell 3\n\nSpell 4");
 	right_list.setFont(font);
-	right_list.setCharacterSize(25.0f);
+	right_list.setCharacterSize(20.0f);
 	right_list.setScale(WX / 1280, WY / 720);
 	right_list.setColor(sf::Color::White);
 	right_list.setOutlineColor(sf::Color::Black);
 	right_list.setOutlineThickness(3.0f);
 
+	right_list2.setPosition(rect.getPosition() + Vector2f(0.6f*WX, 0.1f*WY));
+	right_list2.setString("Spell 5\n\nInventory\n\nCancel");
+	right_list2.setFont(font);
+	right_list2.setCharacterSize(20.0f);
+	right_list2.setScale(WX / 1280, WY / 720);
+	right_list2.setColor(sf::Color::White);
+	right_list2.setOutlineColor(sf::Color::Black);
+	right_list2.setOutlineThickness(3.0f);
+	for (int i = 0; i < 12; i++)
+	{
+		control_labels[i].setString(codes[controls[i]]);
+		control_labels[i].setFont(font);
+		control_labels[i].setCharacterSize(22.0f);
+		control_labels[i].setScale(WX / 1280, WY / 720);
+		control_labels[i].setColor(sf::Color::White);
+		control_labels[i].setOutlineColor(sf::Color::Black);
+		control_labels[i].setOutlineThickness(5.0f);
+	}
+	control_labels[0].setPosition(rect.getPosition() + Vector2f(0.5f*WX, 0.09f*WY));
+	control_labels[1].setPosition(rect.getPosition() + Vector2f(0.5f*WX, 0.17f*WY));
+	control_labels[2].setPosition(rect.getPosition() + Vector2f(0.5f*WX, 0.25f*WY));
+	control_labels[3].setPosition(rect.getPosition() + Vector2f(0.5f*WX, 0.33f*WY));
+	control_labels[4].setPosition(rect.getPosition() + Vector2f(0.5f*WX, 0.41f*WY));
+	control_labels[5].setPosition(rect.getPosition() + Vector2f(0.5f*WX, 0.49f*WY));
+	control_labels[6].setPosition(rect.getPosition() + Vector2f(0.5f*WX, 0.57f*WY));
+	control_labels[7].setPosition(rect.getPosition() + Vector2f(0.5f*WX, 0.65f*WY));
+	control_labels[8].setPosition(rect.getPosition() + Vector2f(0.5f*WX, 0.73f*WY));
+	control_labels[9].setPosition(rect.getPosition() + Vector2f(0.75f*WX, 0.09f*WY));
+	control_labels[10].setPosition(rect.getPosition() + Vector2f(0.75f*WX, 0.17f*WY));
+	control_labels[11].setPosition(rect.getPosition() + Vector2f(0.75f*WX, 0.25f*WY));
 
 	bg_resolution.setOutlineColor(sf::Color::Black);
 	bg_resolution.setOutlineThickness(5.0f);
@@ -594,6 +670,14 @@ void OptionsScene::load()
 void OptionsScene::update(double dt)
 {
 	EventSystem* evs = EventSystem::getInstance();
+	delay -= dt;
+	if (evs->is_for_refresh())
+	{
+		for (int i = 0; i < 12; i++)
+			control_labels[i].setString(codes[controls[i]]);
+
+			evs->refreshed();
+	}
 	if(!fullscreen)
 	mousePos = sf::Mouse::getPosition(Renderer::getWindow());
 	else
@@ -722,6 +806,51 @@ void OptionsScene::update(double dt)
 	{
 		button_screenmode_dot.setOutlineColor(sf::Color::Red);
 	}
+	if (anyKeySelected)
+	{
+		Event event;
+		while (Renderer::getWindow().pollEvent(event))
+		{
+
+			if (event.type == sf::Event::KeyPressed) {
+				controls[selectedKey] = event.key.code;
+				control_labels[selectedKey].setString(codes[event.key.code]);
+				control_labels[selectedKey].setOutlineColor(sf::Color::Red);
+				keySelected[selectedKey] = false;
+				anyKeySelected = false;
+			}
+		}
+	}
+	if(!anyKeySelected)
+	for (int i = 0; i < 12; i++)
+	{
+		if (mousePos.x >= control_labels[i].getPosition().x - 0.04f*WX && mousePos.x <= control_labels[i].getPosition().x + 0.06f*WX)
+		{
+			if (mousePos.y >= control_labels[i].getPosition().y - 0.02f*WY && mousePos.y <= control_labels[i].getPosition().y + 0.06f*WY)
+			{
+
+				control_labels[i].setOutlineColor(sf::Color::Green);
+				if (delay<0 && sf::Mouse::isButtonPressed(Mouse::Left))
+				{
+					delay = 0.1f;
+					keySelected[i] = true;
+					anyKeySelected = true;
+					selectedKey = i;
+				}
+
+			}
+			else
+			{
+				if(!keySelected[i])
+				control_labels[i].setOutlineColor(sf::Color::Red);
+			}
+		}
+		else
+		{
+			if (!keySelected[i])
+			control_labels[i].setOutlineColor(sf::Color::Red);
+		}
+	}
 	Renderer::setCenter(Vector2f(WX / 2 + 25, WY / 2));
 	Scene::update(dt);
 	_ents.update(dt);
@@ -737,6 +866,7 @@ void OptionsScene::render()
 	Renderer::queue(0,&bg_resolution);
 	Renderer::queue(0,&text_resolution);
 	Renderer::queue(0,&right_list);
+	Renderer::queue(0, &right_list2);
 	Renderer::queue(0, &button_return);
 	Renderer::queue(0, &text_return);
 	Renderer::queue(0, &button_resolution_right);
@@ -744,6 +874,9 @@ void OptionsScene::render()
 	Renderer::queue(0, &bg_screenmode);
 	Renderer::queue(0, &text_screenmode);
 	Renderer::queue(0, &button_screenmode_dot);
-	
+	for (int i = 0; i < 12; i++)
+	{
+		Renderer::queue(0, &control_labels[i]);
+	}
 
 }

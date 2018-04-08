@@ -20,8 +20,10 @@ sf::Sprite equipped_armour;
 sf::Sprite equipped_boots;
 sf::Sprite equipped_helmet;
 sf::Sprite equipped_shield;
+
 HudComponent::HudComponent(Entity *p) : Component(p)
 {
+	
 	equipped_weapon.setScale(WX / 1280, WY / 720);
 	equipped_armour.setScale(WX / 1280, WY / 720);
 	equipped_boots.setScale(WX / 1280, WY / 720);
@@ -55,27 +57,27 @@ HudComponent::HudComponent(Entity *p) : Component(p)
 	label_skill1.setColor(sf::Color::Red);
 	label_skill1.setCharacterSize(15.0f);
 	label_skill1.setScale(WX / 1280, WY / 720);
-	label_skill1.setString("1");
+	label_skill1.setString(codes[controls[5]]);
 	label_skill2.setFont(font);
 	label_skill2.setColor(sf::Color::Red);
 	label_skill2.setCharacterSize(15.0f);
 	label_skill2.setScale(WX / 1280, WY / 720);
-	label_skill2.setString("2");
+	label_skill2.setString(codes[controls[6]]);
 	label_skill3.setFont(font);
 	label_skill3.setColor(sf::Color::Red);
 	label_skill3.setCharacterSize(15.0f);
 	label_skill3.setScale(WX / 1280, WY / 720);
-	label_skill3.setString("3");
+	label_skill3.setString(codes[controls[6]]);
 	label_skill4.setFont(font);
 	label_skill4.setColor(sf::Color::Red);
 	label_skill4.setCharacterSize(15.0f);
 	label_skill4.setScale(WX / 1280, WY / 720);
-	label_skill4.setString("4");
+	label_skill4.setString(codes[controls[7]]);
 	label_skill5.setFont(font);
 	label_skill5.setColor(sf::Color::Red);
 	label_skill5.setCharacterSize(15.0f);
 	label_skill5.setScale(WX / 1280, WY / 720);
-	label_skill5.setString("5");
+	label_skill5.setString(codes[controls[8]]);
 
 	////////////////////////BUTTONS
 	button_menu.setOutlineColor(sf::Color::Black);
@@ -274,6 +276,7 @@ HudComponent::HudComponent(Entity *p) : Component(p)
 
 
 }
+
 void HudComponent::getStats()
 {
 	auto x = player->GetComponent<CharacterSheetComponent>();
@@ -446,6 +449,7 @@ void HudComponent::render()
 	}
 
 }
+
 void HudComponent::reload()
 {
 	auto x = player->GetComponent<CharacterSheetComponent>();
@@ -482,6 +486,16 @@ void HudComponent::reload()
 }
 void HudComponent::update(double dt)
 {
+	
+	if (evs->is_for_refresh())
+	{
+		label_skill1.setString(codes[controls[5]]);
+		label_skill2.setString(codes[controls[6]]);
+		label_skill3.setString(codes[controls[7]]);
+		label_skill4.setString(codes[controls[8]]);
+		label_skill5.setString(codes[controls[9]]);
+		evs->refreshed();
+	}
 	auto x = player->GetComponent<CharacterSheetComponent>();
 	auto backpack = x->getBP();
 	auto info = x->getBPINFO();
@@ -546,7 +560,7 @@ void HudComponent::update(double dt)
 		else
 		{
 			itemOptionsEquip.setOutlineColor(Color::Black);
-			if (buttonDelay<0 && (sf::Mouse::isButtonPressed(Mouse::Left) || sf::Keyboard::isKeyPressed(sf::Keyboard::W) || sf::Keyboard::isKeyPressed(sf::Keyboard::A) || sf::Keyboard::isKeyPressed(sf::Keyboard::S) || sf::Keyboard::isKeyPressed(sf::Keyboard::D)))
+			if (buttonDelay<0 && (sf::Mouse::isButtonPressed(Mouse::Left) || sf::Keyboard::isKeyPressed(controls[0]) || sf::Keyboard::isKeyPressed(controls[1]) || sf::Keyboard::isKeyPressed(controls[2]) || sf::Keyboard::isKeyPressed(controls[3])))
 			{
 				buttonDelay = 0.1f;
 				displayItemOptions = false;
@@ -566,7 +580,7 @@ void HudComponent::update(double dt)
 	{
 		hideInventory = false;
 	}
-	if (buttonDelay<0 && Keyboard::isKeyPressed(Keyboard::I))
+	if (buttonDelay<0 && Keyboard::isKeyPressed(controls[10]))
 	{
 		sound.play();
 		buttonDelay = 0.2f;
@@ -576,7 +590,7 @@ void HudComponent::update(double dt)
 			hideInventory = true;
 
 	}
-	if (Keyboard::isKeyPressed(Keyboard::Escape)) 
+	if (Keyboard::isKeyPressed(controls[11]))
 	{
 		hideInventory = true;
 		displayInfo = false;

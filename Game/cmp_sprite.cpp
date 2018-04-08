@@ -80,7 +80,7 @@ void CharacterSpriteComponent::update(double dt)
 	}
 	else
 	{
-		if (Keyboard::isKeyPressed(Keyboard::W))
+		if (Keyboard::isKeyPressed(controls[0]))
 		{
 			facing = 1;
 			if (frame > 3) frame = 0;
@@ -91,7 +91,7 @@ void CharacterSpriteComponent::update(double dt)
 				AnimationCounter = AnimationDelay;
 			}
 		}
-		else if (Keyboard::isKeyPressed(Keyboard::S))
+		else if (Keyboard::isKeyPressed(controls[1]))
 		{
 			facing = 3;
 			if (frame > 3) frame = 0;
@@ -102,7 +102,7 @@ void CharacterSpriteComponent::update(double dt)
 				AnimationCounter = AnimationDelay;
 			}
 		}
-		else if (Keyboard::isKeyPressed(Keyboard::A))
+		else if (Keyboard::isKeyPressed(controls[3]))
 		{
 			facing = 4;
 			if (frame > 3) frame = 0;
@@ -113,7 +113,7 @@ void CharacterSpriteComponent::update(double dt)
 				AnimationCounter = AnimationDelay;
 			}
 		}
-		else if (Keyboard::isKeyPressed(Keyboard::D))
+		else if (Keyboard::isKeyPressed(controls[2]))
 		{
 			facing = 2;
 			if (frame > 3) frame = 0;
