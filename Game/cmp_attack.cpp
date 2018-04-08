@@ -62,7 +62,7 @@ void AttackComponent::update(double dt)
 		for (auto e : _entities) 
 		{
 			if (!e->is_forDeletion())
-			if (attackTime <= 0 && length(_parent->getPosition() - e->getPosition()) < 100.0f) {
+			if (attackTime <= 0 && length(_parent->getPosition() - e->getPosition()) < 100.0f*WX / 1280) {
 				attackTime = 0.2f;
 				//this should take the hp of the entity, reduce it by the AD of whatever hits it
 				auto health_mana = e->GetComponent<HealthComponent>();

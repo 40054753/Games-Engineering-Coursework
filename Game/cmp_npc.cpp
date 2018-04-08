@@ -13,7 +13,7 @@ NPCComponent::NPCComponent(Entity *p) : Component(p)
 	dialogueBox.setPosition(sf::Vector2f(0.025f* WX, 0.75f*WY));
 	text.setColor(sf::Color::Black);
 	text.setFont(font);
-	text.setCharacterSize(27.0f);
+	text.setCharacterSize(27.0f * WX/1280);
 }
 void NPCComponent::setDialogue(std::string x)
 {
@@ -24,7 +24,7 @@ void NPCComponent::update(double dt)
 	interactionDelay -= dt;
 	dialogueBox.setPosition(player->getPosition() + sf::Vector2f(-0.49f* WX, 0.14f*WY));
 	text.setPosition(player->getPosition() + sf::Vector2f(-0.48f* WX, 0.15f*WY));
-	if (interactionDelay <= 0 && (length(_parent->getPosition() - player->getPosition()) < 21.0f) && sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+	if (interactionDelay <= 0 && (length(_parent->getPosition() - player->getPosition()) < 21.0f*WX/1280) && sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
 	{
 		player->GetComponent<PlayerMovementComponent>()->immobilize();
 		interact();

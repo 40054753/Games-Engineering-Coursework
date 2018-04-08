@@ -97,7 +97,7 @@ void ItemGenerator::create_iron_helmet(sf::Vector2f location)
 		it->setDef(10);
 		it->getSprite().setTexture(itemsTexture);
 		it->getSprite().setTextureRect({ 0,144,16,16 });
-		it->getSprite().setScale({ 2, 2 });
+		it->getSprite().setScale({ 2*WX / 1280,2*WY / 720 });
 		it->getSprite().setOrigin({ 8,8 });
 		activeScene->getEnts().push_back(item);
 }
@@ -113,7 +113,7 @@ void ItemGenerator::recreate_iron_helmet(bool equipped)
 	it->setDef(10);
 	it->getSprite().setTexture(itemsTexture);
 	it->getSprite().setTextureRect({ 0,144,16,16 });
-	it->getSprite().setScale({ 2, 2 });
+	it->getSprite().setScale({ 2 * WX / 1280,2 * WY / 720 });
 	it->getSprite().setOrigin({ 8,8 });
 	activeScene->getEnts().push_back(item);
 	auto x = player->GetComponent<CharacterSheetComponent>();
@@ -133,7 +133,7 @@ void ItemGenerator::create_leaf(sf::Vector2f location)
 	it->setDef(1);
 	it->getSprite().setTexture(itemsTexture);
 	it->getSprite().setTextureRect({ 16,192,16,16 });
-	it->getSprite().setScale({ 2, 2 });
+	it->getSprite().setScale({ 2 * WX / 1280,2 * WY / 720 });
 	it->getSprite().setOrigin({ 8,8 });
 	activeScene->getEnts().push_back(item);
 }
@@ -148,7 +148,7 @@ void ItemGenerator::recreate_leaf(bool equipped)
 	it->setDef(1);
 	it->getSprite().setTexture(itemsTexture);
 	it->getSprite().setTextureRect({ 16,192,16,16 });
-	it->getSprite().setScale({ 2, 2 });
+	it->getSprite().setScale({ 2 * WX / 1280,2 * WY / 720 });
 	it->getSprite().setOrigin({ 8,8 });
 	activeScene->getEnts().push_back(item);
 	auto x = player->GetComponent<CharacterSheetComponent>();
@@ -167,7 +167,7 @@ void ItemGenerator::create_dagger(sf::Vector2f location)
 	it->setAtt(5);
 	it->getSprite().setTexture(itemsTexture);
 	it->getSprite().setTextureRect({ 0,112,16,16 });
-	it->getSprite().setScale({ 2, 2 });
+	it->getSprite().setScale({ 2 * WX / 1280,2 * WY / 720 });
 	it->getSprite().setOrigin({ 8,8 });
 	activeScene->getEnts().push_back(item);
 }
@@ -182,7 +182,7 @@ void ItemGenerator::recreate_dagger(bool equipped)
 	it->setAtt(5);
 	it->getSprite().setTexture(itemsTexture);
 	it->getSprite().setTextureRect({ 0,112,16,16 });
-	it->getSprite().setScale({ 2, 2 });
+	it->getSprite().setScale({ 2 * WX / 1280,2 * WY / 720 });
 	it->getSprite().setOrigin({ 8,8 });
 	activeScene->getEnts().push_back(item);
 	auto x = player->GetComponent<CharacterSheetComponent>();
@@ -201,7 +201,7 @@ void ItemGenerator::create_short_sword(sf::Vector2f location)
 	it->setAtt(10);
 	it->getSprite().setTexture(itemsTexture);
 	it->getSprite().setTextureRect({ 16,112,16,16 });
-	it->getSprite().setScale({ 2, 2 });
+	it->getSprite().setScale({ 2 * WX / 1280,2 * WY / 720 });
 	it->getSprite().setOrigin({ 8,8 });
 	activeScene->getEnts().push_back(item);
 }
@@ -216,7 +216,7 @@ void ItemGenerator::recreate_short_sword(bool equipped)
 	it->setAtt(10);
 	it->getSprite().setTexture(itemsTexture);
 	it->getSprite().setTextureRect({ 16,112,16,16 });
-	it->getSprite().setScale({ 2, 2 });
+	it->getSprite().setScale({ 2 * WX / 1280,2 * WY / 720 });
 	it->getSprite().setOrigin({ 8,8 });
 	activeScene->getEnts().push_back(item);
 	auto x = player->GetComponent<CharacterSheetComponent>();
@@ -235,7 +235,7 @@ void ItemGenerator::create_templar_sword(sf::Vector2f location)
 	it->setAtt(22);
 	it->getSprite().setTexture(itemsTexture);
 	it->getSprite().setTextureRect({ 32,112,16,16 });
-	it->getSprite().setScale({ 2, 2 });
+	it->getSprite().setScale({ 2 * WX / 1280,2 * WY / 720 });
 	it->getSprite().setOrigin({ 8,8 });
 	activeScene->getEnts().push_back(item);
 }
@@ -250,7 +250,7 @@ void ItemGenerator::recreate_templar_sword(bool equipped)
 	it->setAtt(22);
 	it->getSprite().setTexture(itemsTexture);
 	it->getSprite().setTextureRect({ 32,112,16,16 });
-	it->getSprite().setScale({ 2, 2 });
+	it->getSprite().setScale({ 2 * WX / 1280,2 * WY / 720 });
 	it->getSprite().setOrigin({ 8,8 });
 	activeScene->getEnts().push_back(item);
 	auto x = player->GetComponent<CharacterSheetComponent>();
@@ -269,7 +269,7 @@ void ItemGenerator::create_giant_sword(sf::Vector2f location)
 	it->setAtt(38);
 	it->getSprite().setTexture(itemsTexture);
 	it->getSprite().setTextureRect({ 48,112,16,16 });
-	it->getSprite().setScale({ 2, 2 });
+	it->getSprite().setScale({ 2 * WX / 1280,2 * WY / 720 });
 	it->getSprite().setOrigin({ 8,8 });
 	activeScene->getEnts().push_back(item);
 }
@@ -284,7 +284,7 @@ void ItemGenerator::recreate_giant_sword(bool equipped)
 	it->setAtt(38);
 	it->getSprite().setTexture(itemsTexture);
 	it->getSprite().setTextureRect({ 48,112,16,16 });
-	it->getSprite().setScale({ 2, 2 });
+	it->getSprite().setScale({ 2 * WX / 1280,2 * WY / 720 });
 	it->getSprite().setOrigin({ 8,8 });
 	activeScene->getEnts().push_back(item);
 	auto x = player->GetComponent<CharacterSheetComponent>();
@@ -303,7 +303,7 @@ void ItemGenerator::create_magic_sword(sf::Vector2f location)
 	it->setAtt(60);
 	it->getSprite().setTexture(itemsTexture);
 	it->getSprite().setTextureRect({ 192,112,16,16 });
-	it->getSprite().setScale({ 2, 2 });
+	it->getSprite().setScale({ 2 * WX / 1280,2 * WY / 720 });
 	it->getSprite().setOrigin({ 8,8 });
 	activeScene->getEnts().push_back(item);
 }
@@ -318,7 +318,7 @@ void ItemGenerator::recreate_magic_sword(bool equipped)
 	it->setAtt(60);
 	it->getSprite().setTexture(itemsTexture);
 	it->getSprite().setTextureRect({ 192,112,16,16 });
-	it->getSprite().setScale({ 2, 2 });
+	it->getSprite().setScale({ 2 * WX / 1280,2 * WY / 720 });
 	it->getSprite().setOrigin({ 8,8 });
 	activeScene->getEnts().push_back(item);
 	auto x = player->GetComponent<CharacterSheetComponent>();
@@ -337,7 +337,7 @@ void ItemGenerator::create_forbidden_item(sf::Vector2f location)
 	it->setAtt(150);
 	it->getSprite().setTexture(itemsTexture);
 	it->getSprite().setTextureRect({ 192,128,16,16 });
-	it->getSprite().setScale({ 2, 2 });
+	it->getSprite().setScale({ 2 * WX / 1280,2 * WY / 720 });
 	it->getSprite().setOrigin({ 8,8 });
 	activeScene->getEnts().push_back(item);
 }
@@ -352,7 +352,7 @@ void ItemGenerator::recreate_forbidden_item(bool equipped)
 	it->setAtt(150);
 	it->getSprite().setTexture(itemsTexture);
 	it->getSprite().setTextureRect({ 192,128,16,16 });
-	it->getSprite().setScale({ 2, 2 });
+	it->getSprite().setScale({ 2 * WX / 1280,2 * WY / 720 });
 	it->getSprite().setOrigin({ 8,8 });
 	activeScene->getEnts().push_back(item);
 	auto x = player->GetComponent<CharacterSheetComponent>();

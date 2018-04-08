@@ -32,6 +32,7 @@ public:
 	std::vector<sf::IntRect> walkingAnimationRight;
 	std::vector<sf::IntRect> walkingAnimationLeft;
 	void update(double dt) override;
+	void setScale();
 	void render() override;
 	int frame=0; //Current frame of player/npc animation (goes from 0 to 3)
 	int facing; //direction player/npc is facing 1 - north, then clockwise (1-4)
@@ -49,6 +50,7 @@ protected:
 	std::vector<sf::Text> damageArray;
 	float textTime = 0.4f;
 public:
+	void setScale();
 	DamageTextComponent() = delete;
 	explicit DamageTextComponent(Entity *p);
 	void setText(int x);
@@ -60,6 +62,7 @@ class EnemyHealthBarComponent : public Component {
 protected:
 	sf::RectangleShape hp;
 public:
+	void setScale();
 	EnemyHealthBarComponent() = delete;
 	explicit EnemyHealthBarComponent(Entity *p);
 	void update(double dt) override;
@@ -72,6 +75,7 @@ protected:
 	std::shared_ptr<sf::Sprite> _sprite;
 
 public:
+	void setScale();
 	void addSpin() { spin = true; }
 	StaticSpriteComponent() = delete;
 	explicit StaticSpriteComponent(Entity *p);

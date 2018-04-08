@@ -35,7 +35,7 @@ void EnemyAttackComponent::update(double dt)
 	if (!_parent->is_forDeletion())
 	{
 		///////////////////////////////////////////////////////WHEN PLAYER TOUCHES THE ENEMY//////////////////////////////////
-		if (length(_parent->getPosition() - player->getPosition()) < 20.0f)
+		if (length(_parent->getPosition() - player->getPosition()) < 20.0f*WX/1280)
 		{
 			auto hp = player->GetComponent<HealthComponent>();
 			auto d = player->GetComponent<PlayerMovementComponent>();

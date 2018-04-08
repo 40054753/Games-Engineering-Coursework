@@ -59,14 +59,14 @@ void MenuScene::load() {
 	text_return.setOutlineThickness(3.0f);
 	text_return.setPosition(button_return.getPosition() + Vector2f(0.01f*WX, 0.015f*WY));
 
-	for (int i = 0; i < 45; i++)
+	for (int i = 0; i < 30; i++)
 	{
 		float scale = (float)(rand() % 10) / 50.0f;
 		auto snow = make_shared<Entity>();
 		auto s = snow->addComponent<StaticSpriteComponent>();
 		s->getSprite().setTexture(snowEffect);
 		s->getSprite().setScale({ scale,scale});
-		snow->setPosition(Vector2f((rand() % (int)WX), rand() % (int)WY));
+		snow->setPosition(Vector2f((rand()%(int)WX), rand() % (int)WY));
 		snow->addComponent<SnowComponent>();
 		_ents.list.push_back(snow);
 	}
@@ -325,7 +325,7 @@ void GameScene::respawn()
 		auto s = ghost->addComponent<CharacterSpriteComponent>();
 		s->getSprite().setTexture(zombieTexture);
 		s->getSprite().setTextureRect({ 0,0,16,21 });
-		s->getSprite().setScale({ 2.0f, 2.0f });
+		s->getSprite().setScale({ 2.0f*WX / 1280, 2.0f*WY / 720 });
 		s->getSprite().setOrigin(8.0f, 12.0f);
 		ghost->addComponent<HealthComponent>();
 		ghost->addComponent<EnemyHealthBarComponent>();
@@ -343,7 +343,7 @@ void GameScene::respawn()
 	auto s = ghost->addComponent<CharacterSpriteComponent>();
 	s->getSprite().setTexture(zombieTexture);
 	s->getSprite().setTextureRect({ 0,0,16,21 });
-	s->getSprite().setScale({ 2.0f, 2.0f });
+	s->getSprite().setScale({ 2.0f*WX / 1280, 2.0f*WY / 720 });
 	s->getSprite().setOrigin(8.0f, 12.0f);
 	ghost->addComponent<HealthComponent>();
 	auto p = ghost->addComponent<EnemyAttackComponent>();
@@ -356,7 +356,7 @@ void GameScene::respawn()
 	auto n = npc->addComponent<CharacterSpriteComponent>();
 	n->getSprite().setTexture(playerTexture);
 	n->getSprite().setTextureRect({ 0,0,16,21 });
-	n->getSprite().setScale({ 2.0f, 2.0f });
+	n->getSprite().setScale({ 2.0f*WX / 1280, 2.0f*WY/720 });
 	n->getSprite().setOrigin(8.0f, 12.0f);
 	auto d = npc->addComponent<NPCComponent>();
 	d->setDialogue("HELLO THERE, ADVENTURER! HELLO THERE, \nADVENTURER! HELLO THERE, ADVENTURER! ");
@@ -421,7 +421,7 @@ void GameScene::load()
 	if (!iconsTexture.loadFromFile("res/img/gray_icons.png")) {
 		cout << "Cannot load img!" << endl;
 	}
-	ls::loadLevelFile("res/levels/example.txt", 25.0f);
+	ls::loadLevelFile("res/levels/example.txt", 25.0f * WX/1280);
 
 
 	auto pl = std::make_shared<Entity>();
@@ -432,7 +432,7 @@ void GameScene::load()
 	auto s = pl->addComponent<CharacterSpriteComponent>();
 	s->getSprite().setTexture(playerTexture);
 	s->getSprite().setTextureRect({ 0,0,16,21 });
-	s->getSprite().setScale({ 2.0f, 2.0f });
+	s->getSprite().setScale({ 2.0f*WX/1280, 2.0f*WY/720 });
 	s->getSprite().setOrigin({ 8.0f, 12.0f });
 	s->getSprite().setPosition({ 100.0f, 100.0f });
 	gameScene->getEnts().push_back(pl);

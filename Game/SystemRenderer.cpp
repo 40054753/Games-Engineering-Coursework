@@ -47,6 +47,7 @@ void Renderer::resizeView()
 		rw->setSize(Vector2u(gameWidth[resolution_index], gameHeight[resolution_index]));
 		playerCam = View(Vector2f(0.0f, 0.0f), Vector2f(Renderer::gameWidth[resolution_index], Renderer::gameHeight[resolution_index]));
 }
+
 void Renderer::render()
 {
 	rw->setView(playerCam);

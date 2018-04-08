@@ -4,6 +4,7 @@ ItemComponent::ItemComponent(Entity *p) : Component(p) ,_sprite(std::make_shared
 	
 	highlight.setFillColor(sf::Color(244, 203, 66, 255));
 	highlight.setSize({ 0.045f*WX, 0.07f * WY });
+	
 }
 
 sf::Sprite& ItemComponent::getSprite()  {

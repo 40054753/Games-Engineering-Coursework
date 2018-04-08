@@ -148,7 +148,10 @@ void CharacterSpriteComponent::update(double dt)
 	
 	_sprite->setPosition(_parent->getPosition());
 }
-
+void CharacterSpriteComponent::setScale()
+{
+	_sprite->setScale(WX / 1280, WY / 720);
+}
 void CharacterSpriteComponent::render() {
 	Renderer::queue(1,_sprite.get());
 }
@@ -160,6 +163,7 @@ DamageTextComponent::DamageTextComponent(Entity *p) : Component(p)
 {
 	damageText.setFont(font);
 	damageText.setCharacterSize(15);
+	damageText.setScale(WX/1280,WY/720);
 	damageText.setColor(sf::Color::Red);
 	
 
@@ -171,7 +175,7 @@ void DamageTextComponent::setText(int x)
 void DamageTextComponent::update(double dt)
 {
 	textTime -= dt;
-	damageText.setPosition(_parent->getPosition()+Vector2f(-14.0f,-50.0f));
+	damageText.setPosition(_parent->getPosition()+Vector2f(-14.0f*WX/1280,-50.0f*WY/720));
 	if (textTime < 0)
 		_parent->setForDelete();
 	
@@ -187,9 +191,13 @@ sf::Sprite& StaticSpriteComponent::getSprite() const {
 
 StaticSpriteComponent::StaticSpriteComponent(Entity *p) : Component(p), _sprite(std::make_shared<sf::Sprite>())
 {
-
+	
 }
 
+void StaticSpriteComponent::setScale()
+{
+	_sprite->setScale(WX / 1280, WY / 720);
+}
 void StaticSpriteComponent::update(double dt)
 {
 	if(spin)
@@ -203,6 +211,7 @@ void StaticSpriteComponent::render()
 }
 EnemyHealthBarComponent::EnemyHealthBarComponent(Entity *p) : Component(p) 
 {
+	
 	hp.setFillColor(sf::Color::Red);
 	hp.setSize({31.0f, 4.0f});
 }
@@ -210,8 +219,8 @@ void EnemyHealthBarComponent::update(double dt)
 {
 	auto health = _parent->GetComponent<HealthComponent>();
 	float scaleX = health->getHealth() / health->getMaxHealth();
-	hp.setScale(scaleX, 1.0f);
-	hp.setPosition(_parent->getPosition() + Vector2f(-15.0f, -30.0f));
+	hp.setScale(scaleX * (WX / 1280) , WY / 720);
+	hp.setPosition(_parent->getPosition() + Vector2f(-15.0*WX/1280, -30.0f*WY/720));
 }
 void EnemyHealthBarComponent::render()
 {
