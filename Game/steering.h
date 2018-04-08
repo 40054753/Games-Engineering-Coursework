@@ -28,22 +28,8 @@ private:
 	float _maxSpeed;
 
 public:
-	Seek() = delete;
+	//Seek() = delete;
 	Seek(Entity* character, Entity* target, float maxSpeed)
-		: _character(character), _target(target), _maxSpeed(maxSpeed) {}
-	SteeringOutput getSteering() const noexcept;
-};
-
-class Flee : public StreeringBehaviour
-{
-private:
-	Entity * _character;
-	Entity* _target;
-	float _maxSpeed;
-
-public:
-	Flee() = delete;
-	Flee(Entity* character, Entity* target, float maxSpeed)
 		: _character(character), _target(target), _maxSpeed(maxSpeed) {}
 	SteeringOutput getSteering() const noexcept;
 };

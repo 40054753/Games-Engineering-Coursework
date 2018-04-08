@@ -26,6 +26,8 @@ public:
 	static std::vector<sf::Vector2f> findTiles(TILE t);
 	const static size_t getHeight() {return _height;}
 	const static size_t getWidth() {return _width;}
+	const static sf::Vector2f getOffset() { return _offset; }
+	const static float getTileSize() { return _tileSize; }
 	static sf::Vector2f getStart();
 
 protected:

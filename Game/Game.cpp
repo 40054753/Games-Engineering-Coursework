@@ -12,6 +12,8 @@
 #include "cmp_char_sheet.h"
 #include "cmp_enemy_attack.h"
 #include "cmp_ai_steering.h"
+#include "cmp_path_follow.h"
+#include "astar.h"
 #include <string>
 
 
@@ -280,7 +282,7 @@ void GameScene::respawn()
 		p->setLevel(0);
 		p->setPlayer(player);
 		ghost->addComponent<SteeringComponent>(player.get());
-		std::cout << player.get()->getPosition().x;
+		ghost->addComponent<PathfindingComponent>();
 		_ents.list.push_back(ghost);
 		ghosts.push_back(ghost);
 		//eatingEnts.push_back(ghost);       ///ghosts can eat
@@ -345,7 +347,6 @@ void GameScene::respawn()
 		_ents.list.push_back(cherry);
 		nibbles.push_back(cherry);
 	}
-	
 }
 void GameScene::load()
 {
@@ -394,7 +395,6 @@ void GameScene::load()
 
 	eatingEnts.push_back(player);
 	respawn();
-	
 }
 
 

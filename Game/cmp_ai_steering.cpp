@@ -1,25 +1,36 @@
 #include "cmp_ai_steering.h"
 #include "SystemRenderer.h"
+#include "cmp_path_follow.h"
+#include "astar.h"
 #include <maths.h>
+#include <levelsystem.h>
 
 using namespace sf;
+using namespace std;
 
-SteeringComponent::SteeringComponent(Entity * p, Entity* player)
-	: _player(player), _seek(Seek(p, player, 100.f)),
-	_flee(Flee(p, player, 100.0f)), Component(p) {
-	_speed = 80.0f;
-}
+SteeringComponent::SteeringComponent(Entity* p, Entity* player)
+	: _player(player), _seek(Seek(p, player, 100.f)), Component(p) {}
 
 void SteeringComponent::update(double dt)
 {
+	int randomTime = rand() % 100;
 	const auto mva = (float)(dt * _speed);
 	// If target (player) is within 300 pixels seek
 	if (length(_parent->getPosition() - _player->getPosition()) < 300.0f)
 	{
-		double pi = 3.14159265359;
-		auto output = _seek.getSteering();
-		move(output.direction * mva);
+		auto ai = _parent->GetComponent<PathfindingComponent>();
+		Vector2i movefrom(_parent->getPosition());
+		Vector2i moveto(_player->getPosition());
+		auto relative_pos = moveto;
+		auto tile_coord = relative_pos / (int)ls::getTileSize();
+		auto char_relative = _parent->getPosition() - ls::getOffset();
+		auto char_tile = Vector2i(char_relative / ls::getTileSize());
+		auto path = pathFind(char_tile, tile_coord);
+		ai->setPath(path);
 
+		auto output = _seek.getSteering();
+		//move(output.direction * mva);
+		double pi = 3.14159265359;
 		Vector2f j(_parent->getPosition());
 		Vector2f k(_player->getPosition());
 
