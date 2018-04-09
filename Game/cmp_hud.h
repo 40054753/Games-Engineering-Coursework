@@ -97,6 +97,16 @@ protected:
 	sf::RectangleShape progressBar_Wind_BG;
 	sf::RectangleShape progressBar_Earth;
 	sf::RectangleShape progressBar_Earth_BG;
+
+
+	sf::Text label_skill_tree;
+	sf::RectangleShape skill_tree;
+	sf::RectangleShape fire_tree;
+	sf::RectangleShape water_tree;
+	bool show_skill_tree = false;
+	bool hide_skill_tree = false;
+	float tree_sliderX = 0;
+	float tree_slideTime = 0.2f;
 public:
 	///////////////EQUIPPED ITEMS///////////
 	void reload();

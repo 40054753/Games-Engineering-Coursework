@@ -4,6 +4,7 @@
 class ProjectileComponent : public Component {
 
 protected:
+	bool damage_dealt = false;
 	std::vector <std::shared_ptr<Entity>> _entities;
 	float textTime = 0.0f;
 	float damage = 30;

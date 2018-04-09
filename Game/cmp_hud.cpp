@@ -276,8 +276,17 @@ HudComponent::HudComponent(Entity *p) : Component(p)
 	progressBar_Earth_BG.setOutlineColor(sf::Color::Black);
 	progressBar_Earth_BG.setOutlineThickness(3.0f);
 	progressBar_Earth_BG.setSize({ WX / 5.2f,WY / 30.0f });
+	//////////////////////////////////////////////////////SKILL TREEE/////////////////////////
+	skill_tree.setFillColor(sf::Color(255, 255, 255, 150));
+	skill_tree.setSize({ 0.62f*WX, 0.825f*WY });
 
-
+	label_skill_tree.setFont(font);
+	label_skill_tree.setColor(sf::Color::White);
+	label_skill_tree.setOutlineColor(sf::Color::Black);
+	label_skill_tree.setOutlineThickness(3.0f);
+	label_skill_tree.setCharacterSize(25.0f);
+	label_skill_tree.setScale(WX / 1280, WY / 720);
+	label_skill_tree.setString("Skill tree");
 }
 
 void HudComponent::getStats()
@@ -325,11 +334,13 @@ void HudComponent::resetSlot(int i)
 }
 void HudComponent::render() 
 {
-	
-	Renderer::queue(0,&HP);
-	Renderer::queue(0,&MP);
-	Renderer::queue(0, &STAM);
-	Renderer::queue(0,&text);
+	if (!show_skill_tree)
+	{
+		Renderer::queue(0, &HP);
+		Renderer::queue(0, &MP);
+		Renderer::queue(0, &STAM);
+		Renderer::queue(0, &text);
+	}
 	Renderer::queue(0,&buttonsBackground);	
 	Renderer::queue(0,&skill1);
 	Renderer::queue(0,&skill2);
@@ -349,7 +360,11 @@ void HudComponent::render()
 	Renderer::queue(0,&icon_inventory);
 	Renderer::queue(0, &icon_save);
 	Renderer::queue(0, &icon_menu);
-
+	if (show_skill_tree || hide_skill_tree)
+	{
+		Renderer::queue(0, &skill_tree);
+		Renderer::queue(0, &label_skill_tree);
+	}
 	if (showInventory || hideInventory)
 	{
 		Renderer::queue(0,&inventory);
@@ -587,6 +602,36 @@ void HudComponent::update(double dt)
 	{
 		hideInventory = false;
 	}
+	if (showInventory && sliderX<= 0.39f*WX)
+	{
+		sliderX += 1.5f*WX * dt;
+	}
+	if (hideInventory && sliderX > 0.0f)
+	{
+		showInventory = false;
+		sliderX -= 1.5f*WX * dt;
+	}
+	else if (hideInventory && sliderX <= 0.0f)
+	{
+		hideInventory = false;
+	}
+
+
+
+	if ( show_skill_tree && tree_sliderX <= 0.75f*WX)
+	{
+		tree_sliderX += 2.5f*WX * dt;
+	}
+	if (hide_skill_tree && tree_sliderX > 0.0f)
+	{
+		show_skill_tree = false;
+		tree_sliderX -= 2.5f*WX * dt;
+	}
+	else if (hide_skill_tree && tree_sliderX <= 0.0f)
+	{
+		hide_skill_tree = false;
+	}
+
 	if (buttonDelay<0 && Keyboard::isKeyPressed(controls[10]))
 	{
 		sound.play();
@@ -595,6 +640,16 @@ void HudComponent::update(double dt)
 			showInventory = true;
 		else
 			hideInventory = true;
+
+	}
+	if (buttonDelay<0 && Keyboard::isKeyPressed(Keyboard::K))
+	{
+		sound.play();
+		buttonDelay = 0.2f;
+		if (!show_skill_tree)
+			show_skill_tree = true;
+		else
+			hide_skill_tree = true;
 
 	}
 	if (Keyboard::isKeyPressed(controls[11]))
@@ -766,68 +821,78 @@ void HudComponent::setPosition()
 	icon_inventory.setPosition(button_inventory.getPosition());
 	button_menu.setPosition(windowZero + Vector2f(0.69f*WX, 0.915f*WY));
 	icon_save.setPosition(button_save.getPosition());
-	////////////////////////////INVENTORY
-	inventory.setPosition(windowZero + Vector2f(WX, 0.02f*WY) - Vector2f(sliderX,0));
-	////backpack
-	backpack.setPosition(inventory.getPosition() + Vector2f(0.007f*WX,0.55f*WY));
-	label_backpack.setPosition(inventory.getPosition() + Vector2f(0.007f*WX, 0.50f*WY));
-	int row =0;
-	int column = 0;
-	for (int i = 0; i<BPslots; i++)
+	if (showInventory || hideInventory)
 	{
-		if (column > (BPslots/3)-1)
+		////////////////////////////INVENTORY
+		inventory.setPosition(windowZero + Vector2f(WX, 0.02f*WY) - Vector2f(sliderX, 0));
+
+		////backpack
+		backpack.setPosition(inventory.getPosition() + Vector2f(0.007f*WX, 0.55f*WY));
+		label_backpack.setPosition(inventory.getPosition() + Vector2f(0.007f*WX, 0.50f*WY));
+		int row = 0;
+		int column = 0;
+		for (int i = 0; i < BPslots; i++)
 		{
-			row++;
-			column =0;
+			if (column > (BPslots / 3) - 1)
+			{
+				row++;
+				column = 0;
+			}
+			slots[i].setPosition(backpack.getPosition() + Vector2f(0.0053f*WX, 0.008f*WY) + Vector2f(column * 0.054f*WX, row * 0.086f*WY));
+			column++;
 		}
-		slots[i].setPosition(backpack.getPosition() + Vector2f(0.0053f*WX, 0.008f*WY) + Vector2f(column * 0.054f*WX, row * 0.086f*WY));
-		column++;
+		////stats
+		statsArea.setPosition(inventory.getPosition() + Vector2f(0.18f*WX, 0.06f*WY));
+		label_stats.setPosition(inventory.getPosition() + Vector2f(0.18f*WX, 0.01f*WY));
+		experience_levels.setPosition(statsArea.getPosition() + Vector2f(0.005f*WX, 0.005f*WY));
+		///////////level bars///////////
+		progressBar_Melee.setPosition(statsArea.getPosition() + Vector2f(0.005f*WX, 0.035f*WY));
+		progressBar_Melee_BG.setPosition(statsArea.getPosition() + Vector2f(0.005f*WX, 0.035f*WY));
+		progressBar_Fire.setPosition(statsArea.getPosition() + Vector2f(0.005f*WX, 0.115f*WY));
+		progressBar_Fire_BG.setPosition(statsArea.getPosition() + Vector2f(0.005f*WX, 0.115f*WY));
+		progressBar_Water.setPosition(statsArea.getPosition() + Vector2f(0.005f*WX, 0.195f*WY));
+		progressBar_Water_BG.setPosition(statsArea.getPosition() + Vector2f(0.005f*WX, 0.195f*WY));
+		progressBar_Wind.setPosition(statsArea.getPosition() + Vector2f(0.005f*WX, 0.275f*WY));
+		progressBar_Wind_BG.setPosition(statsArea.getPosition() + Vector2f(0.005f*WX, 0.275f*WY));
+		progressBar_Earth.setPosition(statsArea.getPosition() + Vector2f(0.005f*WX, 0.355f*WY));
+		progressBar_Earth_BG.setPosition(statsArea.getPosition() + Vector2f(0.005f*WX, 0.355f*WY));
+
+
+		///////////////equipped///////////
+		equippedArea.setPosition(inventory.getPosition() + Vector2f(0.007f*WX, 0.06f*WY));
+		label_equipped.setPosition(inventory.getPosition() + Vector2f(0.007f*WX, 0.01f*WY));
+
+		helmet.setPosition(equippedArea.getPosition() + Vector2f(0.06f*WX, 0.01f*WY));
+		equipped_helmet.setPosition(helmet.getPosition() + Vector2f(0.023f*WX, 0.03f*WY));
+		armour.setPosition(equippedArea.getPosition() + Vector2f(0.06f*WX, 0.17f*WY));
+		equipped_armour.setPosition(armour.getPosition() + Vector2f(0.023f*WX, 0.03f*WY));
+		boots.setPosition(equippedArea.getPosition() + Vector2f(0.06f*WX, 0.3f*WY));
+		equipped_boots.setPosition(boots.getPosition() + Vector2f(0.023f*WX, 0.03f*WY));
+		weapon.setPosition(equippedArea.getPosition() + Vector2f(0.005f*WX, 0.17f*WY));
+		equipped_weapon.setPosition(weapon.getPosition() + Vector2f(0.023f*WX, 0.03f*WY));
+		shield.setPosition(equippedArea.getPosition() + Vector2f(0.115f*WX, 0.17f*WY));
+		equipped_shield.setPosition(shield.getPosition() + Vector2f(0.023f*WX, 0.03f*WY));
+
+		icon_weapon.setPosition(weapon.getPosition());
+		icon_armour.setPosition(armour.getPosition());
+		icon_shield.setPosition(shield.getPosition());
+		icon_helmet.setPosition(helmet.getPosition());
+		icon_boots.setPosition(boots.getPosition());
+
+		auto x = player->GetComponent<CharacterSheetComponent>();
+		auto backpack = x->getBP();
+		int i = 0;
+		for (auto item : backpack)
+		{
+			if (!item->is_forDeletion())
+				item->setPosition(slots[i++].getPosition() + Vector2f(0.023f*WX, 0.03f*WY));
+		}
 	}
-	////stats
-	statsArea.setPosition(inventory.getPosition() + Vector2f(0.18f*WX, 0.06f*WY));
-	label_stats.setPosition(inventory.getPosition() + Vector2f(0.18f*WX, 0.01f*WY));
-	experience_levels.setPosition(statsArea.getPosition() + Vector2f(0.005f*WX, 0.005f*WY));
-	///////////level bars///////////
-	progressBar_Melee.setPosition(statsArea.getPosition() + Vector2f(0.005f*WX, 0.035f*WY));
-	progressBar_Melee_BG.setPosition(statsArea.getPosition() + Vector2f(0.005f*WX, 0.035f*WY));
-	progressBar_Fire.setPosition(statsArea.getPosition() + Vector2f(0.005f*WX, 0.115f*WY));
-	progressBar_Fire_BG.setPosition(statsArea.getPosition() + Vector2f(0.005f*WX, 0.115f*WY));
-	progressBar_Water.setPosition(statsArea.getPosition() + Vector2f(0.005f*WX, 0.195f*WY));
-	progressBar_Water_BG.setPosition(statsArea.getPosition() + Vector2f(0.005f*WX, 0.195f*WY));
-	progressBar_Wind.setPosition(statsArea.getPosition() + Vector2f(0.005f*WX, 0.275f*WY));
-	progressBar_Wind_BG.setPosition(statsArea.getPosition() + Vector2f(0.005f*WX, 0.275f*WY));
-	progressBar_Earth.setPosition(statsArea.getPosition() + Vector2f(0.005f*WX, 0.355f*WY));
-	progressBar_Earth_BG.setPosition(statsArea.getPosition() + Vector2f(0.005f*WX, 0.355f*WY));
-
-
-	///////////////equipped///////////
-	equippedArea.setPosition(inventory.getPosition() + Vector2f(0.007f*WX, 0.06f*WY));
-	label_equipped.setPosition(inventory.getPosition() + Vector2f(0.007f*WX, 0.01f*WY));
-
-	helmet.setPosition(equippedArea.getPosition() + Vector2f(0.06f*WX, 0.01f*WY));
-	equipped_helmet.setPosition(helmet.getPosition() + Vector2f(0.023f*WX, 0.03f*WY));
-	armour.setPosition(equippedArea.getPosition() + Vector2f(0.06f*WX, 0.17f*WY));
-	equipped_armour.setPosition(armour.getPosition() + Vector2f(0.023f*WX, 0.03f*WY));
-	boots.setPosition(equippedArea.getPosition() + Vector2f(0.06f*WX, 0.3f*WY));
-	equipped_boots.setPosition(boots.getPosition() + Vector2f(0.023f*WX, 0.03f*WY));
-	weapon.setPosition(equippedArea.getPosition() + Vector2f(0.005f*WX, 0.17f*WY));
-	equipped_weapon.setPosition(weapon.getPosition() + Vector2f(0.023f*WX, 0.03f*WY));
-	shield.setPosition(equippedArea.getPosition() + Vector2f(0.115f*WX, 0.17f*WY));
-	equipped_shield.setPosition(shield.getPosition() + Vector2f(0.023f*WX, 0.03f*WY));
-
-	icon_weapon.setPosition(weapon.getPosition());
-	icon_armour.setPosition(armour.getPosition());
-	icon_shield.setPosition(shield.getPosition());
-	icon_helmet.setPosition(helmet.getPosition());
-	icon_boots.setPosition(boots.getPosition());
-
-	auto x = player->GetComponent<CharacterSheetComponent>();
-	auto backpack = x->getBP();
-	int i = 0;
-	for (auto item : backpack)
+	if (show_skill_tree || hide_skill_tree)
 	{
-		if(!item->is_forDeletion())
-		item->setPosition(slots[i++].getPosition() + Vector2f(0.023f*WX, 0.03f*WY));
+		////skill tree
+		skill_tree.setPosition(windowZero + Vector2f(-0.8f*WX, 0.02f*WY) + Vector2f(tree_sliderX, 0));
+		label_skill_tree.setPosition(skill_tree.getPosition() + Vector2f(0.07f*WX, 0.01f*WY));
 	}
-	
+
 }

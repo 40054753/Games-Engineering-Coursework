@@ -172,6 +172,7 @@ void SpellCaster::cast_sword_swing(sf::Vector2f location)
 		auto pr = bullet->addComponent<PlayerMovementComponent>();
 		bullet->setFace(player->getFace());
 		auto c2 = bullet->addComponent<ProjectileComponent>();
+		c2->finishAnimationFirst();
 		c2->setEntities(_entities);
 		c2->addKnockback();
 		auto dmg = player->GetComponent<CharacterSheetComponent>();
@@ -181,8 +182,7 @@ void SpellCaster::cast_sword_swing(sf::Vector2f location)
 		s->getSprite().setTexture(swordSwingTexture);
 		s->getSprite().setScale({ 1.0f, 1.0f });
 		s->getSprite().setOrigin({ 60, 35 });
-		c2->setTimer(0.05f);
-		c2->finishAnimationFirst();
+		c2->setTimer(0.35f);
 		s->setDelay(0.05f);
 		s->playOnce();
 		s->addFrame(sf::IntRect(0, 0, 100, 70));
@@ -195,22 +195,22 @@ void SpellCaster::cast_sword_swing(sf::Vector2f location)
 		s->getSprite().setTextureRect({ 0, 0, 100, 70 });
 		if (player->getFace() == 1)
 		{
-			bullet->setPosition(player->getPosition() + sf::Vector2f(0, -35.0 *WY / 720));
+			bullet->setPosition(player->getPosition() + sf::Vector2f(0, -15.0 *WY / 720));
 			s->getSprite().rotate(-90);
 		}
 		else if (player->getFace() == 2)
 		{
-			bullet->setPosition(player->getPosition() + sf::Vector2f(35 * WX / 1280, 0));
+			bullet->setPosition(player->getPosition() + sf::Vector2f(15 * WX / 1280, 0));
 		}
 		else if (player->getFace() == 3)
 		{
 			s->setPriority(1);
-			bullet->setPosition(player->getPosition() + sf::Vector2f(0, 35.0 *WY / 720));
+			bullet->setPosition(player->getPosition() + sf::Vector2f(0, 15.0 *WY / 720));
 			s->getSprite().rotate(90);
 		}
 		else if (player->getFace() == 4)
 		{
-			bullet->setPosition(player->getPosition() + sf::Vector2f(-35 * WX / 1280, 0));
+			bullet->setPosition(player->getPosition() + sf::Vector2f(-15 * WX / 1280, 0));
 			s->getSprite().rotate(180);
 		}
 		activeScene->getEnts().push_back(bullet);

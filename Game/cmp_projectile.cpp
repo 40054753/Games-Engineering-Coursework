@@ -37,13 +37,17 @@ void ProjectileComponent::update(double dt)
 	if (length(g->getPosition() - _parent->getPosition()) < 30.0f*WX / 1280)
 	{
 		auto health_mana = g->GetComponent<HealthComponent>();
-		health_mana->reduceHealth(damage); //should be changed to the player's attack damage
-		auto dmg = std::make_shared<Entity>();
-		auto txt = dmg->addComponent<DamageTextComponent>();
-		dmg->setPosition(g->getPosition());
-		txt->setText(damage);
-		gameScene->getEnts().push_back(dmg);
-		events->addExp(type, 10);
+		if (!damage_dealt)
+		{
+			auto dmg = std::make_shared<Entity>();
+			auto txt = dmg->addComponent<DamageTextComponent>();		
+			dmg->setPosition(g->getPosition());
+			health_mana->reduceHealth(damage); //should be changed to the player's attack damage
+			txt->setText(damage);
+			gameScene->getEnts().push_back(dmg);
+			events->addExp(type, 10);
+			damage_dealt = true;
+		}
 		if (knockback)
 		{
 			auto d = g->GetComponent<ActorMovementComponent>();
