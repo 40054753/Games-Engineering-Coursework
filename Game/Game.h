@@ -18,6 +18,7 @@ extern sf::Texture spellsTexture;
 extern sf::Texture animatedSpellsTexture;
 extern sf::Texture iconsTexture;
 extern sf::Texture itemsTexture;
+extern sf::Texture swordSwingTexture;
 extern std::shared_ptr<Entity> player;
 extern sf::SoundBuffer buffer;
 extern sf::Sound sound;

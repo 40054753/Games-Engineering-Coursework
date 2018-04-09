@@ -22,7 +22,7 @@ using namespace sf;
 using namespace std;
 const int GHOSTS_COUNT = 4;
 Font font;
-Texture playerTexture, zombieTexture, spellsTexture, snowEffect, iconsTexture, itemsTexture, animatedSpellsTexture;
+Texture playerTexture, zombieTexture, spellsTexture, snowEffect, iconsTexture, itemsTexture, animatedSpellsTexture, swordSwingTexture;
 Texture menuBg;
 sf::Sprite background;
 SoundBuffer buffer;
@@ -415,7 +415,7 @@ void GameScene::respawn()
 	_ents.list.push_back(npc);
 	npcs.push_back(npc);
 
-	auto att = _ents.list[0]->addComponent<AttackComponent>();
+	auto att = _ents.list[0]->GetComponent<AttackComponent>();
 	att->setEntities(ghosts);
 
 	for (auto n : nibbles)
@@ -474,9 +474,14 @@ void GameScene::load()
 	{
 		cerr << "Failed to load spritesheet!" << endl;
 	}
+	if (!swordSwingTexture.loadFromFile("res/img/sword_swing.png"))
+	{
+		cerr << "Failed to load spritesheet!" << endl;
+	}
 	if (!iconsTexture.loadFromFile("res/img/gray_icons.png")) {
 		cout << "Cannot load img!" << endl;
 	}
+
 	ls::loadLevelFile("res/levels/example.txt", 25.0f * WX/1280);
 
 
@@ -493,7 +498,7 @@ void GameScene::load()
 	s->getSprite().setPosition({ 100.0f, 100.0f });
 	gameScene->getEnts().push_back(pl);
 	player = pl;
-
+	pl->addComponent<AttackComponent>();
 	auto hd = make_shared<Entity>();
 	auto hb = hd->addComponent<HudComponent>();
 	hud = hd;

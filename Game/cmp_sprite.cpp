@@ -267,5 +267,5 @@ sf::Sprite& AnimatedSpriteComponent::getSprite() const {
 
 void AnimatedSpriteComponent::render()
 {
-	Renderer::queue(2, _sprite.get());
+	Renderer::queue(priority, _sprite.get());
 }

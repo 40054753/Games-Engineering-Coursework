@@ -13,7 +13,7 @@ SpellCaster::SpellCaster()
 	cooldowns.push_back(0.5f);//////////water gun cooldown
 	cooldowns.push_back(0.5f);//////////sonic boom cooldown
 	cooldowns.push_back(0.5f);//////////earth spike cooldown
-	cooldowns.push_back(0.2f);////////////////////////////////SWORD ATTACK cooldown
+	cooldowns.push_back(0.25f);////////////////////////////////SWORD ATTACK cooldown
 }
 SpellCaster* SpellCaster::getInstance()
 {
@@ -165,11 +165,11 @@ void SpellCaster::cast_sword_swing(sf::Vector2f location)
 {////////////////////spell ID: 4//////////////////////////////////////
 
 	auto health_mana = player->GetComponent<HealthComponent>();
-	if (health_mana->getStamina() >= 5)
+	if (health_mana->getStamina() >= 4)
 	{
-		health_mana->reduceStamina(5);
+		health_mana->reduceStamina(4);
 		auto bullet = std::make_shared<Entity>();
-		//auto pr = bullet->addComponent<ProjectileMovementComponent>();
+		auto pr = bullet->addComponent<PlayerMovementComponent>();
 		bullet->setFace(player->getFace());
 		auto c2 = bullet->addComponent<ProjectileComponent>();
 		c2->setEntities(_entities);
@@ -178,19 +178,21 @@ void SpellCaster::cast_sword_swing(sf::Vector2f location)
 		c2->setDamage(dmg->getStatAttack());
 		c2->setType(0);
 		auto s = bullet->addComponent<AnimatedSpriteComponent>();
-		s->getSprite().setTexture(animatedSpellsTexture);
-		s->getSprite().setScale({ 1.5f, 1.5f });
-		s->getSprite().setOrigin({ 15.0f, 15.0f });
+		s->getSprite().setTexture(swordSwingTexture);
+		s->getSprite().setScale({ 1.0f, 1.0f });
+		s->getSprite().setOrigin({ 60, 35 });
 		c2->setTimer(0.05f);
 		c2->finishAnimationFirst();
 		s->setDelay(0.05f);
 		s->playOnce();
-		s->addFrame(sf::IntRect(0, 30, 30, 30));
-		s->addFrame(sf::IntRect(30, 30, 30, 30));
-		s->addFrame(sf::IntRect(60, 30, 30, 30));
-		s->addFrame(sf::IntRect(90, 30, 30, 30));
-		s->addFrame(sf::IntRect(120, 30, 30, 30));
-		s->getSprite().setTextureRect({ 0,30,30,30 });
+		s->addFrame(sf::IntRect(0, 0, 100, 70));
+		s->addFrame(sf::IntRect(100, 0, 100, 70));
+		s->addFrame(sf::IntRect(200, 0, 100, 70));
+		s->addFrame(sf::IntRect(300, 0, 100, 70));
+		s->addFrame(sf::IntRect(400, 0, 100, 70));
+		s->addFrame(sf::IntRect(500, 0, 100, 70));
+		s->addFrame(sf::IntRect(600, 0, 100, 70));
+		s->getSprite().setTextureRect({ 0, 0, 100, 70 });
 		if (player->getFace() == 1)
 		{
 			bullet->setPosition(player->getPosition() + sf::Vector2f(0, -35.0 *WY / 720));
@@ -202,6 +204,7 @@ void SpellCaster::cast_sword_swing(sf::Vector2f location)
 		}
 		else if (player->getFace() == 3)
 		{
+			s->setPriority(1);
 			bullet->setPosition(player->getPosition() + sf::Vector2f(0, 35.0 *WY / 720));
 			s->getSprite().rotate(90);
 		}

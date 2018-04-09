@@ -91,6 +91,7 @@ public:
 };
 class AnimatedSpriteComponent : public Component {
 protected:
+	int priority = 2;
 	bool singularPlay = false;
 	bool animationDirection = true;
 	int frame = 0; //Current frame of player/npc animation (goes from 0 to 3)
@@ -101,6 +102,7 @@ protected:
 	std::shared_ptr<sf::Sprite> _sprite;
 	std::vector<sf::IntRect> animationFrames;
 public:
+	void setPriority(int x) { priority = x; }
 	void playOnce() { singularPlay = true; }
 	void setDelay(float x) { AnimationDelay = x; }
 	void setScale();
