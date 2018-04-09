@@ -24,4 +24,5 @@ public:
 	void cast_water_gun(sf::Vector2f location);//////1
 	void cast_sonic_boom(sf::Vector2f location);//////2
 	void cast_earth_spike(sf::Vector2f location);//////3
+	void cast_sword_swing(sf::Vector2f location);//////4
 };

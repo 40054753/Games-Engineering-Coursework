@@ -240,10 +240,14 @@ void AnimatedSpriteComponent::update(double dt)
 	AnimationCounter -= dt;
 
 	if (frame >= max_frames)
+	{
 		animationDirection = false;
+		if (singularPlay)
+			_parent->setForDelete();
+	}
 	else if (frame <= 0)
 		animationDirection = true;
-
+	if(!_parent->is_forDeletion())
 	if ( AnimationCounter <= 0.0f)
 	{
 		if (animationDirection)

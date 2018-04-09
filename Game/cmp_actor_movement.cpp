@@ -9,7 +9,23 @@ static const Vector2i directions[] = { Vector2i{ 0, 1 }, Vector2i{ 1, 0 }, Vecto
 //ACTOR MOVEMENT
 void ActorMovementComponent::render() {}
 
-void ActorMovementComponent::update(double dt) {}
+void ActorMovementComponent::update(double dt) 
+{
+	if (pushed)
+	{
+		pushTimer -= dt;
+		move(pushVector);
+		immobilize();
+	}
+	if (pushed && pushTimer <= 0)
+	{
+		mobilize();
+		pushTimer = 0.1f;
+		pushed = false;
+		auto c = _parent->GetComponent<CharacterSpriteComponent>();
+		c->getSprite().setColor(sf::Color::White);
+	}
+}
 
 ActorMovementComponent::ActorMovementComponent(Entity *p) : _speed(100.0f*WX/1280), Component(p) {}
 

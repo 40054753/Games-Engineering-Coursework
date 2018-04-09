@@ -91,6 +91,7 @@ public:
 };
 class AnimatedSpriteComponent : public Component {
 protected:
+	bool singularPlay = false;
 	bool animationDirection = true;
 	int frame = 0; //Current frame of player/npc animation (goes from 0 to 3)
 	float AnimationDelay = 0.15f; //delay between frames of animation
@@ -100,6 +101,7 @@ protected:
 	std::shared_ptr<sf::Sprite> _sprite;
 	std::vector<sf::IntRect> animationFrames;
 public:
+	void playOnce() { singularPlay = true; }
 	void setDelay(float x) { AnimationDelay = x; }
 	void setScale();
 	void addFrame(sf::IntRect f) { max_frames = animationFrames.size(); animationFrames.push_back(f); }

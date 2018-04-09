@@ -87,22 +87,10 @@ void AttackComponent::update(double dt)
 	}
 	if (sf::Keyboard::isKeyPressed(controls[4]))
 	{
-		for (auto e : _entities) 
+		if (cooldowns[4] < 0)
 		{
-			if (!e->is_forDeletion())
-			if (attackTime <= 0 && length(_parent->getPosition() - e->getPosition()) < 100.0f*WX / 1280) {
-				attackTime = 0.2f;
-				//this should take the hp of the entity, reduce it by the AD of whatever hits it
-				auto health_mana = e->GetComponent<HealthComponent>();
-				auto att = player->GetComponent<CharacterSheetComponent>();
-				health_mana->reduceHealth(att->getStatAttack()); //should be changed to the player's attack damage
-				events->addExp(0, 10.0f);
-				auto dmg = std::make_shared<Entity>();
-				auto txt = dmg->addComponent<DamageTextComponent>();
-				dmg->setPosition(e->getPosition());
-				txt->setText(att->getStatAttack());
-				activeScene->getEnts().push_back(dmg);
-			}
+			spells->cast_spell_id(4, _parent->getPosition());
+			cooldowns[4] = cooldownTimes[4];
 		}
 	}
 	

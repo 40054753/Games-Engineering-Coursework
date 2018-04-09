@@ -23,6 +23,14 @@ void ProjectileComponent::render()
 }
 void ProjectileComponent::update(double dt)
 {
+	if (finishAnimation)
+	{
+		timer -= dt;
+		if (timer < 0)
+		{
+			finishAnimation = false;
+		}
+	}
 	if(!_parent->is_forDeletion())
 	for(auto g: _entities)
 	if(!g->is_forDeletion())
@@ -36,6 +44,12 @@ void ProjectileComponent::update(double dt)
 		txt->setText(damage);
 		gameScene->getEnts().push_back(dmg);
 		events->addExp(type, 10);
+		if (knockback)
+		{
+			auto d = g->GetComponent<ActorMovementComponent>();
+			d->push((g->getPosition() - _parent->getPosition()));
+		}
+		if(!finishAnimation)
 		_parent->setForDelete();
 	}
 	

@@ -12,6 +12,7 @@ protected:
 	float buttonDelay = 0.0f;
 	sf::RectangleShape HP;
 	sf::RectangleShape MP;
+	sf::RectangleShape STAM;
 	////////////SKILL INTICATORS////////////////////////////////////
 	sf::RectangleShape buttonsBackground;	
 	sf::RectangleShape skill1;
@@ -63,6 +64,8 @@ protected:
 	float health;
 	float maxMana;
 	float mana;
+	float stamina;
+	float maxStamina;
 
 	sf::Text text;
 	
@@ -100,7 +103,7 @@ public:
 	void getStats();
 	void resetButtons();
 	void resetSlot(int i);
-	void set(float health, float maxhealth, float mana, float maxmana);
+	void set(float health, float maxhealth, float mana, float maxmana, float stam, float maxstam);
 	explicit HudComponent(Entity *p);
 	HudComponent() = delete;
 	void setMaxHealth(float maxHealth);

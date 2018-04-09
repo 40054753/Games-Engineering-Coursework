@@ -4,6 +4,8 @@
 class HealthComponent : public Component {
 
 protected:
+	float maxStamina;
+	float stamina;
 	float maxHealth;
 	float health;
 	float maxMana;
@@ -17,9 +19,12 @@ public:
 	float getMaxHealth() { return maxHealth; }
 	float getMaxMana() { return maxMana; }
 	float getMana() { return mana; }
+	float getMaxStamina() { return maxStamina; }
+	float getStamina() { return stamina; }
 	void reduceHealth(float x);
 	void reset();
 	void reduceMana(float x);
+	void reduceStamina(float x);
 	void render() override;
 	void update(double dt) override;	
 

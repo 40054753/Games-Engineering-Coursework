@@ -34,6 +34,9 @@ HudComponent::HudComponent(Entity *p) : Component(p)
 	HP.setSize({ WX / 5.7f,WY / 25.0f });
 	MP.setFillColor(sf::Color::Blue);
 	MP.setSize({ WX / 5.7f,WY / 25.0f });
+	STAM.setFillColor(sf::Color(244, 139, 34, 255));
+	STAM.setSize({ WX / 5.7f,WY / 25.0f });
+
 	text.setCharacterSize(22);
 	text.setScale(WX / 1280, WY / 720);
 	text.setColor(sf::Color::White);
@@ -281,7 +284,7 @@ void HudComponent::getStats()
 {
 	auto x = player->GetComponent<CharacterSheetComponent>();
 
-	experience_levels.setString("Meele LV: " + std::to_string((int)x->getLevelMeele())
+	experience_levels.setString("Meele LV: " + std::to_string((int)x->getLevelMelee())
 							+ "\n\n\nFire LV: " + std::to_string((int)x->getLevelFire())
 							+ "\n\n\nWater LV: " + std::to_string((int)x->getLevelWater())
 							+ "\n\n\nWind LV: " + std::to_string((int)x->getLevelWind())
@@ -289,7 +292,7 @@ void HudComponent::getStats()
 							+ "\n\n\nAttack: " + std::to_string((int)x->getStatAttack())
 							+ "\nDefence: " + std::to_string((int)x->getStatDefence())
 							+ "\nSpeed: " + std::to_string((int)x->getStatSpeed()));
-	progressBar_Melee.setScale((x->getExpMeele()/x->getRequiredExp(x->getLevelMeele())), 1.0f);
+	progressBar_Melee.setScale((x->getExpMeele()/x->getRequiredExp(x->getLevelMelee())), 1.0f);
 	progressBar_Fire.setScale((x->getExpFire() / x->getRequiredExp(x->getLevelFire())), 1.0f);
 	progressBar_Water.setScale((x->getExpWater() / x->getRequiredExp(x->getLevelWater())), 1.0f);
 	progressBar_Wind.setScale((x->getExpWind() / x->getRequiredExp(x->getLevelWind())), 1.0f);
@@ -297,14 +300,17 @@ void HudComponent::getStats()
 
 }
 
-void HudComponent::set(float h, float mh, float m, float mm)
+void HudComponent::set(float h, float mh, float m, float mm, float s, float ms)
 {
 	health = h;
 	mana = m;
 	maxHealth = mh;
 	maxMana = mm;
+	stamina = s;
+	maxStamina = ms;
 	HP.setScale((float)(h/mh),1.0f);
 	MP.setScale( (float)(m/mm) ,1.0f);
+	STAM.setScale((float)(s / ms), 1.0f);
 }
 void HudComponent::resetButtons()
 {
@@ -322,6 +328,7 @@ void HudComponent::render()
 	
 	Renderer::queue(0,&HP);
 	Renderer::queue(0,&MP);
+	Renderer::queue(0, &STAM);
 	Renderer::queue(0,&text);
 	Renderer::queue(0,&buttonsBackground);	
 	Renderer::queue(0,&skill1);
@@ -708,7 +715,7 @@ void HudComponent::update(double dt)
 		resetButtons();
 	}
 	auto health_mana = player->GetComponent<HealthComponent>();
-	set(health_mana->getHealth(), health_mana->getMaxHealth(), health_mana->getMana(), health_mana->getMaxMana());
+	set(health_mana->getHealth(), health_mana->getMaxHealth(), health_mana->getMana(), health_mana->getMaxMana(), health_mana->getStamina(), health_mana->getMaxStamina());
 	setText();
 	setPosition();
 }
@@ -729,7 +736,7 @@ void HudComponent::setMana(float manaChange) {
 }
 
 void HudComponent::setText() {
-	text.setString("HP " + std::to_string((int)health) +"/" + std::to_string((int)maxHealth) + "\n" + "MP " + std::to_string((int)mana) + "/" + std::to_string((int)maxMana));
+	text.setString("HP " + std::to_string((int)health) +"/" + std::to_string((int)maxHealth) + "\n" + "MP " + std::to_string((int)mana) + "/" + std::to_string((int)maxMana) + "\n" + "ST " + std::to_string((int)stamina) + "/" + std::to_string((int)maxStamina));
 }
 
 void HudComponent::setPosition() 
@@ -737,6 +744,7 @@ void HudComponent::setPosition()
 	windowZero = Vector2f(player->getPosition().x - WX / 2, player->getPosition().y - WY / 2);
 	HP.setPosition(windowZero + Vector2f(0.052f*WX, 0.02f*WY));
 	MP.setPosition(windowZero + Vector2f(0.052f*WX, 0.06f*WY));
+	STAM.setPosition(windowZero + Vector2f(0.052f*WX, 0.105f*WY));
 	text.setPosition(windowZero + Vector2f(0.01f*WX, 0.025f*WY));
 	buttonsBackground.setPosition(windowZero + Vector2f(0.25f*WX, 0.90f*WY));
 	//////skillls

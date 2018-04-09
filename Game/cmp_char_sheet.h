@@ -11,7 +11,7 @@ protected:
 	std::shared_ptr<Entity> boots;
 	std::shared_ptr<Entity> weapon;
 	std::shared_ptr<Entity> shield;
-	int selectedSpells[5] = { 0 ,1, 2, 3,-1 };
+	int selectedSpells[5] = { 0 ,1, 2, 3,4 };
 	std::vector <std::shared_ptr<Entity>> _backpack;
 	//////////////////////////////////SKILLS TO TRAIN/////////////////////////
 	float level_melee=0;
@@ -34,7 +34,7 @@ public:
 	void setSpell(int pos, int id) { selectedSpells[pos] = id; }
 	void dropOne() { dropped_items++; }
 	float getRequiredExp(int level) { return experience_thresholds[level]; }
-	float getLevelMeele() { return level_melee; }
+	float getLevelMelee() { return level_melee; }
 	float getLevelFire() { return level_fire; }
 	float getLevelWater() { return level_water; }
 	float getLevelWind() { return level_wind; }

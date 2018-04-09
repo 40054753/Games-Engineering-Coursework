@@ -6,9 +6,15 @@ class ProjectileComponent : public Component {
 protected:
 	std::vector <std::shared_ptr<Entity>> _entities;
 	float textTime = 0.0f;
-	float damage=30;
-	int type=1;
+	float damage = 30;
+	int type = 1;
+	bool knockback = false;
+	bool finishAnimation = false;
+	float timer = 0.1f;
 public:
+	void setTimer(float t) { timer = t; }
+	void finishAnimationFirst() { finishAnimation = true; }
+	void addKnockback() { knockback = true; }
 	sf::Text damageText;
 	std::vector<sf::Text> damageArray;
 	explicit ProjectileComponent(Entity *p);

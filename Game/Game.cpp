@@ -372,7 +372,7 @@ void GameScene::respawn()
 	for (int i = 0; i < GHOSTS_COUNT; ++i)
 	{
 		auto ghost = make_shared<Entity>();
-		//ghost->addComponent<EnemyAIComponent>();
+		ghost->addComponent<ActorMovementComponent>();
 		auto s = ghost->addComponent<CharacterSpriteComponent>();
 		s->getSprite().setTexture(zombieTexture);
 		s->getSprite().setTextureRect({ 0,0,16,21 });
@@ -391,6 +391,7 @@ void GameScene::respawn()
 	}
 	///////standing enemy
 	auto ghost = make_shared<Entity>();
+	ghost->addComponent<ActorMovementComponent>();
 	auto s = ghost->addComponent<CharacterSpriteComponent>();
 	s->getSprite().setTexture(zombieTexture);
 	s->getSprite().setTextureRect({ 0,0,16,21 });
