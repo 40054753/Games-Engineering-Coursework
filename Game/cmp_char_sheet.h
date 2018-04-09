@@ -4,12 +4,14 @@
 class CharacterSheetComponent : public Component {
 
 protected:
+	bool componentsReady = false;
 	int dropped_items = 0;
 	std::shared_ptr<Entity> helmet;
 	std::shared_ptr<Entity> armour;
 	std::shared_ptr<Entity> boots;
 	std::shared_ptr<Entity> weapon;
 	std::shared_ptr<Entity> shield;
+	int selectedSpells[5] = { 0 ,1, 2, 3,-1 };
 	std::vector <std::shared_ptr<Entity>> _backpack;
 	//////////////////////////////////SKILLS TO TRAIN/////////////////////////
 	float level_melee=0;
@@ -28,6 +30,8 @@ protected:
 	float stat_defence = 0;
 	float stat_speed = 0;
 public:
+	int getSpell(int i) { return selectedSpells[i]; }
+	void setSpell(int pos, int id) { selectedSpells[pos] = id; }
 	void dropOne() { dropped_items++; }
 	float getRequiredExp(int level) { return experience_thresholds[level]; }
 	float getLevelMeele() { return level_melee; }

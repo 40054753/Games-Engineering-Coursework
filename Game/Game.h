@@ -15,6 +15,7 @@ extern std::shared_ptr<Scene> activeScene;
 extern sf::Texture playerTexture;
 extern sf::Texture zombieTexture;
 extern sf::Texture spellsTexture;
+extern sf::Texture animatedSpellsTexture;
 extern sf::Texture iconsTexture;
 extern sf::Texture itemsTexture;
 extern std::shared_ptr<Entity> player;

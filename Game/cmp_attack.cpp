@@ -8,7 +8,13 @@
 #include "SystemRenderer.h"
 #include "cmp_char_sheet.h"
 #include "Game.h"
+#include "SpellCaster.h"
 #include <string>
+
+SpellCaster* spells = SpellCaster::getInstance();
+
+std::vector<float> cooldownTimes = spells->getCooldowns();
+std::vector<float> cooldowns = spells->getCooldowns();
 
 
 AttackComponent::AttackComponent(Entity *p) : Component(p) 
@@ -25,38 +31,60 @@ void AttackComponent::render()
 void AttackComponent::update(double dt) 
 {
 	EventSystem* events = EventSystem::getInstance();
-	auto char_cheet = _parent->GetComponent<CharacterSheetComponent>();
+	auto char_sheet = _parent->GetComponent<CharacterSheetComponent>();
 	auto health_mana = _parent->GetComponent<HealthComponent>();
+
 	static float attackTime = 0.0f;
 	attackTime -= dt;
-	cooldown -= dt;
-
+	for (int i = 0; i < cooldowns.size(); i++)
+	{
+		cooldowns[i] -= dt;
+	}
+	int spell1 = char_sheet->getSpell(0);
+	int spell2 = char_sheet->getSpell(1);
+	int spell3 = char_sheet->getSpell(2);
+	int spell4 = char_sheet->getSpell(3);
+	int spell5 = char_sheet->getSpell(4);
 	if (sf::Keyboard::isKeyPressed(controls[5]))
 	{
-		if (cooldown < 0.0f && health_mana->getMana()>20 )
+		if (cooldowns[spell1] < 0)
 		{
-			health_mana->reduceMana(20);
-			cooldown = 0.3f;
-			auto bullet = std::make_shared<Entity>();
-			bullet->setPosition(_parent->getPosition());
-			auto pr = bullet->addComponent<ProjectileMovementComponent>();
-			bullet->setFace(_parent->getFace());
-		    auto c2 = bullet->addComponent<ProjectileComponent>();
-			c2->setEntities(_entities);
-			auto dmg = player->GetComponent<CharacterSheetComponent>();
-			c2->setDamage((dmg->getLevelFire()*5.0f) + 20.0f);
-			c2->setType(1);
-			auto s = bullet->addComponent<StaticSpriteComponent>();
-			s->getSprite().setTexture(spellsTexture);
-			s->addSpin();
-			s->getSprite().setTextureRect({ 0,0,30,30 });
-			s->getSprite().setScale({ 1.0f, 1.0f });
-			s->getSprite().setOrigin({ 8.0f, 12.0f });
-
-			activeScene->getEnts().push_back(bullet);
+			spells->cast_spell_id(spell1, _parent->getPosition());
+			cooldowns[spell1] = cooldownTimes[spell1];
 		}
 	}
-
+	if (sf::Keyboard::isKeyPressed(controls[6]))
+	{
+		if (cooldowns[spell2] < 0)
+		{
+			spells->cast_spell_id(spell2, _parent->getPosition());
+			cooldowns[spell2] = cooldownTimes[spell2];
+		}
+	}
+	if (sf::Keyboard::isKeyPressed(controls[7]))
+	{
+		if (cooldowns[spell3] < 0)
+		{
+			spells->cast_spell_id(spell3, _parent->getPosition());
+			cooldowns[spell3] = cooldownTimes[spell3];
+		}
+	}
+	if (sf::Keyboard::isKeyPressed(controls[8]))
+	{
+		if (cooldowns[spell4] < 0)
+		{
+			spells->cast_spell_id(spell4, _parent->getPosition());
+			cooldowns[spell4] = cooldownTimes[spell4];
+		}
+	}
+	if (sf::Keyboard::isKeyPressed(controls[9]))
+	{
+		if (cooldowns[spell5] < 0)
+		{
+			spells->cast_spell_id(spell5, _parent->getPosition());
+			cooldowns[spell5] = cooldownTimes[spell5];
+		}
+	}
 	if (sf::Keyboard::isKeyPressed(controls[4]))
 	{
 		for (auto e : _entities) 

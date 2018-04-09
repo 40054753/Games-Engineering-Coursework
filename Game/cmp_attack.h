@@ -5,7 +5,7 @@
 class AttackComponent : public Component {
 
 protected:
-	float cooldown = 0.3f;
+	bool componentsReady = false;
 	std::vector <std::shared_ptr<Entity>> _entities;
 public:
 	explicit AttackComponent(Entity *p);

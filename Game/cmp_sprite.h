@@ -23,22 +23,24 @@ public:
 class CharacterSpriteComponent : public Component {
 protected:
 	std::shared_ptr<sf::Sprite> _sprite;
-
-public:
-	CharacterSpriteComponent() = delete;
-	explicit CharacterSpriteComponent(Entity *p);
+	int facing; //direction player/npc is facing 1 - north, then clockwise (1-4)
+	int frame = 0; //Current frame of player/npc animation (goes from 0 to 3)
+	const float AnimationDelay = 0.15f; //delay between frames of animation
+	float AnimationCounter = 0.15f; //used as a count-down between frames, then set to AnimationDelay when frame changes
 	std::vector<sf::IntRect> walkingAnimationDown;
 	std::vector<sf::IntRect> walkingAnimationUp;
 	std::vector<sf::IntRect> walkingAnimationRight;
 	std::vector<sf::IntRect> walkingAnimationLeft;
+public:
+	CharacterSpriteComponent() = delete;
+	explicit CharacterSpriteComponent(Entity *p);
+	
 	void update(double dt) override;
 	void setScale();
 	void render() override;
-	int frame=0; //Current frame of player/npc animation (goes from 0 to 3)
-	int facing; //direction player/npc is facing 1 - north, then clockwise (1-4)
+	
 	sf::Sprite &getSprite() const;
-	const float AnimationDelay = 0.15f; //delay between frames of animation
-	float AnimationCounter = 0.15f; //used as a count-down between frames, then set to AnimationDelay when frame changes
+	
 	template<typename T, typename... Targs>
 	void setSprite(Targs... params) {
 		_sprite.reset(new T(params...));
@@ -79,6 +81,30 @@ public:
 	void addSpin() { spin = true; }
 	StaticSpriteComponent() = delete;
 	explicit StaticSpriteComponent(Entity *p);
+	void update(double dt) override;
+	void render() override;
+	sf::Sprite &getSprite() const;
+	template<typename T, typename... Targs>
+	void setSprite(Targs... params) {
+		_sprite.reset(new T(params...));
+	}
+};
+class AnimatedSpriteComponent : public Component {
+protected:
+	bool animationDirection = true;
+	int frame = 0; //Current frame of player/npc animation (goes from 0 to 3)
+	float AnimationDelay = 0.15f; //delay between frames of animation
+	float AnimationCounter = 0.15f; //used as a count-down between frames, then set to AnimationDelay when frame changes
+	int max_frames = 0;
+	bool spin = false;
+	std::shared_ptr<sf::Sprite> _sprite;
+	std::vector<sf::IntRect> animationFrames;
+public:
+	void setDelay(float x) { AnimationDelay = x; }
+	void setScale();
+	void addFrame(sf::IntRect f) { max_frames = animationFrames.size(); animationFrames.push_back(f); }
+	AnimatedSpriteComponent() = delete;
+	explicit AnimatedSpriteComponent(Entity *p);
 	void update(double dt) override;
 	void render() override;
 	sf::Sprite &getSprite() const;

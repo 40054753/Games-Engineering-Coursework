@@ -201,7 +201,7 @@ void StaticSpriteComponent::setScale()
 void StaticSpriteComponent::update(double dt)
 {
 	if(spin)
-	_sprite->rotate(360.0f*dt*5.0f);
+	_sprite->rotate(-360.0f*dt*5.0f);
 	_sprite->setPosition(_parent->getPosition());
 }
 
@@ -225,4 +225,43 @@ void EnemyHealthBarComponent::update(double dt)
 void EnemyHealthBarComponent::render()
 {
 	Renderer::queue(&hp);
+}
+AnimatedSpriteComponent::AnimatedSpriteComponent(Entity *p) : Component(p), _sprite(std::make_shared<sf::Sprite>())
+{
+
+}
+
+void AnimatedSpriteComponent::setScale()
+{
+	_sprite->setScale(WX / 1280, WY / 720);
+}
+void AnimatedSpriteComponent::update(double dt)
+{
+	AnimationCounter -= dt;
+
+	if (frame >= max_frames)
+		animationDirection = false;
+	else if (frame <= 0)
+		animationDirection = true;
+
+	if ( AnimationCounter <= 0.0f)
+	{
+		if (animationDirection)
+			frame++;
+		else
+			frame--;
+		_sprite->setTextureRect(animationFrames[frame]);		
+		AnimationCounter = AnimationDelay;
+	}
+	_sprite->setPosition(_parent->getPosition());
+
+	
+}
+sf::Sprite& AnimatedSpriteComponent::getSprite() const {
+	return *_sprite;
+}
+
+void AnimatedSpriteComponent::render()
+{
+	Renderer::queue(2, _sprite.get());
 }

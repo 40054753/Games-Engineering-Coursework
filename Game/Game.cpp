@@ -13,6 +13,7 @@
 #include "cmp_enemy_attack.h"
 #include "cmp_ai_steering.h"
 #include "EventSystem.h"
+#include "SpellCaster.h"
 #include <string>
 
 
@@ -21,7 +22,7 @@ using namespace sf;
 using namespace std;
 const int GHOSTS_COUNT = 4;
 Font font;
-Texture playerTexture, zombieTexture, spellsTexture, snowEffect, iconsTexture, itemsTexture;
+Texture playerTexture, zombieTexture, spellsTexture, snowEffect, iconsTexture, itemsTexture, animatedSpellsTexture;
 Texture menuBg;
 sf::Sprite background;
 SoundBuffer buffer;
@@ -456,6 +457,10 @@ void GameScene::load()
 	{
 		cerr << "Failed to load spritesheet!" << endl;
 	}
+	if (!animatedSpellsTexture.loadFromFile("res/img/animated_spells.png"))
+	{
+		cerr << "Failed to load spritesheet!" << endl;
+	}
 	if (!itemsTexture.loadFromFile("res/img/items.png"))
 	{
 		cerr << "Failed to load spritesheet!" << endl;
@@ -495,6 +500,7 @@ void GameScene::load()
 
 	eatingEnts.push_back(player);
 	respawn();
+	SpellCaster::getInstance()->setEntities(ghosts);
 	
 }
 
@@ -507,6 +513,7 @@ void GameScene::update(double dt)
 		health_mana->reset();
 		std::cout << "Game over!" << std::endl;
 		respawn();
+		SpellCaster::getInstance()->setEntities(ghosts);
 	}
 	if (Keyboard::isKeyPressed(Keyboard::Tab))
 	{
@@ -530,14 +537,14 @@ OptionsScene::OptionsScene() {
 void OptionsScene::load() 
 {
 	setID(2);
-	for (int i = 0; i < 45; i++)
+	for (int i = 0; i < 30; i++)
 	{
 		float scale = (float)(rand() % 10) / 50.0f;
 		auto snow = make_shared<Entity>();
 		auto s = snow->addComponent<StaticSpriteComponent>();
 		s->getSprite().setTexture(snowEffect);
 		s->getSprite().setScale({ scale,scale });
-		snow->setPosition(Vector2f((rand() %(int) WX), rand() %(int) WY));
+		snow->setPosition(Vector2f(rand() % ((int)WX), rand() % ((int)WY)));
 		snow->addComponent<SnowComponent>();
 		_ents.list.push_back(snow);
 	}
