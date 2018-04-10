@@ -110,6 +110,7 @@ protected:
 
 	sf::Sprite spell_slots[20];
 	bool spell_available[20];
+	int spell_ids[20] = {0,-1,-1,-1,-1, 1,-1,-1,-1,-1, 2,-1,-1,-1,-1, 3 ,-1,-1,-1,-1};
 	sf::Text label_spell_options_1, label_spell_options_2, label_spell_options_3, label_spell_options_4, label_spell_options_5;
 	sf::RectangleShape bg_spell_options;
 

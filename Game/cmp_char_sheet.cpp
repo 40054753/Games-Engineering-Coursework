@@ -8,10 +8,10 @@ CharacterSheetComponent::CharacterSheetComponent(Entity *p) : Component(p)
 {
 	//////////////////////exp to progress befween levels
 	experience_thresholds[0] = 100;
-	experience_thresholds[1] = 20;
-	experience_thresholds[2] = 20;
-	experience_thresholds[3] = 20;
-	experience_thresholds[4] = 20;
+	experience_thresholds[1] = 200;
+	experience_thresholds[2] = 300;
+	experience_thresholds[3] = 400;
+	experience_thresholds[4] = 500;
 	experience_thresholds[5] = 700;
 	experience_thresholds[6] = 800;
 	experience_thresholds[7] = 900;

@@ -21,6 +21,8 @@ sf::Sprite equipped_boots;
 sf::Sprite equipped_helmet;
 sf::Sprite equipped_shield;
 
+sf::Sprite equipped_spell[5];
+
 HudComponent::HudComponent(Entity *p) : Component(p)
 {
 	

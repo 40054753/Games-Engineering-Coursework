@@ -11,7 +11,7 @@ protected:
 	std::shared_ptr<Entity> boots;
 	std::shared_ptr<Entity> weapon;
 	std::shared_ptr<Entity> shield;
-	int selectedSpells[5] = { 0 ,1, 2, 3,4 };
+	int selectedSpells[5] = { 0 ,1, 2, 3, 4 };
 	std::vector <std::shared_ptr<Entity>> _backpack;
 	//////////////////////////////////SKILLS TO TRAIN/////////////////////////
 	float level_melee=0;
