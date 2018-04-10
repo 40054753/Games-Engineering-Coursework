@@ -243,6 +243,7 @@ void MenuScene::update(double dt)
 			{
 				gameScene.reset(new GameScene());
 				gameScene->load();
+				evs->refresh();
 				activeScene = gameScene; //switch to game
 				std::cout << "Active Scene: " + std::to_string(activeScene->getID()) << std::endl;
 			}
@@ -491,7 +492,6 @@ void GameScene::load()
 	auto pl = std::make_shared<Entity>();
 	pl->addComponent<CharacterSheetComponent>();
 	auto mp = pl->addComponent<PlayerMovementComponent>();
-	mp->setSpeed(100.0f);
 	pl->addComponent<HealthComponent>();
 	auto s = pl->addComponent<CharacterSpriteComponent>();
 	s->getSprite().setTexture(playerTexture);

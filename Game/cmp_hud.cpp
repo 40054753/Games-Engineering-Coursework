@@ -21,7 +21,6 @@ sf::Sprite equipped_boots;
 sf::Sprite equipped_helmet;
 sf::Sprite equipped_shield;
 
-sf::Sprite equipped_spell[5];
 
 HudComponent::HudComponent(Entity *p) : Component(p)
 {
@@ -59,27 +58,27 @@ HudComponent::HudComponent(Entity *p) : Component(p)
 	skill5.setSize({ 0.045f*WX, 0.07f * WY });
 
 	label_skill1.setFont(font);
-	label_skill1.setColor(sf::Color::Red);
+	label_skill1.setColor(sf::Color::Cyan);
 	label_skill1.setCharacterSize(15.0f);
 	label_skill1.setScale(WX / 1280, WY / 720);
 	label_skill1.setString(codes[controls[5]]);
 	label_skill2.setFont(font);
-	label_skill2.setColor(sf::Color::Red);
+	label_skill2.setColor(sf::Color::Cyan);
 	label_skill2.setCharacterSize(15.0f);
 	label_skill2.setScale(WX / 1280, WY / 720);
 	label_skill2.setString(codes[controls[6]]);
 	label_skill3.setFont(font);
-	label_skill3.setColor(sf::Color::Red);
+	label_skill3.setColor(sf::Color::Cyan);
 	label_skill3.setCharacterSize(15.0f);
 	label_skill3.setScale(WX / 1280, WY / 720);
 	label_skill3.setString(codes[controls[6]]);
 	label_skill4.setFont(font);
-	label_skill4.setColor(sf::Color::Red);
+	label_skill4.setColor(sf::Color::Cyan);
 	label_skill4.setCharacterSize(15.0f);
 	label_skill4.setScale(WX / 1280, WY / 720);
 	label_skill4.setString(codes[controls[7]]);
 	label_skill5.setFont(font);
-	label_skill5.setColor(sf::Color::Red);
+	label_skill5.setColor(sf::Color::Cyan);
 	label_skill5.setCharacterSize(15.0f);
 	label_skill5.setScale(WX / 1280, WY / 720);
 	label_skill5.setString(codes[controls[8]]);
@@ -425,6 +424,17 @@ HudComponent::HudComponent(Entity *p) : Component(p)
 	spell_slots[19].setScale(WX / 1280, WY / 720);
 	spell_slots[19].setColor(sf::Color(50, 50, 50, 255));
 
+	
+	equipped_spells[0] = spell_slots[0];
+	equipped_spells[1] = spell_slots[5];
+	equipped_spells[2] = spell_slots[10];
+	equipped_spells[3] = spell_slots[15];
+	equipped_spells[0].setScale(WX / 1280, 0.9*WY / 720);
+	equipped_spells[1].setScale(WX / 1280, 0.9*WY / 720);
+	equipped_spells[2].setScale(WX / 1280, 0.9*WY / 720);
+	equipped_spells[3].setScale(WX / 1280, 0.9*WY / 720);
+	//equipped_spells[4] = spell_slots[0];
+
 	label_spell_options_1.setFont(font);
 	label_spell_options_1.setColor(sf::Color::White);
 	label_spell_options_1.setOutlineColor(sf::Color::Black);
@@ -474,6 +484,21 @@ HudComponent::HudComponent(Entity *p) : Component(p)
 	spell_available[5] = true;
 	spell_available[10] = true;
 	spell_available[15] = true;
+
+	info_spells_text.setFont(font);
+	info_spells_text.setColor(sf::Color::White);
+	info_spells_text.setOutlineColor(sf::Color::Black);
+	info_spells_text.setOutlineThickness(2.0f);
+	info_spells_text.setCharacterSize(16.0f);
+	info_spells_text.setScale(WX / 1280, WY / 720);
+	info_spells_area.setFillColor(sf::Color(255, 255, 255, 150));
+	info_spells_area.setSize({ 0.17f*WX, 0.15f*WY });
+	descriptions.push_back("Fireball");
+	descriptions.push_back("Water gun");
+	descriptions.push_back("Sonic boom");
+	descriptions.push_back("Earth Spike");
+	descriptions.push_back("Sword Swing");
+	descriptions.push_back("Dragon breath");
 }
 
 void HudComponent::getStats()
@@ -535,11 +560,17 @@ void HudComponent::render()
 	Renderer::queue(0,&skill4);
 	Renderer::queue(0,&skill5);
 
-	Renderer::queue(0,&label_skill1);
-	Renderer::queue(0,&label_skill2);
-	Renderer::queue(0,&label_skill3);
-	Renderer::queue(0,&label_skill4);
-	Renderer::queue(0,&label_skill5);
+	Renderer::queue(-1, &equipped_spells[0]);
+	Renderer::queue(0, &equipped_spells[1]);
+	Renderer::queue(0, &equipped_spells[2]);
+	Renderer::queue(0, &equipped_spells[3]);
+	Renderer::queue(0, &equipped_spells[4]);
+
+	Renderer::queue(-1,&label_skill1);
+	Renderer::queue(-1,&label_skill2);
+	Renderer::queue(-1,&label_skill3);
+	Renderer::queue(-1,&label_skill4);
+	Renderer::queue(-1,&label_skill5);
 
 	Renderer::queue(0,&button_inventory);
 	Renderer::queue(0,&button_menu);
@@ -572,6 +603,11 @@ void HudComponent::render()
 			Renderer::queue(-1, &label_spell_options_3);
 			Renderer::queue(-1, &label_spell_options_4);
 			Renderer::queue(-1, &label_spell_options_5);
+		}
+		if (show_spell_info)
+		{
+			Renderer::queue(-1, &info_spells_area);
+			Renderer::queue(-1, &info_spells_text);
 		}
 	}
 	if (showInventory || hideInventory)
@@ -817,6 +853,14 @@ void HudComponent::update(double dt)
 		label_skill3.setString(codes[controls[7]]);
 		label_skill4.setString(codes[controls[8]]);
 		label_skill5.setString(codes[controls[9]]);
+
+		for (int i = 0; i < 5; i++)
+		{
+			equipped_spells[i] = spell_slots[id_to_slot[x->getSpell(i)]];
+			equipped_spells[i].setScale(WX / 1280, 0.9*WY / 720);
+		}
+		
+
 		evs->refreshed();
 	}
 
@@ -832,10 +876,32 @@ void HudComponent::update(double dt)
 					buttonDelay = 0.1f;
 					selectedIndex = i;
 					show_spell_options = true;
+					show_spell_info = false;
 					bg_spell_options.setPosition(mousePos.x + windowZero.x, mousePos.y + windowZero.y);
 				}
+				if (spell_available[i] && buttonDelay < 0 && sf::Mouse::isButtonPressed(Mouse::Right))
+				{
+					show_spell_info = true;
+					show_spell_options = false;
+					info_spells_text.setPosition(mousePos.x + windowZero.x + 0.015f*WX, mousePos.y + windowZero.y + 0.01f*WY);
+					info_spells_area.setPosition(mousePos.x + windowZero.x, mousePos.y + windowZero.y);
+					info_spells_text.setString(descriptions[spell_ids[i]]);
+					
+				}
+				
 			}
+			
 		}
+		
+	}
+	if (show_spell_info)
+	{
+		if (buttonDelay<0 && (sf::Mouse::isButtonPressed(Mouse::Left) || sf::Keyboard::isKeyPressed(controls[0]) || sf::Keyboard::isKeyPressed(controls[1]) || sf::Keyboard::isKeyPressed(controls[2]) || sf::Keyboard::isKeyPressed(controls[3])))
+			{
+				buttonDelay = 0.1f;
+				show_spell_info = false;
+			}
+
 	}
 	if (show_spell_options)
 	{
@@ -846,7 +912,8 @@ void HudComponent::update(double dt)
 				if (buttonDelay < 0 && sf::Mouse::isButtonPressed(Mouse::Left))
 				{
 					buttonDelay = 0.1f;
-
+					x->setSpell(0,spell_ids[selectedIndex]);
+					evs->refresh();
 					show_spell_options = false;
 				}
 				label_spell_options_1.setOutlineColor(Color::Green);
@@ -860,6 +927,8 @@ void HudComponent::update(double dt)
 				if (buttonDelay < 0 && sf::Mouse::isButtonPressed(Mouse::Left))
 				{
 					buttonDelay = 0.1f;
+					x->setSpell(1, spell_ids[selectedIndex]);
+					evs->refresh();
 					show_spell_options = false;
 				}
 				label_spell_options_1.setOutlineColor(Color::Black);
@@ -874,7 +943,8 @@ void HudComponent::update(double dt)
 				if (buttonDelay < 0 && sf::Mouse::isButtonPressed(Mouse::Left))
 				{
 					buttonDelay = 0.1f;
-
+					x->setSpell(2, spell_ids[selectedIndex]);
+					evs->refresh();
 					show_spell_options = false;
 				}
 				label_spell_options_1.setOutlineColor(Color::Black);
@@ -887,7 +957,8 @@ void HudComponent::update(double dt)
 				if (buttonDelay < 0 && sf::Mouse::isButtonPressed(Mouse::Left))
 				{
 					buttonDelay = 0.1f;
-
+					x->setSpell(3, spell_ids[selectedIndex]);
+					evs->refresh();
 					show_spell_options = false;
 				}
 				label_spell_options_1.setOutlineColor(Color::Black);
@@ -900,7 +971,8 @@ void HudComponent::update(double dt)
 				if (buttonDelay < 0 && sf::Mouse::isButtonPressed(Mouse::Left))
 				{
 					buttonDelay = 0.1f;
-
+					x->setSpell(4, spell_ids[selectedIndex]);
+					evs->refresh();
 					show_spell_options = false;
 				}
 				label_spell_options_1.setOutlineColor(Color::Black);
@@ -1071,6 +1143,9 @@ void HudComponent::update(double dt)
 		hideInventory = true;
 		displayInfo = false;
 		displayItemOptions = false;
+		hide_skill_tree = true;
+		show_spell_options = false;
+		show_spell_info = false;
 	}
 	mousePos = sf::Mouse::getPosition(Renderer::getWindow());
 	buttonDelay -= dt;
@@ -1217,11 +1292,16 @@ void HudComponent::setPosition()
 	text.setPosition(windowZero + Vector2f(0.01f*WX, 0.025f*WY));
 	buttonsBackground.setPosition(windowZero + Vector2f(0.25f*WX, 0.90f*WY));
 	//////skillls
-	skill1.setPosition(windowZero + Vector2f(0.26f*WX, 0.915f*WY));
+    skill1.setPosition(windowZero + Vector2f(0.26f*WX, 0.915f*WY));
+	equipped_spells[0].setPosition(skill1.getPosition());
 	skill2.setPosition(windowZero + Vector2f(0.31f*WX, 0.915f*WY));
+	equipped_spells[1].setPosition(skill2.getPosition());
 	skill3.setPosition(windowZero + Vector2f(0.36f*WX, 0.915f*WY));
+	equipped_spells[2].setPosition(skill3.getPosition());
 	skill4.setPosition(windowZero + Vector2f(0.41f*WX, 0.915f*WY));
+	equipped_spells[3].setPosition(skill4.getPosition());
 	skill5.setPosition(windowZero + Vector2f(0.46f*WX, 0.915f*WY));
+	equipped_spells[4].setPosition(skill5.getPosition());
 	/////labels for skills
 	label_skill1.setPosition(windowZero + Vector2f(0.265f*WX, 0.92f*WY));
 	label_skill2.setPosition(windowZero + Vector2f(0.315f*WX, 0.92f*WY));

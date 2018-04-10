@@ -67,6 +67,7 @@ public:
 	std::string saveItems();
 	std::string saveLocation();
 	std::string saveControls();
+	std::string saveSpells();
 	void render() override;
 	void update(double dt) override;
 	

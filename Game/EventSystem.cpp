@@ -38,6 +38,7 @@ void EventSystem::LoadGame()
 	std::vector<int> experience;
 	std::vector<int> items;
 	std::vector<int> keys;
+	std::vector<int> spells;
 	auto character = player->GetComponent<CharacterSheetComponent>();
 	std::ifstream save("save.txt");
 	if (save.good())
@@ -60,6 +61,8 @@ void EventSystem::LoadGame()
 					items.push_back(i);
 				else if (line_number == 4)
 					keys.push_back(i);
+				else if (line_number == 5)
+					spells.push_back(i);
 
 				if (ss.peek() == ',')
 					ss.ignore();
@@ -71,6 +74,11 @@ void EventSystem::LoadGame()
 		player->setPosition({ (float)location[1],(float)location[2] });
 		character->setLevels(levels[0], levels[1], levels[2], levels[3], levels[4]);
 		character->setExperience(experience[0], experience[1], experience[2], experience[3], experience[4]);
+		character->setSpell(0, spells[0]);
+		character->setSpell(1, spells[1]);
+		character->setSpell(2, spells[2]);
+		character->setSpell(3, spells[3]);
+		character->setSpell(4, spells[4]);
 		for (int i = 0; i < items.size(); i += 2)
 		{
 			itemGenerator->load(items[i], (bool)items[i + 1]);
@@ -96,6 +104,7 @@ void EventSystem::SaveGame()
 		save << character->saveExperience() + "\n";
 		save << character->saveItems() + "\n";
 		save << character->saveControls() + "\n";
+		save << character->saveSpells() + "\n";
 		save.close();
 	}
 	else std::cout << "Unable to open file";

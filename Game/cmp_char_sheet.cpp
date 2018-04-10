@@ -124,6 +124,10 @@ std::string CharacterSheetComponent::saveControls()
 	}
 	return temp;
 }
+std::string CharacterSheetComponent::saveSpells()
+{
+	return std::to_string(selectedSpells[0]) + "," + std::to_string(selectedSpells[1]) + "," + std::to_string(selectedSpells[2]) + "," + std::to_string(selectedSpells[3]) + "," + std::to_string(selectedSpells[4]);
+}
 void CharacterSheetComponent::reset()
 {
 	for (auto n : _backpack)
