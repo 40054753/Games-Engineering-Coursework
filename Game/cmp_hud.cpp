@@ -679,9 +679,9 @@ void HudComponent::update(double dt)
 	if (evs->is_leveled_up())
 	{
 		int fire_lv = x->getLevelFire();
-		int water_lv = x->getLevelFire();
-		int wind_lv = x->getLevelFire();
-		int earth_lv = x->getLevelFire();
+		int water_lv = x->getLevelWater();
+		int wind_lv = x->getLevelWind();
+		int earth_lv = x->getLevelEarth();
 		if(fire_lv>=3)
 			spell_fire_2.setColor(sf::Color(255, 255, 255, 255));
 		if (fire_lv >= 5)

@@ -19,6 +19,7 @@ protected:
 	float def=0;  // adds to defence
 	float spd=0;	// increases movement speed
 public:
+	void setPickedUp() { pickedUp = true; }
 	explicit ItemComponent(Entity *p);
 	ItemComponent() = delete;
 	void setID(int i) { id = i; }

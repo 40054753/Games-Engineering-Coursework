@@ -12,11 +12,12 @@ sf::Sprite& ItemComponent::getSprite()  {
 }
 void ItemComponent::render()
 {
+
 	if (equipped)
-	{
 		Renderer::queue(0, &highlight);
+
+	if (pickedUp)
 		Renderer::queue(0, _sprite.get());
-	}
 	else
 		Renderer::queue(3, _sprite.get());
 
