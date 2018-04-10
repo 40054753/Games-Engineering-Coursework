@@ -287,6 +287,140 @@ HudComponent::HudComponent(Entity *p) : Component(p)
 	label_skill_tree.setCharacterSize(25.0f);
 	label_skill_tree.setScale(WX / 1280, WY / 720);
 	label_skill_tree.setString("Skill tree");
+
+	fire_tree.setFillColor(sf::Color(120, 120, 120, 150));
+	fire_tree.setSize({ 0.27f*WX, 0.35f*WY });
+	fire_tree.setOutlineColor(sf::Color::Black);
+	fire_tree.setOutlineThickness(3.0f);
+
+	water_tree.setFillColor(sf::Color(120, 120, 120, 150));
+	water_tree.setSize({ 0.27f*WX, 0.35f*WY });
+	water_tree.setOutlineColor(sf::Color::Black);
+	water_tree.setOutlineThickness(3.0f);
+
+	wind_tree.setFillColor(sf::Color(120, 120, 120, 150));
+	wind_tree.setSize({ 0.27f*WX, 0.35f*WY });
+	wind_tree.setOutlineColor(sf::Color::Black);
+	wind_tree.setOutlineThickness(3.0f);
+
+	earth_tree.setFillColor(sf::Color(120, 120, 120, 150));
+	earth_tree.setSize({ 0.27f*WX, 0.35f*WY });
+	earth_tree.setOutlineColor(sf::Color::Black);
+	earth_tree.setOutlineThickness(3.0f);
+
+	label_fire.setFont(font);
+	label_fire.setColor(sf::Color::White);
+	label_fire.setOutlineColor(sf::Color::Black);
+	label_fire.setOutlineThickness(3.0f);
+	label_fire.setCharacterSize(20.0f);
+	label_fire.setScale(WX / 1280, WY / 720);
+	label_fire.setString("Fire");
+
+	label_water.setFont(font);
+	label_water.setColor(sf::Color::White);
+	label_water.setOutlineColor(sf::Color::Black);
+	label_water.setOutlineThickness(3.0f);
+	label_water.setCharacterSize(20.0f);
+	label_water.setScale(WX / 1280, WY / 720);
+	label_water.setString("Water");
+
+	label_wind.setFont(font);
+	label_wind.setColor(sf::Color::White);
+	label_wind.setOutlineColor(sf::Color::Black);
+	label_wind.setOutlineThickness(3.0f);
+	label_wind.setCharacterSize(20.0f);
+	label_wind.setScale(WX / 1280, WY / 720);
+	label_wind.setString("Wind");
+
+	label_earth.setFont(font);
+	label_earth.setColor(sf::Color::White);
+	label_earth.setOutlineColor(sf::Color::Black);
+	label_earth.setOutlineThickness(3.0f);
+	label_earth.setCharacterSize(20.0f);
+	label_earth.setScale(WX / 1280, WY / 720);
+	label_earth.setString("Earth");
+
+	spell_fire_1.setTexture(spell_icons);
+	spell_fire_1.setTextureRect({0,0,55,55});
+	spell_fire_1.setScale(WX / 1280, WY / 720);
+
+	spell_fire_2.setTexture(spell_icons);
+	spell_fire_2.setTextureRect({ 0,56,55,55 });
+	spell_fire_2.setScale(WX / 1280, WY / 720);
+	spell_fire_2.setColor(sf::Color(50, 50, 50, 255));
+	spell_fire_3.setTexture(spell_icons);
+	spell_fire_3.setTextureRect({ 0,112,55,55 });
+	spell_fire_3.setScale(WX / 1280, WY / 720);
+	spell_fire_3.setColor(sf::Color(50, 50, 50, 255));
+	spell_fire_4.setTexture(spell_icons);
+	spell_fire_4.setTextureRect({ 0,168,55,55 });
+	spell_fire_4.setScale(WX / 1280, WY / 720);
+	spell_fire_4.setColor(sf::Color(50, 50, 50, 255));
+	spell_fire_5.setTexture(spell_icons);
+	spell_fire_5.setTextureRect({ 0,224,55,55 });
+	spell_fire_5.setScale(WX / 1280, WY / 720);
+	spell_fire_5.setColor(sf::Color(50, 50, 50, 255));
+	spell_water_1.setTexture(spell_icons);
+	spell_water_1.setTextureRect({ 56,0,55,55 });
+	spell_water_1.setScale(WX / 1280, WY / 720);
+	
+	spell_water_2.setTexture(spell_icons);
+	spell_water_2.setTextureRect({ 56,56,55,55 });
+	spell_water_2.setScale(WX / 1280, WY / 720);
+	spell_water_2.setColor(sf::Color(50, 50, 50, 255));
+	spell_water_3.setTexture(spell_icons);
+	spell_water_3.setTextureRect({ 56,112,55,55 });
+	spell_water_3.setScale(WX / 1280, WY / 720);
+	spell_water_3.setColor(sf::Color(50, 50, 50, 255));
+	spell_water_4.setTexture(spell_icons);
+	spell_water_4.setTextureRect({ 56,168,55,55 });
+	spell_water_4.setScale(WX / 1280, WY / 720);
+	spell_water_4.setColor(sf::Color(50, 50, 50, 255));
+	spell_water_5.setTexture(spell_icons);
+	spell_water_5.setTextureRect({ 56,224,55,55 });
+	spell_water_5.setScale(WX / 1280, WY / 720);
+	spell_water_5.setColor(sf::Color(50, 50, 50, 255));
+	spell_wind_1.setTexture(spell_icons);
+	spell_wind_1.setTextureRect({ 168,0,55,55 });
+	spell_wind_1.setScale(WX / 1280, WY / 720);
+
+	spell_wind_2.setTexture(spell_icons);
+	spell_wind_2.setTextureRect({ 168,56,55,55 });
+	spell_wind_2.setScale(WX / 1280, WY / 720);
+	spell_wind_2.setColor(sf::Color(50, 50, 50, 255));
+	spell_wind_3.setTexture(spell_icons);
+	spell_wind_3.setTextureRect({ 168,112,55,55 });
+	spell_wind_3.setScale(WX / 1280, WY / 720);
+	spell_wind_3.setColor(sf::Color(50, 50, 50, 255));
+	spell_wind_4.setTexture(spell_icons);
+	spell_wind_4.setTextureRect({ 168,168,55,55 });
+	spell_wind_4.setScale(WX / 1280, WY / 720);
+	spell_wind_4.setColor(sf::Color(50, 50, 50, 255));
+	spell_wind_5.setTexture(spell_icons);
+	spell_wind_5.setTextureRect({ 168,224,55,55 });
+	spell_wind_5.setScale(WX / 1280, WY / 720);
+	spell_wind_5.setColor(sf::Color(50, 50, 50, 255));
+	spell_earth_1.setTexture(spell_icons);
+	spell_earth_1.setTextureRect({ 112,0,55,55 });
+	spell_earth_1.setScale(WX / 1280, WY / 720);
+
+	spell_earth_2.setTexture(spell_icons);
+	spell_earth_2.setTextureRect({ 112,56,55,55 });
+	spell_earth_2.setScale(WX / 1280, WY / 720);
+	spell_earth_2.setColor(sf::Color(50, 50, 50, 255));
+	spell_earth_3.setTexture(spell_icons);
+	spell_earth_3.setTextureRect({ 112,112,55,55 });
+	spell_earth_3.setScale(WX / 1280, WY / 720);
+	spell_earth_3.setColor(sf::Color(50, 50, 50, 255));
+	spell_earth_4.setTexture(spell_icons);
+	spell_earth_4.setTextureRect({ 112,168,55,55 });
+	spell_earth_4.setScale(WX / 1280, WY / 720);
+	spell_earth_4.setColor(sf::Color(50, 50, 50, 255));
+	spell_earth_5.setTexture(spell_icons);
+	spell_earth_5.setTextureRect({ 112,224,55,55 });
+	spell_earth_5.setScale(WX / 1280, WY / 720);
+	spell_earth_5.setColor(sf::Color(50, 50, 50, 255));
+
 }
 
 void HudComponent::getStats()
@@ -364,6 +498,39 @@ void HudComponent::render()
 	{
 		Renderer::queue(0, &skill_tree);
 		Renderer::queue(0, &label_skill_tree);
+		Renderer::queue(0, &fire_tree);
+		Renderer::queue(0, &water_tree);
+		Renderer::queue(0, &wind_tree);
+		Renderer::queue(0, &earth_tree);
+
+		Renderer::queue(0, &label_fire);
+		Renderer::queue(0, &label_water);
+		Renderer::queue(0, &label_wind);
+		Renderer::queue(0, &label_earth);
+
+		Renderer::queue(0, &spell_fire_1);
+		Renderer::queue(0, &spell_fire_2);
+		Renderer::queue(0, &spell_fire_3);
+		Renderer::queue(0, &spell_fire_4);
+		Renderer::queue(0, &spell_fire_5);
+
+		Renderer::queue(0, &spell_water_1);
+		Renderer::queue(0, &spell_water_2);
+		Renderer::queue(0, &spell_water_3);
+		Renderer::queue(0, &spell_water_4);
+		Renderer::queue(0, &spell_water_5);
+
+		Renderer::queue(0, &spell_wind_1);
+		Renderer::queue(0, &spell_wind_2);
+		Renderer::queue(0, &spell_wind_3);
+		Renderer::queue(0, &spell_wind_4);
+		Renderer::queue(0, &spell_wind_5);
+
+		Renderer::queue(0, &spell_earth_1);
+		Renderer::queue(0, &spell_earth_2);
+		Renderer::queue(0, &spell_earth_3);
+		Renderer::queue(0, &spell_earth_4);
+		Renderer::queue(0, &spell_earth_5);
 	}
 	if (showInventory || hideInventory)
 	{
@@ -508,7 +675,51 @@ void HudComponent::reload()
 }
 void HudComponent::update(double dt)
 {
-	
+	auto x = player->GetComponent<CharacterSheetComponent>();
+	if (evs->is_leveled_up())
+	{
+		int fire_lv = x->getLevelFire();
+		int water_lv = x->getLevelFire();
+		int wind_lv = x->getLevelFire();
+		int earth_lv = x->getLevelFire();
+		if(fire_lv>=3)
+			spell_fire_2.setColor(sf::Color(255, 255, 255, 255));
+		if (fire_lv >= 5)
+			spell_fire_3.setColor(sf::Color(255, 255, 255, 255));
+		if (fire_lv >= 7)
+			spell_fire_4.setColor(sf::Color(255, 255, 255, 255));
+		if (fire_lv >= 9)
+			spell_fire_5.setColor(sf::Color(255, 255, 255, 255));
+
+		if (water_lv >= 3)
+			spell_water_2.setColor(sf::Color(255, 255, 255, 255));
+		if (water_lv >= 5)
+			spell_water_3.setColor(sf::Color(255, 255, 255, 255));
+		if (water_lv >= 7)
+			spell_water_4.setColor(sf::Color(255, 255, 255, 255));
+		if (water_lv >= 9)
+			spell_water_5.setColor(sf::Color(255, 255, 255, 255));
+
+		if (wind_lv >= 3)
+			spell_wind_2.setColor(sf::Color(255, 255, 255, 255));
+		if (wind_lv >= 5)
+			spell_wind_3.setColor(sf::Color(255, 255, 255, 255));
+		if (wind_lv >= 7)
+			spell_wind_4.setColor(sf::Color(255, 255, 255, 255));
+		if (wind_lv >= 9)
+			spell_wind_5.setColor(sf::Color(255, 255, 255, 255));
+
+		if (earth_lv >= 3)
+			spell_earth_2.setColor(sf::Color(255, 255, 255, 255));
+		if (earth_lv >= 5)
+			spell_earth_3.setColor(sf::Color(255, 255, 255, 255));
+		if (earth_lv >= 7)
+			spell_earth_4.setColor(sf::Color(255, 255, 255, 255));
+		if (earth_lv >= 9)
+			spell_earth_5.setColor(sf::Color(255, 255, 255, 255));
+
+		evs->switch_level_up();
+	}
 	if (evs->is_for_refresh())
 	{
 		label_skill1.setString(codes[controls[5]]);
@@ -518,7 +729,7 @@ void HudComponent::update(double dt)
 		label_skill5.setString(codes[controls[9]]);
 		evs->refreshed();
 	}
-	auto x = player->GetComponent<CharacterSheetComponent>();
+	
 	auto backpack = x->getBP();
 	auto info = x->getBPINFO();
 	getStats();
@@ -821,26 +1032,36 @@ void HudComponent::setPosition()
 	icon_inventory.setPosition(button_inventory.getPosition());
 	button_menu.setPosition(windowZero + Vector2f(0.69f*WX, 0.915f*WY));
 	icon_save.setPosition(button_save.getPosition());
+	////////////////////////////INVENTORY
+	inventory.setPosition(windowZero + Vector2f(WX, 0.02f*WY) - Vector2f(sliderX, 0));
+
+	////backpack
+	backpack.setPosition(inventory.getPosition() + Vector2f(0.007f*WX, 0.55f*WY));
+	
+	int row = 0;
+	int column = 0;
+	for (int i = 0; i < BPslots; i++)
+	{
+		if (column >(BPslots / 3) - 1)
+		{
+			row++;
+			column = 0;
+		}
+		slots[i].setPosition(backpack.getPosition() + Vector2f(0.0053f*WX, 0.008f*WY) + Vector2f(column * 0.054f*WX, row * 0.086f*WY));
+		column++;
+	}
+	auto x = player->GetComponent<CharacterSheetComponent>();
+	auto _backpack = x->getBP();
+	int i = 0;
+	for (auto item : _backpack)
+	{
+		if (!item->is_forDeletion())
+			item->setPosition(slots[i++].getPosition() + Vector2f(0.023f*WX, 0.03f*WY));
+	}
 	if (showInventory || hideInventory)
 	{
-		////////////////////////////INVENTORY
-		inventory.setPosition(windowZero + Vector2f(WX, 0.02f*WY) - Vector2f(sliderX, 0));
-
-		////backpack
-		backpack.setPosition(inventory.getPosition() + Vector2f(0.007f*WX, 0.55f*WY));
 		label_backpack.setPosition(inventory.getPosition() + Vector2f(0.007f*WX, 0.50f*WY));
-		int row = 0;
-		int column = 0;
-		for (int i = 0; i < BPslots; i++)
-		{
-			if (column > (BPslots / 3) - 1)
-			{
-				row++;
-				column = 0;
-			}
-			slots[i].setPosition(backpack.getPosition() + Vector2f(0.0053f*WX, 0.008f*WY) + Vector2f(column * 0.054f*WX, row * 0.086f*WY));
-			column++;
-		}
+		
 		////stats
 		statsArea.setPosition(inventory.getPosition() + Vector2f(0.18f*WX, 0.06f*WY));
 		label_stats.setPosition(inventory.getPosition() + Vector2f(0.18f*WX, 0.01f*WY));
@@ -879,20 +1100,43 @@ void HudComponent::setPosition()
 		icon_helmet.setPosition(helmet.getPosition());
 		icon_boots.setPosition(boots.getPosition());
 
-		auto x = player->GetComponent<CharacterSheetComponent>();
-		auto backpack = x->getBP();
-		int i = 0;
-		for (auto item : backpack)
-		{
-			if (!item->is_forDeletion())
-				item->setPosition(slots[i++].getPosition() + Vector2f(0.023f*WX, 0.03f*WY));
-		}
+		
 	}
 	if (show_skill_tree || hide_skill_tree)
 	{
 		////skill tree
 		skill_tree.setPosition(windowZero + Vector2f(-0.8f*WX, 0.02f*WY) + Vector2f(tree_sliderX, 0));
-		label_skill_tree.setPosition(skill_tree.getPosition() + Vector2f(0.07f*WX, 0.01f*WY));
+		label_skill_tree.setPosition(skill_tree.getPosition() + Vector2f(0.05f*WX, 0.01f*WY));
+		fire_tree.setPosition(skill_tree.getPosition() + Vector2f(0.05f*WX, 0.08f*WY));
+		water_tree.setPosition(skill_tree.getPosition() + Vector2f(0.33f*WX, 0.08f*WY));
+		wind_tree.setPosition(skill_tree.getPosition() + Vector2f(0.05f*WX, 0.45f*WY));
+		earth_tree.setPosition(skill_tree.getPosition() + Vector2f(0.33f*WX, 0.45f*WY));
+
+		label_fire.setPosition(fire_tree.getPosition() + Vector2f(0.02f*WX, 0.01f*WY));
+		label_water.setPosition(water_tree.getPosition() + Vector2f(0.02f*WX, 0.01f*WY));
+		label_wind.setPosition(wind_tree.getPosition() + Vector2f(0.02f*WX, 0.01f*WY));
+		label_earth.setPosition(earth_tree.getPosition() + Vector2f(0.02f*WX, 0.01f*WY));
+
+		spell_fire_1.setPosition(fire_tree.getPosition() + Vector2f(0.02f*WX, 0.05f*WY));
+		spell_fire_2.setPosition(fire_tree.getPosition() + Vector2f(0.02f*WX, 0.25f*WY));
+		spell_fire_3.setPosition(fire_tree.getPosition() + Vector2f(0.10f*WX, 0.05f*WY));
+		spell_fire_4.setPosition(fire_tree.getPosition() + Vector2f(0.10f*WX, 0.25f*WY));
+		spell_fire_5.setPosition(fire_tree.getPosition() + Vector2f(0.20f*WX, 0.15f*WY));
+		spell_water_1.setPosition(water_tree.getPosition() + Vector2f(0.02f*WX, 0.05f*WY));
+		spell_water_2.setPosition(water_tree.getPosition() + Vector2f(0.02f*WX, 0.25f*WY));
+		spell_water_3.setPosition(water_tree.getPosition() + Vector2f(0.10f*WX, 0.05f*WY));
+		spell_water_4.setPosition(water_tree.getPosition() + Vector2f(0.10f*WX, 0.25f*WY));
+		spell_water_5.setPosition(water_tree.getPosition() + Vector2f(0.20f*WX, 0.15f*WY));
+		spell_wind_1.setPosition(wind_tree.getPosition() + Vector2f(0.02f*WX, 0.05f*WY));
+		spell_wind_2.setPosition(wind_tree.getPosition() + Vector2f(0.02f*WX, 0.25f*WY));
+		spell_wind_3.setPosition(wind_tree.getPosition() + Vector2f(0.10f*WX, 0.05f*WY));
+		spell_wind_4.setPosition(wind_tree.getPosition() + Vector2f(0.10f*WX, 0.25f*WY));
+		spell_wind_5.setPosition(wind_tree.getPosition() + Vector2f(0.20f*WX, 0.15f*WY));
+		spell_earth_1.setPosition(earth_tree.getPosition() + Vector2f(0.02f*WX, 0.05f*WY));
+		spell_earth_2.setPosition(earth_tree.getPosition() + Vector2f(0.02f*WX, 0.25f*WY));
+		spell_earth_3.setPosition(earth_tree.getPosition() + Vector2f(0.10f*WX, 0.05f*WY));
+		spell_earth_4.setPosition(earth_tree.getPosition() + Vector2f(0.10f*WX, 0.25f*WY));
+		spell_earth_5.setPosition(earth_tree.getPosition() + Vector2f(0.20f*WX, 0.15f*WY));
 	}
 
 }

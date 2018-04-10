@@ -81,7 +81,7 @@ void EventSystem::LoadGame()
 			controls[i] = (sf::Keyboard::Key)keys[i];
 		
 		refreshKeyLabels = true;
-
+		LVUP = true;
 	}
 	
 }

@@ -103,6 +103,15 @@ protected:
 	sf::RectangleShape skill_tree;
 	sf::RectangleShape fire_tree;
 	sf::RectangleShape water_tree;
+	sf::RectangleShape wind_tree;
+	sf::RectangleShape earth_tree;
+
+	sf::Text label_fire, label_water, label_wind, label_earth;
+	sf::Sprite spell_fire_1, spell_fire_2, spell_fire_3, spell_fire_4, spell_fire_5;
+	sf::Sprite spell_water_1, spell_water_2, spell_water_3, spell_water_4, spell_water_5;
+	sf::Sprite spell_wind_1, spell_wind_2, spell_wind_3, spell_wind_4, spell_wind_5;
+	sf::Sprite spell_earth_1, spell_earth_2, spell_earth_3, spell_earth_4, spell_earth_5;
+
 	bool show_skill_tree = false;
 	bool hide_skill_tree = false;
 	float tree_sliderX = 0;

@@ -22,7 +22,7 @@ using namespace sf;
 using namespace std;
 const int GHOSTS_COUNT = 4;
 Font font;
-Texture playerTexture, zombieTexture, spellsTexture, snowEffect, iconsTexture, itemsTexture, animatedSpellsTexture, swordSwingTexture;
+Texture playerTexture, zombieTexture,spell_icons, spellsTexture, snowEffect, iconsTexture, itemsTexture, animatedSpellsTexture, swordSwingTexture;
 Texture menuBg;
 sf::Sprite background;
 SoundBuffer buffer;
@@ -479,6 +479,9 @@ void GameScene::load()
 		cerr << "Failed to load spritesheet!" << endl;
 	}
 	if (!iconsTexture.loadFromFile("res/img/gray_icons.png")) {
+		cout << "Cannot load img!" << endl;
+	}
+	if (!spell_icons.loadFromFile("res/img/spell_icons.png")) {
 		cout << "Cannot load img!" << endl;
 	}
 

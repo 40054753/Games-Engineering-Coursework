@@ -12,9 +12,14 @@ sf::Sprite& ItemComponent::getSprite()  {
 }
 void ItemComponent::render()
 {
-	if(equipped)
+	if (equipped)
+	{
 		Renderer::queue(0, &highlight);
-	Renderer::queue(0,_sprite.get());
+		Renderer::queue(0, _sprite.get());
+	}
+	else
+		Renderer::queue(3, _sprite.get());
+
 }
 void ItemComponent::update(double dt)
 {
