@@ -340,87 +340,138 @@ HudComponent::HudComponent(Entity *p) : Component(p)
 	label_earth.setScale(WX / 1280, WY / 720);
 	label_earth.setString("Earth");
 
-	spell_fire_1.setTexture(spell_icons);
-	spell_fire_1.setTextureRect({0,0,55,55});
-	spell_fire_1.setScale(WX / 1280, WY / 720);
+	spell_slots[0].setTexture(spell_icons);
+	spell_slots[0].setTextureRect({0,0,55,55});
+	spell_slots[0].setScale(WX / 1280, WY / 720);
 
-	spell_fire_2.setTexture(spell_icons);
-	spell_fire_2.setTextureRect({ 0,56,55,55 });
-	spell_fire_2.setScale(WX / 1280, WY / 720);
-	spell_fire_2.setColor(sf::Color(50, 50, 50, 255));
-	spell_fire_3.setTexture(spell_icons);
-	spell_fire_3.setTextureRect({ 0,112,55,55 });
-	spell_fire_3.setScale(WX / 1280, WY / 720);
-	spell_fire_3.setColor(sf::Color(50, 50, 50, 255));
-	spell_fire_4.setTexture(spell_icons);
-	spell_fire_4.setTextureRect({ 0,168,55,55 });
-	spell_fire_4.setScale(WX / 1280, WY / 720);
-	spell_fire_4.setColor(sf::Color(50, 50, 50, 255));
-	spell_fire_5.setTexture(spell_icons);
-	spell_fire_5.setTextureRect({ 0,224,55,55 });
-	spell_fire_5.setScale(WX / 1280, WY / 720);
-	spell_fire_5.setColor(sf::Color(50, 50, 50, 255));
-	spell_water_1.setTexture(spell_icons);
-	spell_water_1.setTextureRect({ 56,0,55,55 });
-	spell_water_1.setScale(WX / 1280, WY / 720);
-	
-	spell_water_2.setTexture(spell_icons);
-	spell_water_2.setTextureRect({ 56,56,55,55 });
-	spell_water_2.setScale(WX / 1280, WY / 720);
-	spell_water_2.setColor(sf::Color(50, 50, 50, 255));
-	spell_water_3.setTexture(spell_icons);
-	spell_water_3.setTextureRect({ 56,112,55,55 });
-	spell_water_3.setScale(WX / 1280, WY / 720);
-	spell_water_3.setColor(sf::Color(50, 50, 50, 255));
-	spell_water_4.setTexture(spell_icons);
-	spell_water_4.setTextureRect({ 56,168,55,55 });
-	spell_water_4.setScale(WX / 1280, WY / 720);
-	spell_water_4.setColor(sf::Color(50, 50, 50, 255));
-	spell_water_5.setTexture(spell_icons);
-	spell_water_5.setTextureRect({ 56,224,55,55 });
-	spell_water_5.setScale(WX / 1280, WY / 720);
-	spell_water_5.setColor(sf::Color(50, 50, 50, 255));
-	spell_wind_1.setTexture(spell_icons);
-	spell_wind_1.setTextureRect({ 168,0,55,55 });
-	spell_wind_1.setScale(WX / 1280, WY / 720);
+	spell_slots[1].setTexture(spell_icons);
+	spell_slots[1].setTextureRect({ 0,56,55,55 });
+	spell_slots[1].setScale(WX / 1280, WY / 720);
+	spell_slots[1].setColor(sf::Color(50, 50, 50, 255));
+	spell_slots[2].setTexture(spell_icons);
+	spell_slots[2].setTextureRect({ 0,112,55,55 });
+	spell_slots[2].setScale(WX / 1280, WY / 720);
+	spell_slots[2].setColor(sf::Color(50, 50, 50, 255));
+	spell_slots[3].setTexture(spell_icons);
+	spell_slots[3].setTextureRect({ 0,168,55,55 });
+	spell_slots[3].setScale(WX / 1280, WY / 720);
+	spell_slots[3].setColor(sf::Color(50, 50, 50, 255));
+	spell_slots[4].setTexture(spell_icons);
+	spell_slots[4].setTextureRect({ 0,224,55,55 });
+	spell_slots[4].setScale(WX / 1280, WY / 720);
+	spell_slots[4].setColor(sf::Color(50, 50, 50, 255));
 
-	spell_wind_2.setTexture(spell_icons);
-	spell_wind_2.setTextureRect({ 168,56,55,55 });
-	spell_wind_2.setScale(WX / 1280, WY / 720);
-	spell_wind_2.setColor(sf::Color(50, 50, 50, 255));
-	spell_wind_3.setTexture(spell_icons);
-	spell_wind_3.setTextureRect({ 168,112,55,55 });
-	spell_wind_3.setScale(WX / 1280, WY / 720);
-	spell_wind_3.setColor(sf::Color(50, 50, 50, 255));
-	spell_wind_4.setTexture(spell_icons);
-	spell_wind_4.setTextureRect({ 168,168,55,55 });
-	spell_wind_4.setScale(WX / 1280, WY / 720);
-	spell_wind_4.setColor(sf::Color(50, 50, 50, 255));
-	spell_wind_5.setTexture(spell_icons);
-	spell_wind_5.setTextureRect({ 168,224,55,55 });
-	spell_wind_5.setScale(WX / 1280, WY / 720);
-	spell_wind_5.setColor(sf::Color(50, 50, 50, 255));
-	spell_earth_1.setTexture(spell_icons);
-	spell_earth_1.setTextureRect({ 112,0,55,55 });
-	spell_earth_1.setScale(WX / 1280, WY / 720);
+	spell_slots[5].setTexture(spell_icons);
+	spell_slots[5].setTextureRect({ 56,0,55,55 });
+	spell_slots[5].setScale(WX / 1280, WY / 720);
 
-	spell_earth_2.setTexture(spell_icons);
-	spell_earth_2.setTextureRect({ 112,56,55,55 });
-	spell_earth_2.setScale(WX / 1280, WY / 720);
-	spell_earth_2.setColor(sf::Color(50, 50, 50, 255));
-	spell_earth_3.setTexture(spell_icons);
-	spell_earth_3.setTextureRect({ 112,112,55,55 });
-	spell_earth_3.setScale(WX / 1280, WY / 720);
-	spell_earth_3.setColor(sf::Color(50, 50, 50, 255));
-	spell_earth_4.setTexture(spell_icons);
-	spell_earth_4.setTextureRect({ 112,168,55,55 });
-	spell_earth_4.setScale(WX / 1280, WY / 720);
-	spell_earth_4.setColor(sf::Color(50, 50, 50, 255));
-	spell_earth_5.setTexture(spell_icons);
-	spell_earth_5.setTextureRect({ 112,224,55,55 });
-	spell_earth_5.setScale(WX / 1280, WY / 720);
-	spell_earth_5.setColor(sf::Color(50, 50, 50, 255));
+	spell_slots[6].setTexture(spell_icons);
+	spell_slots[6].setTextureRect({ 56,56,55,55 });
+	spell_slots[6].setScale(WX / 1280, WY / 720);
+	spell_slots[6].setColor(sf::Color(50, 50, 50, 255));
+	spell_slots[7].setTexture(spell_icons);
+	spell_slots[7].setTextureRect({ 56,112,55,55 });
+	spell_slots[7].setScale(WX / 1280, WY / 720);
+	spell_slots[7].setColor(sf::Color(50, 50, 50, 255));
+	spell_slots[8].setTexture(spell_icons);
+	spell_slots[8].setTextureRect({ 56,168,55,55 });
+	spell_slots[8].setScale(WX / 1280, WY / 720);
+	spell_slots[8].setColor(sf::Color(50, 50, 50, 255));
+	spell_slots[9].setTexture(spell_icons);
+	spell_slots[9].setTextureRect({ 56,224,55,55 });
+	spell_slots[9].setScale(WX / 1280, WY / 720);
+	spell_slots[9].setColor(sf::Color(50, 50, 50, 255));
 
+	spell_slots[10].setTexture(spell_icons);
+	spell_slots[10].setTextureRect({ 168,0,55,55 });
+	spell_slots[10].setScale(WX / 1280, WY / 720);
+
+	spell_slots[11].setTexture(spell_icons);
+	spell_slots[11].setTextureRect({ 168,56,55,55 });
+	spell_slots[11].setScale(WX / 1280, WY / 720);
+	spell_slots[11].setColor(sf::Color(50, 50, 50, 255));
+	spell_slots[12].setTexture(spell_icons);
+	spell_slots[12].setTextureRect({ 168,112,55,55 });
+	spell_slots[12].setScale(WX / 1280, WY / 720);
+	spell_slots[12].setColor(sf::Color(50, 50, 50, 255));
+	spell_slots[13].setTexture(spell_icons);
+	spell_slots[13].setTextureRect({ 168,168,55,55 });
+	spell_slots[13].setScale(WX / 1280, WY / 720);
+	spell_slots[13].setColor(sf::Color(50, 50, 50, 255));
+	spell_slots[14].setTexture(spell_icons);
+	spell_slots[14].setTextureRect({ 168,224,55,55 });
+	spell_slots[14].setScale(WX / 1280, WY / 720);
+	spell_slots[14].setColor(sf::Color(50, 50, 50, 255));
+	spell_slots[15].setTexture(spell_icons);
+	spell_slots[15].setTextureRect({ 112,0,55,55 });
+	spell_slots[15].setScale(WX / 1280, WY / 720);
+
+	spell_slots[16].setTexture(spell_icons);
+	spell_slots[16].setTextureRect({ 112,56,55,55 });
+	spell_slots[16].setScale(WX / 1280, WY / 720);
+	spell_slots[16].setColor(sf::Color(50, 50, 50, 255));
+	spell_slots[17].setTexture(spell_icons);
+	spell_slots[17].setTextureRect({ 112,112,55,55 });
+	spell_slots[17].setScale(WX / 1280, WY / 720);
+	spell_slots[17].setColor(sf::Color(50, 50, 50, 255));
+	spell_slots[18].setTexture(spell_icons);
+	spell_slots[18].setTextureRect({ 112,168,55,55 });
+	spell_slots[18].setScale(WX / 1280, WY / 720);
+	spell_slots[18].setColor(sf::Color(50, 50, 50, 255));
+	spell_slots[19].setTexture(spell_icons);
+	spell_slots[19].setTextureRect({ 112,224,55,55 });
+	spell_slots[19].setScale(WX / 1280, WY / 720);
+	spell_slots[19].setColor(sf::Color(50, 50, 50, 255));
+
+	label_spell_options_1.setFont(font);
+	label_spell_options_1.setColor(sf::Color::White);
+	label_spell_options_1.setOutlineColor(sf::Color::Black);
+	label_spell_options_1.setOutlineThickness(3.0f);
+	label_spell_options_1.setCharacterSize(25.0f);
+	label_spell_options_1.setScale(WX / 1280, WY / 720);
+	label_spell_options_1.setString("Equip to slot 1");
+
+	label_spell_options_2.setFont(font);
+	label_spell_options_2.setColor(sf::Color::White);
+	label_spell_options_2.setOutlineColor(sf::Color::Black);
+	label_spell_options_2.setOutlineThickness(3.0f);
+	label_spell_options_2.setCharacterSize(25.0f);
+	label_spell_options_2.setScale(WX / 1280, WY / 720);
+	label_spell_options_2.setString("Equip to slot 2");
+
+	label_spell_options_3.setFont(font);
+	label_spell_options_3.setColor(sf::Color::White);
+	label_spell_options_3.setOutlineColor(sf::Color::Black);
+	label_spell_options_3.setOutlineThickness(3.0f);
+	label_spell_options_3.setCharacterSize(25.0f);
+	label_spell_options_3.setScale(WX / 1280, WY / 720);
+	label_spell_options_3.setString("Equip to slot 3");
+
+	label_spell_options_4.setFont(font);
+	label_spell_options_4.setColor(sf::Color::White);
+	label_spell_options_4.setOutlineColor(sf::Color::Black);
+	label_spell_options_4.setOutlineThickness(3.0f);
+	label_spell_options_4.setCharacterSize(25.0f);
+	label_spell_options_4.setScale(WX / 1280, WY / 720);
+	label_spell_options_4.setString("Equip to slot 4");
+
+	label_spell_options_5.setFont(font);
+	label_spell_options_5.setColor(sf::Color::White);
+	label_spell_options_5.setOutlineColor(sf::Color::Black);
+	label_spell_options_5.setOutlineThickness(3.0f);
+	label_spell_options_5.setCharacterSize(25.0f);
+	label_spell_options_5.setScale(WX / 1280, WY / 720);
+	label_spell_options_5.setString("Equip to slot 5");
+
+	bg_spell_options.setFillColor(sf::Color(170, 170, 170, 255));
+	bg_spell_options.setSize({ 0.23f*WX, 0.27f*WY });
+	for (int i = 0; i < 19; i++)
+		spell_available[i] = false;
+
+	spell_available[0] = true;
+	spell_available[5] = true;
+	spell_available[10] = true;
+	spell_available[15] = true;
 }
 
 void HudComponent::getStats()
@@ -508,29 +559,18 @@ void HudComponent::render()
 		Renderer::queue(0, &label_wind);
 		Renderer::queue(0, &label_earth);
 
-		Renderer::queue(0, &spell_fire_1);
-		Renderer::queue(0, &spell_fire_2);
-		Renderer::queue(0, &spell_fire_3);
-		Renderer::queue(0, &spell_fire_4);
-		Renderer::queue(0, &spell_fire_5);
-
-		Renderer::queue(0, &spell_water_1);
-		Renderer::queue(0, &spell_water_2);
-		Renderer::queue(0, &spell_water_3);
-		Renderer::queue(0, &spell_water_4);
-		Renderer::queue(0, &spell_water_5);
-
-		Renderer::queue(0, &spell_wind_1);
-		Renderer::queue(0, &spell_wind_2);
-		Renderer::queue(0, &spell_wind_3);
-		Renderer::queue(0, &spell_wind_4);
-		Renderer::queue(0, &spell_wind_5);
-
-		Renderer::queue(0, &spell_earth_1);
-		Renderer::queue(0, &spell_earth_2);
-		Renderer::queue(0, &spell_earth_3);
-		Renderer::queue(0, &spell_earth_4);
-		Renderer::queue(0, &spell_earth_5);
+		for(int i=0;i<19;i++)
+		Renderer::queue(0, &spell_slots[i]);
+		
+		if (show_spell_options)
+		{
+			Renderer::queue(-1, &bg_spell_options);
+			Renderer::queue(-1, &label_spell_options_1);
+			Renderer::queue(-1, &label_spell_options_2);
+			Renderer::queue(-1, &label_spell_options_3);
+			Renderer::queue(-1, &label_spell_options_4);
+			Renderer::queue(-1, &label_spell_options_5);
+		}
 	}
 	if (showInventory || hideInventory)
 	{
@@ -634,6 +674,8 @@ void HudComponent::render()
 			Renderer::queue(-1, &itemOptionsDrop);
 		}
 		
+
+		
 		
 	}
 
@@ -682,41 +724,87 @@ void HudComponent::update(double dt)
 		int water_lv = x->getLevelWater();
 		int wind_lv = x->getLevelWind();
 		int earth_lv = x->getLevelEarth();
-		if(fire_lv>=3)
-			spell_fire_2.setColor(sf::Color(255, 255, 255, 255));
+		if (fire_lv >= 3)
+		{
+			spell_slots[1].setColor(sf::Color(255, 255, 255, 255));
+			spell_available[1] = true;
+		}
 		if (fire_lv >= 5)
-			spell_fire_3.setColor(sf::Color(255, 255, 255, 255));
+		{
+			spell_slots[2].setColor(sf::Color(255, 255, 255, 255));
+			spell_available[2] = true;
+		}
 		if (fire_lv >= 7)
-			spell_fire_4.setColor(sf::Color(255, 255, 255, 255));
+		{
+			spell_slots[3].setColor(sf::Color(255, 255, 255, 255));
+			spell_available[3] = true;
+		}
 		if (fire_lv >= 9)
-			spell_fire_5.setColor(sf::Color(255, 255, 255, 255));
-
+		{
+			spell_slots[4].setColor(sf::Color(255, 255, 255, 255));
+			spell_available[4] = true;
+		}
 		if (water_lv >= 3)
-			spell_water_2.setColor(sf::Color(255, 255, 255, 255));
+		{
+			spell_slots[6].setColor(sf::Color(255, 255, 255, 255));
+			spell_available[6] = true;
+		}
 		if (water_lv >= 5)
-			spell_water_3.setColor(sf::Color(255, 255, 255, 255));
+		{
+			spell_slots[7].setColor(sf::Color(255, 255, 255, 255));
+			spell_available[7] = true;
+		}
 		if (water_lv >= 7)
-			spell_water_4.setColor(sf::Color(255, 255, 255, 255));
+		{
+			spell_slots[8].setColor(sf::Color(255, 255, 255, 255));
+			spell_available[8] = true;
+		}
 		if (water_lv >= 9)
-			spell_water_5.setColor(sf::Color(255, 255, 255, 255));
-
+		{
+			spell_slots[9].setColor(sf::Color(255, 255, 255, 255));
+			spell_available[9] = true;
+		}
 		if (wind_lv >= 3)
-			spell_wind_2.setColor(sf::Color(255, 255, 255, 255));
+		{
+			spell_slots[11].setColor(sf::Color(255, 255, 255, 255));
+			spell_available[11] = true;
+		}
 		if (wind_lv >= 5)
-			spell_wind_3.setColor(sf::Color(255, 255, 255, 255));
+		{
+			spell_slots[12].setColor(sf::Color(255, 255, 255, 255));
+			spell_available[12] = true;
+		}
 		if (wind_lv >= 7)
-			spell_wind_4.setColor(sf::Color(255, 255, 255, 255));
+		{
+			spell_slots[13].setColor(sf::Color(255, 255, 255, 255));
+			spell_available[13] = true;
+		}
 		if (wind_lv >= 9)
-			spell_wind_5.setColor(sf::Color(255, 255, 255, 255));
+		{
+			spell_slots[14].setColor(sf::Color(255, 255, 255, 255));
+			spell_available[14] = true;
+		}
 
 		if (earth_lv >= 3)
-			spell_earth_2.setColor(sf::Color(255, 255, 255, 255));
+		{
+			spell_slots[16].setColor(sf::Color(255, 255, 255, 255));
+			spell_available[16] = true;
+		}
 		if (earth_lv >= 5)
-			spell_earth_3.setColor(sf::Color(255, 255, 255, 255));
+		{
+			spell_slots[17].setColor(sf::Color(255, 255, 255, 255));
+			spell_available[17] = true;
+		}
 		if (earth_lv >= 7)
-			spell_earth_4.setColor(sf::Color(255, 255, 255, 255));
+		{
+			spell_slots[18].setColor(sf::Color(255, 255, 255, 255));
+			spell_available[18] = true;
+		}
 		if (earth_lv >= 9)
-			spell_earth_5.setColor(sf::Color(255, 255, 255, 255));
+		{
+			spell_slots[19].setColor(sf::Color(255, 255, 255, 255));
+			spell_available[19] = true;
+		}
 
 		evs->switch_level_up();
 	}
@@ -729,7 +817,120 @@ void HudComponent::update(double dt)
 		label_skill5.setString(codes[controls[9]]);
 		evs->refreshed();
 	}
-	
+
+	for(int i=0; i<19;i++)
+	if (show_skill_tree)
+	{
+		if (mousePos.x >= spell_slots[i].getPosition().x - windowZero.x  && mousePos.x <= spell_slots[i].getPosition().x + 55*WX/1280 - windowZero.x)
+		{
+			if (mousePos.y >= spell_slots[i].getPosition().y - windowZero.y  && mousePos.y <= spell_slots[i].getPosition().y + 55*WY/720 - windowZero.y)
+			{
+				if (spell_available[i] && buttonDelay < 0 && sf::Mouse::isButtonPressed(Mouse::Left))
+				{
+					buttonDelay = 0.1f;
+					selectedIndex = i;
+					show_spell_options = true;
+					bg_spell_options.setPosition(mousePos.x + windowZero.x, mousePos.y + windowZero.y);
+				}
+			}
+		}
+	}
+	if (show_spell_options)
+	{
+		if (mousePos.x >= label_spell_options_1.getPosition().x - windowZero.x  && mousePos.x <= label_spell_options_1.getPosition().x + 0.2f*WX - windowZero.x)
+		{
+			if (mousePos.y >= label_spell_options_1.getPosition().y - windowZero.y  && mousePos.y <= label_spell_options_1.getPosition().y + 0.045f*WY - windowZero.y)
+			{
+				if (buttonDelay < 0 && sf::Mouse::isButtonPressed(Mouse::Left))
+				{
+					buttonDelay = 0.1f;
+
+					show_spell_options = false;
+				}
+				label_spell_options_1.setOutlineColor(Color::Green);
+				label_spell_options_2.setOutlineColor(Color::Black);
+				label_spell_options_3.setOutlineColor(Color::Black);
+				label_spell_options_4.setOutlineColor(Color::Black);
+				label_spell_options_5.setOutlineColor(Color::Black);
+			}
+			else if (mousePos.y >= label_spell_options_2.getPosition().y - windowZero.y  && mousePos.y <= label_spell_options_2.getPosition().y + 0.045f*WY - windowZero.y)
+			{
+				if (buttonDelay < 0 && sf::Mouse::isButtonPressed(Mouse::Left))
+				{
+					buttonDelay = 0.1f;
+					show_spell_options = false;
+				}
+				label_spell_options_1.setOutlineColor(Color::Black);
+				label_spell_options_2.setOutlineColor(Color::Green);
+				label_spell_options_3.setOutlineColor(Color::Black);
+				label_spell_options_4.setOutlineColor(Color::Black);
+				label_spell_options_5.setOutlineColor(Color::Black);
+				
+			}
+			else if (mousePos.y >= label_spell_options_3.getPosition().y - windowZero.y  && mousePos.y <= label_spell_options_3.getPosition().y + 0.045f*WY - windowZero.y)
+			{
+				if (buttonDelay < 0 && sf::Mouse::isButtonPressed(Mouse::Left))
+				{
+					buttonDelay = 0.1f;
+
+					show_spell_options = false;
+				}
+				label_spell_options_1.setOutlineColor(Color::Black);
+				label_spell_options_2.setOutlineColor(Color::Black);
+				label_spell_options_3.setOutlineColor(Color::Green);
+				label_spell_options_4.setOutlineColor(Color::Black);
+				label_spell_options_5.setOutlineColor(Color::Black);
+			} else if (mousePos.y >= label_spell_options_4.getPosition().y - windowZero.y  && mousePos.y <= label_spell_options_4.getPosition().y + 0.045f*WY - windowZero.y)
+			{
+				if (buttonDelay < 0 && sf::Mouse::isButtonPressed(Mouse::Left))
+				{
+					buttonDelay = 0.1f;
+
+					show_spell_options = false;
+				}
+				label_spell_options_1.setOutlineColor(Color::Black);
+				label_spell_options_2.setOutlineColor(Color::Black);
+				label_spell_options_3.setOutlineColor(Color::Black);
+				label_spell_options_4.setOutlineColor(Color::Green);
+				label_spell_options_5.setOutlineColor(Color::Black);
+			} else if (mousePos.y >= label_spell_options_5.getPosition().y - windowZero.y  && mousePos.y <= label_spell_options_5.getPosition().y + 0.045f*WY - windowZero.y)
+			{
+				if (buttonDelay < 0 && sf::Mouse::isButtonPressed(Mouse::Left))
+				{
+					buttonDelay = 0.1f;
+
+					show_spell_options = false;
+				}
+				label_spell_options_1.setOutlineColor(Color::Black);
+				label_spell_options_2.setOutlineColor(Color::Black);
+				label_spell_options_3.setOutlineColor(Color::Black);
+				label_spell_options_4.setOutlineColor(Color::Black);
+				label_spell_options_5.setOutlineColor(Color::Green);
+			}
+			else
+			{
+				if (buttonDelay<0 && (sf::Mouse::isButtonPressed(Mouse::Left) || sf::Keyboard::isKeyPressed(controls[0]) || sf::Keyboard::isKeyPressed(controls[1]) || sf::Keyboard::isKeyPressed(controls[2]) || sf::Keyboard::isKeyPressed(controls[3])))
+				{
+					buttonDelay = 0.1f;
+					show_spell_options = false;
+				}
+				label_spell_options_1.setOutlineColor(Color::Black);
+				label_spell_options_2.setOutlineColor(Color::Black);
+				label_spell_options_3.setOutlineColor(Color::Black);
+				label_spell_options_4.setOutlineColor(Color::Black);
+				label_spell_options_5.setOutlineColor(Color::Black);
+			}
+		}
+		else
+		{
+			if (buttonDelay<0 && (sf::Mouse::isButtonPressed(Mouse::Left) || sf::Keyboard::isKeyPressed(controls[0]) || sf::Keyboard::isKeyPressed(controls[1]) || sf::Keyboard::isKeyPressed(controls[2]) || sf::Keyboard::isKeyPressed(controls[3])))
+			{
+				buttonDelay = 0.1f;
+				show_spell_options = false;
+			}
+		}
+	}
+
 	auto backpack = x->getBP();
 	auto info = x->getBPINFO();
 	getStats();
@@ -1117,26 +1318,35 @@ void HudComponent::setPosition()
 		label_wind.setPosition(wind_tree.getPosition() + Vector2f(0.02f*WX, 0.01f*WY));
 		label_earth.setPosition(earth_tree.getPosition() + Vector2f(0.02f*WX, 0.01f*WY));
 
-		spell_fire_1.setPosition(fire_tree.getPosition() + Vector2f(0.02f*WX, 0.05f*WY));
-		spell_fire_2.setPosition(fire_tree.getPosition() + Vector2f(0.02f*WX, 0.25f*WY));
-		spell_fire_3.setPosition(fire_tree.getPosition() + Vector2f(0.10f*WX, 0.05f*WY));
-		spell_fire_4.setPosition(fire_tree.getPosition() + Vector2f(0.10f*WX, 0.25f*WY));
-		spell_fire_5.setPosition(fire_tree.getPosition() + Vector2f(0.20f*WX, 0.15f*WY));
-		spell_water_1.setPosition(water_tree.getPosition() + Vector2f(0.02f*WX, 0.05f*WY));
-		spell_water_2.setPosition(water_tree.getPosition() + Vector2f(0.02f*WX, 0.25f*WY));
-		spell_water_3.setPosition(water_tree.getPosition() + Vector2f(0.10f*WX, 0.05f*WY));
-		spell_water_4.setPosition(water_tree.getPosition() + Vector2f(0.10f*WX, 0.25f*WY));
-		spell_water_5.setPosition(water_tree.getPosition() + Vector2f(0.20f*WX, 0.15f*WY));
-		spell_wind_1.setPosition(wind_tree.getPosition() + Vector2f(0.02f*WX, 0.05f*WY));
-		spell_wind_2.setPosition(wind_tree.getPosition() + Vector2f(0.02f*WX, 0.25f*WY));
-		spell_wind_3.setPosition(wind_tree.getPosition() + Vector2f(0.10f*WX, 0.05f*WY));
-		spell_wind_4.setPosition(wind_tree.getPosition() + Vector2f(0.10f*WX, 0.25f*WY));
-		spell_wind_5.setPosition(wind_tree.getPosition() + Vector2f(0.20f*WX, 0.15f*WY));
-		spell_earth_1.setPosition(earth_tree.getPosition() + Vector2f(0.02f*WX, 0.05f*WY));
-		spell_earth_2.setPosition(earth_tree.getPosition() + Vector2f(0.02f*WX, 0.25f*WY));
-		spell_earth_3.setPosition(earth_tree.getPosition() + Vector2f(0.10f*WX, 0.05f*WY));
-		spell_earth_4.setPosition(earth_tree.getPosition() + Vector2f(0.10f*WX, 0.25f*WY));
-		spell_earth_5.setPosition(earth_tree.getPosition() + Vector2f(0.20f*WX, 0.15f*WY));
+		spell_slots[0].setPosition(fire_tree.getPosition() + Vector2f(0.02f*WX, 0.05f*WY));
+		spell_slots[1].setPosition(fire_tree.getPosition() + Vector2f(0.02f*WX, 0.25f*WY));
+		spell_slots[2].setPosition(fire_tree.getPosition() + Vector2f(0.10f*WX, 0.05f*WY));
+		spell_slots[3].setPosition(fire_tree.getPosition() + Vector2f(0.10f*WX, 0.25f*WY));
+		spell_slots[4].setPosition(fire_tree.getPosition() + Vector2f(0.20f*WX, 0.15f*WY));
+		spell_slots[5].setPosition(water_tree.getPosition() + Vector2f(0.02f*WX, 0.05f*WY));
+		spell_slots[6].setPosition(water_tree.getPosition() + Vector2f(0.02f*WX, 0.25f*WY));
+		spell_slots[7].setPosition(water_tree.getPosition() + Vector2f(0.10f*WX, 0.05f*WY));
+		spell_slots[8].setPosition(water_tree.getPosition() + Vector2f(0.10f*WX, 0.25f*WY));
+		spell_slots[9].setPosition(water_tree.getPosition() + Vector2f(0.20f*WX, 0.15f*WY));
+		spell_slots[10].setPosition(wind_tree.getPosition() + Vector2f(0.02f*WX, 0.05f*WY));
+		spell_slots[11].setPosition(wind_tree.getPosition() + Vector2f(0.02f*WX, 0.25f*WY));
+		spell_slots[12].setPosition(wind_tree.getPosition() + Vector2f(0.10f*WX, 0.05f*WY));
+		spell_slots[13].setPosition(wind_tree.getPosition() + Vector2f(0.10f*WX, 0.25f*WY));
+		spell_slots[14].setPosition(wind_tree.getPosition() + Vector2f(0.20f*WX, 0.15f*WY));
+		spell_slots[15].setPosition(earth_tree.getPosition() + Vector2f(0.02f*WX, 0.05f*WY));
+		spell_slots[16].setPosition(earth_tree.getPosition() + Vector2f(0.02f*WX, 0.25f*WY));
+		spell_slots[17].setPosition(earth_tree.getPosition() + Vector2f(0.10f*WX, 0.05f*WY));
+		spell_slots[18].setPosition(earth_tree.getPosition() + Vector2f(0.10f*WX, 0.25f*WY));
+		spell_slots[19].setPosition(earth_tree.getPosition() + Vector2f(0.20f*WX, 0.15f*WY));
+
+		if (show_spell_options)
+		{
+			label_spell_options_1.setPosition(bg_spell_options.getPosition() + Vector2f(0.01f*WX, 0.01f*WY));
+			label_spell_options_2.setPosition(bg_spell_options.getPosition() + Vector2f(0.01f*WX, 0.06f*WY));
+			label_spell_options_3.setPosition(bg_spell_options.getPosition() + Vector2f(0.01f*WX, 0.11f*WY));
+			label_spell_options_4.setPosition(bg_spell_options.getPosition() + Vector2f(0.01f*WX, 0.16f*WY));
+			label_spell_options_5.setPosition(bg_spell_options.getPosition() + Vector2f(0.01f*WX, 0.21f*WY));
+		}
 	}
 
 }
