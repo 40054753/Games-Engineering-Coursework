@@ -106,6 +106,7 @@ void ItemGenerator::recreate_iron_helmet(bool equipped)
 	auto item = std::make_shared<Entity>();
 	auto it = item->addComponent<ItemComponent>();
 	item->setPosition({ 100,100 });
+	it->setPickedUp();
 	it->setID(0);
 	it->point(item);
 	it->setName("Iron Helmet");
@@ -145,6 +146,7 @@ void ItemGenerator::recreate_leaf(bool equipped)
 	it->point(item);
 	it->setName("Leaf");
 	it->setType(ARMOUR);
+	it->setPickedUp();
 	it->setDef(1);
 	it->getSprite().setTexture(itemsTexture);
 	it->getSprite().setTextureRect({ 16,192,16,16 });
@@ -178,6 +180,7 @@ void ItemGenerator::recreate_dagger(bool equipped)
 	it->setID(2);
 	it->point(item);
 	it->setName("Dagger");
+	it->setPickedUp();
 	it->setType(WEAPON);
 	it->setAtt(5);
 	it->getSprite().setTexture(itemsTexture);
@@ -212,6 +215,7 @@ void ItemGenerator::recreate_short_sword(bool equipped)
 	it->setID(3);
 	it->point(item);
 	it->setName("Short Sword");
+	it->setPickedUp();
 	it->setType(WEAPON);
 	it->setAtt(10);
 	it->getSprite().setTexture(itemsTexture);
@@ -247,6 +251,7 @@ void ItemGenerator::recreate_templar_sword(bool equipped)
 	it->point(item);
 	it->setName("Templar Sword");
 	it->setType(WEAPON);
+	it->setPickedUp();
 	it->setAtt(22);
 	it->getSprite().setTexture(itemsTexture);
 	it->getSprite().setTextureRect({ 32,112,16,16 });
@@ -280,6 +285,7 @@ void ItemGenerator::recreate_giant_sword(bool equipped)
 	it->setID(5);
 	it->point(item);
 	it->setName("Giant Sword");
+	it->setPickedUp();
 	it->setType(WEAPON);
 	it->setAtt(38);
 	it->getSprite().setTexture(itemsTexture);
@@ -315,6 +321,7 @@ void ItemGenerator::recreate_magic_sword(bool equipped)
 	it->point(item);
 	it->setName("Magic Sword");
 	it->setType(WEAPON);
+	it->setPickedUp();
 	it->setAtt(60);
 	it->getSprite().setTexture(itemsTexture);
 	it->getSprite().setTextureRect({ 192,112,16,16 });
@@ -349,6 +356,7 @@ void ItemGenerator::recreate_forbidden_item(bool equipped)
 	it->point(item);
 	it->setName("?");
 	it->setType(WEAPON);
+	it->setPickedUp();
 	it->setAtt(150);
 	it->getSprite().setTexture(itemsTexture);
 	it->getSprite().setTextureRect({ 192,128,16,16 });

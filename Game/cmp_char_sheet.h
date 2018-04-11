@@ -11,7 +11,7 @@ protected:
 	std::shared_ptr<Entity> boots;
 	std::shared_ptr<Entity> weapon;
 	std::shared_ptr<Entity> shield;
-	int selectedSpells[5] = { 0 ,1, 2, 3,4 };
+	int selectedSpells[5] = { 0 ,1, 2, 3, 4 };
 	std::vector <std::shared_ptr<Entity>> _backpack;
 	//////////////////////////////////SKILLS TO TRAIN/////////////////////////
 	float level_melee=0;
@@ -67,6 +67,7 @@ public:
 	std::string saveItems();
 	std::string saveLocation();
 	std::string saveControls();
+	std::string saveSpells();
 	void render() override;
 	void update(double dt) override;
 	

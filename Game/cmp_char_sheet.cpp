@@ -1,15 +1,17 @@
 #include "Game.h"
 #include "cmp_char_sheet.h"
 #include "cmp_items.h"
+#include "EventSystem.h"
+
 
 CharacterSheetComponent::CharacterSheetComponent(Entity *p) : Component(p)
 {
 	//////////////////////exp to progress befween levels
 	experience_thresholds[0] = 100;
 	experience_thresholds[1] = 200;
-	experience_thresholds[2] = 400;
-	experience_thresholds[3] = 500;
-	experience_thresholds[4] = 600;
+	experience_thresholds[2] = 300;
+	experience_thresholds[3] = 400;
+	experience_thresholds[4] = 500;
 	experience_thresholds[5] = 700;
 	experience_thresholds[6] = 800;
 	experience_thresholds[7] = 900;
@@ -122,6 +124,10 @@ std::string CharacterSheetComponent::saveControls()
 	}
 	return temp;
 }
+std::string CharacterSheetComponent::saveSpells()
+{
+	return std::to_string(selectedSpells[0]) + "," + std::to_string(selectedSpells[1]) + "," + std::to_string(selectedSpells[2]) + "," + std::to_string(selectedSpells[3]) + "," + std::to_string(selectedSpells[4]);
+}
 void CharacterSheetComponent::reset()
 {
 	for (auto n : _backpack)
@@ -178,31 +184,36 @@ void CharacterSheetComponent::update(double dt)
 	if(boots != nullptr)
 		if (!boots->is_forDeletion())
 			stat_speed = boots->GetComponent<ItemComponent>()->getSpd();
-
+	EventSystem* evs = EventSystem::getInstance();
 	if (experience_melee >= experience_thresholds[(int)level_melee] && level_melee<MAX_LEVEL)
 	{
 		experience_melee =  experience_melee - experience_thresholds[(int)level_melee];
 		level_melee++;
+		evs->switch_level_up();
 	}
 	if (experience_fire >= experience_thresholds[(int)level_fire] && level_fire<MAX_LEVEL)
 	{
 		experience_fire = experience_fire - experience_thresholds[(int)level_fire];
 		level_fire++;
+		evs->switch_level_up();
 	}
 	if (experience_water >= experience_thresholds[(int)level_water] && level_water<MAX_LEVEL)
 	{
 		experience_water = experience_water - experience_thresholds[(int)level_water];
 		level_water++;
+		evs->switch_level_up();
 	}
 	if (experience_wind >= experience_thresholds[(int)level_wind] && level_wind<MAX_LEVEL)
 	{
 		experience_wind = experience_wind - experience_thresholds[(int)level_wind];
 		level_wind++;
+		evs->switch_level_up();
 	}
 	if (experience_earth >= experience_thresholds[(int)level_earth] && level_earth<MAX_LEVEL)
 	{
 		experience_earth = experience_earth - experience_thresholds[(int)level_earth];
 		level_earth++;
+		evs->switch_level_up();
 	}
 }
 std::vector<std::string> CharacterSheetComponent::getBPINFO()

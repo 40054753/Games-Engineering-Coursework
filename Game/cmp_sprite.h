@@ -52,7 +52,6 @@ protected:
 	std::vector<sf::Text> damageArray;
 	float textTime = 0.4f;
 public:
-	void setScale();
 	DamageTextComponent() = delete;
 	explicit DamageTextComponent(Entity *p);
 	void setText(int x);
@@ -79,7 +78,6 @@ class EnemyHealthBarComponent : public Component {
 protected:
 	sf::RectangleShape hp;
 public:
-	void setScale();
 	EnemyHealthBarComponent() = delete;
 	explicit EnemyHealthBarComponent(Entity *p);
 	void update(double dt) override;

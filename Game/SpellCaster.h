@@ -25,4 +25,5 @@ public:
 	void cast_sonic_boom(sf::Vector2f location);//////2
 	void cast_earth_spike(sf::Vector2f location);//////3
 	void cast_sword_swing(sf::Vector2f location);//////4
+	void cast_dragon_breath(sf::Vector2f location);//////4
 };

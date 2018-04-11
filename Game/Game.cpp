@@ -23,7 +23,7 @@ using namespace sf;
 using namespace std;
 const int GHOSTS_COUNT = 4;
 Font font;
-Texture playerTexture, zombieTexture, spellsTexture, snowEffect, iconsTexture, itemsTexture, animatedSpellsTexture, swordSwingTexture;
+Texture playerTexture, zombieTexture,spell_icons, spellsTexture, snowEffect, iconsTexture, itemsTexture, animatedSpellsTexture, swordSwingTexture;
 Texture menuBg;
 sf::Sprite background;
 SoundBuffer buffer;
@@ -244,6 +244,7 @@ void MenuScene::update(double dt)
 			{
 				gameScene.reset(new GameScene());
 				gameScene->load();
+				evs->refresh();
 				activeScene = gameScene; //switch to game
 				std::cout << "Active Scene: " + std::to_string(activeScene->getID()) << std::endl;
 			}
@@ -484,6 +485,9 @@ void GameScene::load()
 	if (!iconsTexture.loadFromFile("res/img/gray_icons.png")) {
 		cout << "Cannot load img!" << endl;
 	}
+	if (!spell_icons.loadFromFile("res/img/spell_icons.png")) {
+		cout << "Cannot load img!" << endl;
+	}
 
 	ls::loadLevelFile("res/levels/example.txt", 25.0f * WX/1280);
 
@@ -491,7 +495,6 @@ void GameScene::load()
 	auto pl = std::make_shared<Entity>();
 	pl->addComponent<CharacterSheetComponent>();
 	auto mp = pl->addComponent<PlayerMovementComponent>();
-	mp->setSpeed(100.0f);
 	pl->addComponent<HealthComponent>();
 	auto s = pl->addComponent<CharacterSpriteComponent>();
 	s->getSprite().setTexture(playerTexture);

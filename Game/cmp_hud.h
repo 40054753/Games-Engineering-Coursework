@@ -79,11 +79,7 @@ protected:
 	sf::RectangleShape itemOptionsArea;
 	sf::Text itemOptionsEquip;
 	sf::Text itemOptionsDrop;
-
 	
-
-
-
 
 	/////////////STATS TEXT
 	sf::Text experience_levels;
@@ -103,6 +99,38 @@ protected:
 	sf::RectangleShape skill_tree;
 	sf::RectangleShape fire_tree;
 	sf::RectangleShape water_tree;
+	sf::RectangleShape wind_tree;
+	sf::RectangleShape earth_tree;
+
+	sf::Text label_fire, label_water, label_wind, label_earth;
+
+	sf::RectangleShape info_spells_area;
+	sf::Text info_spells_text;
+	sf::Sprite spell_slots[20];
+	sf::Sprite equipped_spells[5];
+	bool spell_available[20];
+	int spell_ids[20] = {0,5,-1,-1,-1, 1,-1,-1,-1,-1, 2,-1,-1,-1,-1, 3 ,-1,-1,-1,-1};
+	int id_to_slot[21] = { 0,   ///////////ID 0 = SLOT 0 ////// FIREBALL
+							5, ///////////ID 1 = SLOT 5 ////// Water gun
+							10, ///////////ID 2 = SLOT 10 ////// Sonic Boom
+							15, ///////////ID 3 = SLOT 15 ////// Earth spike
+							-1, ///////////ID 4                  SWORD SWING
+							1, ///////////ID 5 = SLOT 1 ////// Dragonbreath
+							5,
+							10,
+							15,
+							1,
+							0,
+							5,
+							10,
+							15,
+							1,
+							0,5,10,15,1,1 };
+	sf::Text label_spell_options_1, label_spell_options_2, label_spell_options_3, label_spell_options_4, label_spell_options_5;
+	sf::RectangleShape bg_spell_options;
+	std::vector<std::string> descriptions;
+	bool show_spell_info = false;
+	bool show_spell_options = false;
 	bool show_skill_tree = false;
 	bool hide_skill_tree = false;
 	float tree_sliderX = 0;
