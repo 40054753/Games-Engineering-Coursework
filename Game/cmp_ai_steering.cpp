@@ -1,4 +1,5 @@
 #include "cmp_ai_steering.h"
+#include "cmp_status.h"
 #include "SystemRenderer.h"
 #include <maths.h>
 
@@ -12,6 +13,13 @@ SteeringComponent::SteeringComponent(Entity * p, Entity* player)
 
 void SteeringComponent::update(double dt)
 {
+	auto slowed = _parent->GetComponent<StatusComponent>();
+	if (slowed->getSlowed()) {
+		_speed = 40.0f;
+	}
+	else {
+		_speed = 80.0f;
+	}
 	const auto mva = (float)(dt * _speed);
 	// If target (player) is within 300 pixels seek
 	if (length(_parent->getPosition() - _player->getPosition()) < 300.0f && length(_parent->getPosition() - _player->getPosition()) > 20.0f)

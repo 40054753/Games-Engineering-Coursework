@@ -64,7 +64,9 @@ class StatusTextComponent : public Component {
 protected:
 	sf::Text statusText;
 	std::vector<sf::Text> statusArray;
-	float blindTextTime = 3.0f;
+	float blindTextTime = 0.5f;
+	float slowTextTime = 0.5f;
+	float burnTextTime = 0.5f;
 public:
 	void setScale();
 	StatusTextComponent() = delete;
@@ -74,6 +76,7 @@ public:
 	void render() override;
 
 };
+
 class EnemyHealthBarComponent : public Component {
 protected:
 	sf::RectangleShape hp;

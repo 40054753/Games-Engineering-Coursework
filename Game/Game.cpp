@@ -386,7 +386,6 @@ void GameScene::respawn()
 		ghost->addComponent<StatusComponent>();
 		p->setLevel(0);
 		ghost->addComponent<SteeringComponent>(player.get());
-		std::cout << player.get()->getPosition().x;
 		_ents.list.push_back(ghost);
 		ghosts.push_back(ghost);
 		//eatingEnts.push_back(ghost);       ///ghosts can eat

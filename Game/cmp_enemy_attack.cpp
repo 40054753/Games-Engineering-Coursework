@@ -40,7 +40,6 @@ void EnemyAttackComponent::update(double dt)
 		{
 			auto status = _parent->GetComponent<StatusComponent>();
 			bool blindStatus = status->getBlinded();
-			std::cout << blindStatus;
 			if (!blindStatus) {
 				auto hp = player->GetComponent<HealthComponent>();
 				auto d = player->GetComponent<PlayerMovementComponent>();

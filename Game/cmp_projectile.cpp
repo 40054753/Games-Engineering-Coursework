@@ -55,13 +55,31 @@ void ProjectileComponent::update(double dt)
 			d->push((g->getPosition() - _parent->getPosition()));
 		}
 		if (blind) {
+			auto blindcmp = g->GetComponent<StatusComponent>();
+			blindcmp->setBlinded();
+
 			auto blindText = std::make_shared<Entity>();
 			auto stext = blindText->addComponent<StatusTextComponent>();
 			blindText->setPosition(g->getPosition());
 			stext->setText("Blinded!");
 			gameScene->getEnts().push_back(blindText);
-			auto blindcmp = g->GetComponent<StatusComponent>();
-			blindcmp->setBlinded(true);
+		}
+		if (slow) {
+			auto slowcmp = g->GetComponent<StatusComponent>();
+			slowcmp->setSlowed();
+
+			//insertslowtext
+			auto slowText = std::make_shared<Entity>();
+			auto stext = slowText->addComponent<StatusTextComponent>();
+			slowText->setPosition(g->getPosition());
+			stext->setText("Slowed!");
+			gameScene->getEnts().push_back(slowText);
+		}
+		if (burn) {
+			auto burncmp = g->GetComponent<StatusComponent>();
+			burncmp->setBurning();
+
+			//insert burn text (maybe just add a damage text component or something i duno)
 		}
 		if(!finishAnimation)
 		_parent->setForDelete();

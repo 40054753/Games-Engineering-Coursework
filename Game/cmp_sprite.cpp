@@ -2,9 +2,9 @@
 #include "SystemRenderer.h"
 #include <iostream>
 #include "cmp_actor_movement.h"
+#include "cmp_status.h"
 #include "Game.h"
 #include "cmp_health.h"
-#include "cmp_status.h"
 using namespace sf;
 ShapeComponent::ShapeComponent(Entity *p) : Component(p), _shape(std::make_shared<sf::CircleShape>()) {}
 
@@ -201,15 +201,28 @@ void StatusTextComponent::setText(std::string x)
 }
 void StatusTextComponent::update(double dt)
 {
-	auto status = _parent->GetComponent<StatusComponent>();
-	statusText.setPosition(_parent->getPosition() + Vector2f(-39.0f*WX / 1280, -50.0f*WY / 720));
-	auto blinded = "Blinded";
-	setText(blinded);
-	blindTextTime -= dt;
-	if (blindTextTime < 0) {
-		_parent->setForDelete();
+	if (statusText.getString() == "Blinded!") {
+		blindTextTime -= dt;
+		statusText.setPosition(_parent->getPosition() + Vector2f(-14.0f*WX / 1280, -75.0f*WY / 720));
+		if (blindTextTime < 0) {
+			_parent->setForDelete();
+		}
 	}
 
+	if (statusText.getString() == "Slowed!") {
+		slowTextTime -= dt;
+		statusText.setPosition(_parent->getPosition() + Vector2f(-14.0f*WX / 1280, -75.0f*WY / 720));
+		if (slowTextTime < 0) {
+			_parent->setForDelete();
+		}
+	}
+	if (statusText.getString() == "Burning!") {
+		burnTextTime -= dt;
+		statusText.setPosition(_parent->getPosition() + Vector2f(-14.0f*WX / 1280, -75.0f*WY / 720));
+		if (burnTextTime < 0) {
+			_parent->setForDelete();
+		}
+	}
 }
 void StatusTextComponent::render()
 {
