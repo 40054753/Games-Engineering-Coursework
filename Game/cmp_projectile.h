@@ -10,12 +10,14 @@ protected:
 	float damage = 30;
 	int type = 1;
 	bool knockback = false;
+	bool blind = false;
 	bool finishAnimation = false;
 	float timer = 0.1f;
 public:
 	void setTimer(float t) { timer = t; }
 	void finishAnimationFirst() { finishAnimation = true; }
 	void addKnockback() { knockback = true; }
+	void addBlind() { blind = true; }
 	sf::Text damageText;
 	std::vector<sf::Text> damageArray;
 	explicit ProjectileComponent(Entity *p);

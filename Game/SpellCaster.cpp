@@ -140,6 +140,7 @@ void SpellCaster::cast_earth_spike(sf::Vector2f location)
 		auto pr = bullet->addComponent<ProjectileMovementComponent>();
 		bullet->setFace(player->getFace());
 		auto c2 = bullet->addComponent<ProjectileComponent>();
+		c2->addBlind();
 		c2->setEntities(_entities);
 		auto dmg = player->GetComponent<CharacterSheetComponent>();
 		c2->setDamage((dmg->getLevelEarth()*8.0f) + 20.0f);

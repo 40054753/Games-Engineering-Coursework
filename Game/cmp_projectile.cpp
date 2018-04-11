@@ -5,6 +5,7 @@
 #include "SystemRenderer.h"
 #include "cmp_sprite.h"
 #include "cmp_char_sheet.h"
+#include "cmp_status.h"
 #include "EventSystem.h"
 
 EventSystem* events = EventSystem::getInstance();
@@ -52,6 +53,15 @@ void ProjectileComponent::update(double dt)
 		{
 			auto d = g->GetComponent<ActorMovementComponent>();
 			d->push((g->getPosition() - _parent->getPosition()));
+		}
+		if (blind) {
+			auto blindText = std::make_shared<Entity>();
+			auto stext = blindText->addComponent<StatusTextComponent>();
+			blindText->setPosition(g->getPosition());
+			stext->setText("Blinded!");
+			gameScene->getEnts().push_back(blindText);
+			auto blindcmp = g->GetComponent<StatusComponent>();
+			blindcmp->setBlinded(true);
 		}
 		if(!finishAnimation)
 		_parent->setForDelete();

@@ -14,6 +14,7 @@
 #include "cmp_ai_steering.h"
 #include "EventSystem.h"
 #include "SpellCaster.h"
+#include "cmp_status.h"
 #include <string>
 
 
@@ -381,6 +382,7 @@ void GameScene::respawn()
 		ghost->addComponent<HealthComponent>();
 		ghost->addComponent<EnemyHealthBarComponent>();
 		auto p = ghost->addComponent<EnemyAttackComponent>();
+		ghost->addComponent<StatusComponent>();
 		p->setLevel(0);
 		ghost->addComponent<SteeringComponent>(player.get());
 		std::cout << player.get()->getPosition().x;
@@ -401,6 +403,7 @@ void GameScene::respawn()
 	auto p = ghost->addComponent<EnemyAttackComponent>();
 	p->setLevel(0);
 	ghost->addComponent<EnemyHealthBarComponent>();
+	ghost->addComponent<StatusComponent>();
 	_ents.list.push_back(ghost);
 	ghosts.push_back(ghost);
 	/////////////////////////////////////////////////////////////////EXAMPLE NPC/////////////////////////////////////

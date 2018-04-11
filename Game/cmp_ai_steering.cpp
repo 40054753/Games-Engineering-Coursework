@@ -14,7 +14,7 @@ void SteeringComponent::update(double dt)
 {
 	const auto mva = (float)(dt * _speed);
 	// If target (player) is within 300 pixels seek
-	if (length(_parent->getPosition() - _player->getPosition()) < 300.0f)
+	if (length(_parent->getPosition() - _player->getPosition()) < 300.0f && length(_parent->getPosition() - _player->getPosition()) > 20.0f)
 	{
 		double pi = 3.14159265359;
 		auto output = _seek.getSteering();

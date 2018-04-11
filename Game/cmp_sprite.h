@@ -60,6 +60,21 @@ public:
 	void render() override;
 
 };
+
+class StatusTextComponent : public Component {
+protected:
+	sf::Text statusText;
+	std::vector<sf::Text> statusArray;
+	float blindTextTime = 3.0f;
+public:
+	void setScale();
+	StatusTextComponent() = delete;
+	explicit StatusTextComponent(Entity *p);
+	void setText(std::string x);
+	void update(double dt) override;
+	void render() override;
+
+};
 class EnemyHealthBarComponent : public Component {
 protected:
 	sf::RectangleShape hp;

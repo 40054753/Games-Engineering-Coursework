@@ -4,6 +4,7 @@
 #include "cmp_actor_movement.h"
 #include "Game.h"
 #include "cmp_health.h"
+#include "cmp_status.h"
 using namespace sf;
 ShapeComponent::ShapeComponent(Entity *p) : Component(p), _shape(std::make_shared<sf::CircleShape>()) {}
 
@@ -183,6 +184,36 @@ void DamageTextComponent::update(double dt)
 void DamageTextComponent::render()
 {
 	Renderer::queue(&damageText);
+}
+
+StatusTextComponent::StatusTextComponent(Entity *p) : Component(p)
+{
+	statusText.setFont(font);
+	statusText.setCharacterSize(15);
+	statusText.setScale(WX / 1280, WY / 720);
+	statusText.setColor(sf::Color::Red);
+
+
+}
+void StatusTextComponent::setText(std::string x)
+{
+	statusText.setString(x);
+}
+void StatusTextComponent::update(double dt)
+{
+	auto status = _parent->GetComponent<StatusComponent>();
+	statusText.setPosition(_parent->getPosition() + Vector2f(-39.0f*WX / 1280, -50.0f*WY / 720));
+	auto blinded = "Blinded";
+	setText(blinded);
+	blindTextTime -= dt;
+	if (blindTextTime < 0) {
+		_parent->setForDelete();
+	}
+
+}
+void StatusTextComponent::render()
+{
+	Renderer::queue(&statusText);
 }
 	
 sf::Sprite& StaticSpriteComponent::getSprite() const {
