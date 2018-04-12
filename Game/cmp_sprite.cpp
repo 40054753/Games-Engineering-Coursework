@@ -2,6 +2,7 @@
 #include "SystemRenderer.h"
 #include <iostream>
 #include "cmp_actor_movement.h"
+#include "cmp_status.h"
 #include "Game.h"
 #include "cmp_health.h"
 using namespace sf;
@@ -183,6 +184,49 @@ void DamageTextComponent::update(double dt)
 void DamageTextComponent::render()
 {
 	Renderer::queue(&damageText);
+}
+
+StatusTextComponent::StatusTextComponent(Entity *p) : Component(p)
+{
+	statusText.setFont(font);
+	statusText.setCharacterSize(15);
+	statusText.setScale(WX / 1280, WY / 720);
+	statusText.setColor(sf::Color::Red);
+
+
+}
+void StatusTextComponent::setText(std::string x)
+{
+	statusText.setString(x);
+}
+void StatusTextComponent::update(double dt)
+{
+	if (statusText.getString() == "Blinded!") {
+		blindTextTime -= dt;
+		statusText.setPosition(_parent->getPosition() + Vector2f(-14.0f*WX / 1280, -75.0f*WY / 720));
+		if (blindTextTime < 0) {
+			_parent->setForDelete();
+		}
+	}
+
+	if (statusText.getString() == "Slowed!") {
+		slowTextTime -= dt;
+		statusText.setPosition(_parent->getPosition() + Vector2f(-14.0f*WX / 1280, -75.0f*WY / 720));
+		if (slowTextTime < 0) {
+			_parent->setForDelete();
+		}
+	}
+	if (statusText.getString() == "Burning!") {
+		burnTextTime -= dt;
+		statusText.setPosition(_parent->getPosition() + Vector2f(-14.0f*WX / 1280, -75.0f*WY / 720));
+		if (burnTextTime < 0) {
+			_parent->setForDelete();
+		}
+	}
+}
+void StatusTextComponent::render()
+{
+	Renderer::queue(&statusText);
 }
 	
 sf::Sprite& StaticSpriteComponent::getSprite() const {

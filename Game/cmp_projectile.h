@@ -13,6 +13,9 @@ protected:
 	float range = 30;
 	int type = 1;
 	bool knockback = false;
+	bool blind = false;
+	bool burn = false;
+	bool slow = false;
 	bool finishAnimation = false;
 	float timer = 0.1f;
 public:
@@ -22,6 +25,9 @@ public:
 	void setTimer(float t) { timer = t; }
 	void finishAnimationFirst() { finishAnimation = true; }
 	void addKnockback() { knockback = true; }
+	void addBlind() { blind = true; }
+	void addBurn() { burn = true; }
+	void addSlow() { slow = true; }
 	sf::Text damageText;
 	std::vector<sf::Text> damageArray;
 	explicit ProjectileComponent(Entity *p);

@@ -5,6 +5,7 @@
 #include "SystemRenderer.h"
 #include "cmp_sprite.h"
 #include "cmp_char_sheet.h"
+#include "cmp_status.h"
 #include "EventSystem.h"
 
 EventSystem* events = EventSystem::getInstance();
@@ -54,11 +55,48 @@ void ProjectileComponent::update(double dt)
 			auto d = g->GetComponent<ActorMovementComponent>();
 			d->push((g->getPosition() - _parent->getPosition()));
 		}
+<<<<<<< HEAD
 		if (!indestructable)
 		{
 			if (!finishAnimation)
 				_parent->setForDelete();
 		}
+=======
+		if (blind) {
+			auto blindcmp = g->GetComponent<StatusComponent>();
+			blindcmp->setBlinded();
+
+			auto blindText = std::make_shared<Entity>();
+			auto stext = blindText->addComponent<StatusTextComponent>();
+			blindText->setPosition(g->getPosition());
+			stext->setText("Blinded!");
+			gameScene->getEnts().push_back(blindText);
+		}
+		if (slow) {
+			auto slowcmp = g->GetComponent<StatusComponent>();
+			slowcmp->setSlowed();
+
+			//insertslowtext
+			auto slowText = std::make_shared<Entity>();
+			auto stext = slowText->addComponent<StatusTextComponent>();
+			slowText->setPosition(g->getPosition());
+			stext->setText("Slowed!");
+			gameScene->getEnts().push_back(slowText);
+		}
+		if (burn) {
+			auto burncmp = g->GetComponent<StatusComponent>();
+			burncmp->setBurning();
+
+			//insert burn text (maybe just add a damage text component or something i duno)
+			auto burnText = std::make_shared<Entity>();
+			auto stext = burnText->addComponent<StatusTextComponent>();
+			burnText->setPosition(g->getPosition());
+			stext->setText("Burning!");
+			gameScene->getEnts().push_back(burnText);
+		}
+		if(!finishAnimation)
+		_parent->setForDelete();
+>>>>>>> 7beab659b1d8d6194ba001e2fc3fdf96d5fe4b29
 	}
 	
 	

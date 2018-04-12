@@ -3,6 +3,7 @@
 #include "cmp_health.h"
 #include "cmp_actor_movement.h"
 #include "cmp_projectile.h"
+#include "cmp_status.h"
 #include "ItemGenerator.h"
 #include "cmp_sprite.h"
 #include "SystemRenderer.h"
@@ -37,12 +38,15 @@ void EnemyAttackComponent::update(double dt)
 		///////////////////////////////////////////////////////WHEN PLAYER TOUCHES THE ENEMY//////////////////////////////////
 		if (length(_parent->getPosition() - player->getPosition()) < 20.0f*WX/1280)
 		{
-			auto hp = player->GetComponent<HealthComponent>();
-			auto d = player->GetComponent<PlayerMovementComponent>();
-			d->push((player->getPosition() - _parent->getPosition()));
-			auto pp = player->GetComponent<CharacterSpriteComponent>();
-			hp->reduceHealth(30);
-
+			auto status = _parent->GetComponent<StatusComponent>();
+			bool blindStatus = status->getBlinded();
+			if (!blindStatus) {
+				auto hp = player->GetComponent<HealthComponent>();
+				auto d = player->GetComponent<PlayerMovementComponent>();
+				d->push((player->getPosition() - _parent->getPosition()));
+				auto pp = player->GetComponent<CharacterSpriteComponent>();
+				hp->reduceHealth(30);
+			}
 		}
 	}
 	
