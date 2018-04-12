@@ -32,6 +32,7 @@ std::shared_ptr<Entity> MonsterSpawner::spawn_zombie()
 	s->getSprite().setOrigin(8.0f, 12.0f);
 	ghost->addComponent<HealthComponent>();
 	ghost->addComponent<EnemyHealthBarComponent>();
+	ghost->addComponent<StatusComponent>();
 	auto p = ghost->addComponent<EnemyAttackComponent>();
 	p->setLevel(0);
 	ghost->addComponent<SteeringComponent>(player.get());
