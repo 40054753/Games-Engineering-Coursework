@@ -30,7 +30,7 @@ void StatusComponent::update(double dt)
 	}
 	if (burning == true) {
 		burnTimer -= dt;
-		if (burnTimer -= dt) {
+		if (burnTimer <= 0) {
 			burning = false;
 			burnTimer = 5.0f;
 		}

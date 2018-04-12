@@ -1,4 +1,5 @@
 #include "cmp_health.h"
+#include "cmp_status.h"
 
 
 
@@ -32,6 +33,22 @@ void HealthComponent::update(double dt)
 			stamina += 15;
 		recoveryTimer = recoveryDelay;
 	}
+
+	if (burnTimer <= 0) {
+		burnTimer = 5.0f; //need to search for dot implementation
+	}
+
+	auto statuscmp = _parent->GetComponent<StatusComponent>();
+	if (statuscmp->getBurning() && burnTimer >= 0) { //if status is burning, and timer is good
+		std::cout << health << std::endl;
+		burnTimer -= dt; //lower burn timer
+		dotTick -= dt; //lower dot tick
+		if (dotTick <= 0.0f) { //if it ticks
+			reduceHealth(maxHealth * 0.01f);
+			dotTick = 1.0f;
+		}
+	}
+
 }
 void HealthComponent::reduceHealth(float x)
 {

@@ -12,6 +12,8 @@ protected:
 	float mana;
 	float recoveryDelay = 3.0f;
 	float recoveryTimer = 3.0f;
+	float burnTimer = 5.0f;
+	float dotTick = 1.0f;
 public:
 	explicit HealthComponent(Entity *p);
 	HealthComponent() = delete;

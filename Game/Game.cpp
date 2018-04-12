@@ -504,6 +504,7 @@ void GameScene::load()
 	gameScene->getEnts().push_back(pl);
 	player = pl;
 	pl->addComponent<AttackComponent>();
+	pl->addComponent<StatusComponent>();
 	auto hd = make_shared<Entity>();
 	auto hb = hd->addComponent<HudComponent>();
 	hud = hd;

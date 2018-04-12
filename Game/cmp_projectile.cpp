@@ -80,6 +80,11 @@ void ProjectileComponent::update(double dt)
 			burncmp->setBurning();
 
 			//insert burn text (maybe just add a damage text component or something i duno)
+			auto burnText = std::make_shared<Entity>();
+			auto stext = burnText->addComponent<StatusTextComponent>();
+			burnText->setPosition(g->getPosition());
+			stext->setText("Burning!");
+			gameScene->getEnts().push_back(burnText);
 		}
 		if(!finishAnimation)
 		_parent->setForDelete();
