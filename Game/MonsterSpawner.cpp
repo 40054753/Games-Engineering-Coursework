@@ -30,6 +30,7 @@ std::shared_ptr<Entity> MonsterSpawner::spawn_zombie()
 	s->getSprite().setTextureRect({ 0,0,16,21 });
 	s->getSprite().setScale({ 2.0f*WX / 1280, 2.0f*WY / 720 });
 	s->getSprite().setOrigin(8.0f, 12.0f);
+	s->setDefaultFrames();
 	ghost->addComponent<HealthComponent>();
 	ghost->addComponent<EnemyHealthBarComponent>();
 	ghost->addComponent<StatusComponent>();
@@ -48,6 +49,7 @@ std::shared_ptr<Entity> MonsterSpawner::spawn_NPC_WELCOME(sf::Vector2f loc)
 	n->getSprite().setTextureRect({ 0,0,16,21 });
 	n->getSprite().setScale({ 2.0f*WX / 1280, 2.0f*WY / 720 });
 	n->getSprite().setOrigin(8.0f, 12.0f);
+	n->setDefaultFrames();
 	npc->setPosition(loc);
 	auto d = npc->addComponent<NPCComponent>();
 	d->setDialogue("HELLO THERE, ADVENTURER! HELLO THERE, \nADVENTURER! HELLO THERE, ADVENTURER! ");

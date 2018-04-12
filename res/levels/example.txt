@@ -1,6 +1,6 @@
 wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww
-w+    +                                          +    +w
-w+    +                                          +    +w
+w+    +  n                                       +    +w
+w+    +                    n                     +    +w
 w+    +                                          +    +w
 w+    +     n                                    +    +w
 w+    +                                 n        +    +w
@@ -9,18 +9,18 @@ w+    +                                          +    +w
 w+    +                                          +    +w
 w+    +                                          +    +w
 w+    +                                wwwwwwwwwwwwwwwww
-w+    +                     s          w                
+w+    +  n                  s          w                
 w+    +                                w                
 w+    +                                wwwwwwwwwwwwwwwww
 w+    +                                          +    +w
 w+    +                                          +    +w
-w+    +         n                                +    +w
 w+    +                                          +    +w
 w+    +                                          +    +w
+w+    +      n                                   +    +w
 w+    +                                          +    +w
 w+    +                                          +    +w
 w+    +                                   n      +    +w
-w+    +    n                                     +    +w
-w+    +                                          +    +w
+w+    +    n               n                     +    +w
+w+    +                                     n    +    +w
 w+    +                                          +    +w
 wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww

@@ -24,6 +24,10 @@ sf::Shape& ShapeComponent::getShape() const {
 CharacterSpriteComponent::CharacterSpriteComponent(Entity *p) : Component(p), _sprite(std::make_shared<sf::Sprite>())
 {
 	frame = 0;
+	
+}
+void CharacterSpriteComponent::setDefaultFrames()
+{
 	walkingAnimationDown.push_back(sf::IntRect(0, 0, 16, 21));
 	walkingAnimationDown.push_back(sf::IntRect(16, 0, 16, 21));
 	walkingAnimationDown.push_back(sf::IntRect(32, 0, 16, 21));
@@ -33,7 +37,7 @@ CharacterSpriteComponent::CharacterSpriteComponent(Entity *p) : Component(p), _s
 	walkingAnimationUp.push_back(sf::IntRect(16, 42, 16, 21));
 	walkingAnimationUp.push_back(sf::IntRect(32, 42, 16, 21));
 	walkingAnimationUp.push_back(sf::IntRect(48, 42, 16, 21));
-	
+
 	walkingAnimationRight.push_back(sf::IntRect(0, 22, 16, 21));
 	walkingAnimationRight.push_back(sf::IntRect(16, 22, 16, 21));
 	walkingAnimationRight.push_back(sf::IntRect(32, 22, 16, 21));
@@ -44,7 +48,6 @@ CharacterSpriteComponent::CharacterSpriteComponent(Entity *p) : Component(p), _s
 	walkingAnimationLeft.push_back(sf::IntRect(32, 65, 16, 21));
 	walkingAnimationLeft.push_back(sf::IntRect(48, 65, 16, 21));
 }
-
 void CharacterSpriteComponent::update(double dt)
 {
 	

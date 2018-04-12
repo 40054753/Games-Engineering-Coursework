@@ -32,6 +32,11 @@ protected:
 	std::vector<sf::IntRect> walkingAnimationRight;
 	std::vector<sf::IntRect> walkingAnimationLeft;
 public:
+	void setDefaultFrames();
+	void addFrameUp(sf::IntRect x) {walkingAnimationUp.push_back(x);}
+	void addFrameDown(sf::IntRect x) { walkingAnimationDown.push_back(x); }
+	void addFrameRight(sf::IntRect x) { walkingAnimationRight.push_back(x); }
+	void addFrameLeft(sf::IntRect x) { walkingAnimationLeft.push_back(x); }
 	CharacterSpriteComponent() = delete;
 	explicit CharacterSpriteComponent(Entity *p);
 	

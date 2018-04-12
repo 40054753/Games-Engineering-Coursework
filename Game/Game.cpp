@@ -376,24 +376,7 @@ void GameScene::respawn()
 	{		
 		ghosts.push_back(spawner->spawn_zombie());				
 	}
-	///////standing enemy
-	auto ghost = make_shared<Entity>();
-	ghost->addComponent<ActorMovementComponent>();
-	auto s = ghost->addComponent<CharacterSpriteComponent>();
-	s->getSprite().setTexture(zombieTexture);
-	s->getSprite().setTextureRect({ 0,0,16,21 });
-	s->getSprite().setScale({ 2.0f*WX / 1280, 2.0f*WY / 720 });
-	s->getSprite().setOrigin(8.0f, 12.0f);
-	ghost->addComponent<HealthComponent>();
-	auto p = ghost->addComponent<EnemyAttackComponent>();
-	p->setLevel(0);
-	ghost->addComponent<EnemyHealthBarComponent>();
-	ghost->addComponent<StatusComponent>();
-	_ents.list.push_back(ghost);
-	ghosts.push_back(ghost);
-	/////////////////////////////////////////////////////////////////EXAMPLE NPC/////////////////////////////////////
 
-	
 
 	auto att = _ents.list[0]->GetComponent<AttackComponent>();
 	att->setEntities(ghosts);
@@ -478,6 +461,7 @@ void GameScene::load()
 	auto s = pl->addComponent<CharacterSpriteComponent>();
 	s->getSprite().setTexture(playerTexture);
 	s->getSprite().setTextureRect({ 0,0,16,21 });
+	s->setDefaultFrames();
 	s->getSprite().setScale({ 2.0f*WX/1280, 2.0f*WY/720 });
 	s->getSprite().setOrigin({ 8.0f, 12.0f });
 	s->getSprite().setPosition({ 100.0f, 100.0f });

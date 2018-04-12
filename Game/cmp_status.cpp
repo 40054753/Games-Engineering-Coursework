@@ -21,7 +21,7 @@ void StatusComponent::render()
 void StatusComponent::update(double dt)
 {
 	////timers for status
-	if (blinded == true) {
+	if (blinded) {
 		blindTimer -= dt;
 		if (blindTimer <= 0)
 		{
@@ -31,7 +31,7 @@ void StatusComponent::update(double dt)
 			s->getSprite().setColor(sf::Color::White);
 		}
 	}
-	if (burning == true) {
+	if (burning) {
 		burnDamageTimer -= dt;
 		if (burnDamageTimer < 0)
 		{
@@ -52,7 +52,7 @@ void StatusComponent::update(double dt)
 			s->getSprite().setColor(sf::Color::White);
 		}
 	}
-	if (slowed == true) {
+	if (slowed) {
 		slowTimer -= dt;
 		if (slowTimer < 0) {
 			slowed = false;
