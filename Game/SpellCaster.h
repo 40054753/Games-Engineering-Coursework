@@ -25,5 +25,9 @@ public:
 	void cast_sonic_boom(sf::Vector2f location);//////2
 	void cast_earth_spike(sf::Vector2f location);//////3
 	void cast_sword_swing(sf::Vector2f location);//////4
-	void cast_dragon_breath(sf::Vector2f location);//////4
+	void cast_dragon_breath(sf::Vector2f location);//////5
+	void cast_ice_barrage(sf::Vector2f location);///////6
+	void cast_wind_scythe(sf::Vector2f location);///////7
+	void cast_rolling_boulder(sf::Vector2f location);///////7
+	void cast_explosion(sf::Vector2f location);//////////8
 };

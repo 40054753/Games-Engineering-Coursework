@@ -5,7 +5,6 @@
 #include "cmp_sprite.h"
 #include "cmp_health.h"
 #include "cmp_actor_movement.h"
-#include "cmp_pickups.h"
 #include "cmp_attack.h"
 #include "cmp_npc.h"
 #include "cmp_hud.h"
@@ -15,14 +14,14 @@
 #include "EventSystem.h"
 #include "SpellCaster.h"
 #include <string>
-
-
+#include "MonsterSpawner.h"
+#include "cmp_pickups.h"
 
 using namespace sf;
 using namespace std;
 const int GHOSTS_COUNT = 4;
 Font font;
-Texture playerTexture, zombieTexture,spell_icons, spellsTexture, snowEffect, iconsTexture, itemsTexture, animatedSpellsTexture, swordSwingTexture;
+Texture playerTexture, tile_textures, zombieTexture,spell_icons, spellsTexture, snowEffect, iconsTexture, itemsTexture, animatedSpellsTexture, swordSwingTexture;
 Texture menuBg;
 sf::Sprite background;
 SoundBuffer buffer;
@@ -31,7 +30,7 @@ RectangleShape rect;
 Vector2i mousePos;
 int resolution_index = 0;
 bool fullscreen = false;
-sf::Keyboard::Key controls[12] =
+sf::Keyboard::Key controls[13] =
 {
 	sf::Keyboard::W,
 	sf::Keyboard::S,
@@ -44,7 +43,8 @@ sf::Keyboard::Key controls[12] =
 	sf::Keyboard::Num4,
 	sf::Keyboard::Num5,
 	sf::Keyboard::I,
-	sf::Keyboard::Escape
+	sf::Keyboard::Escape,
+	sf::Keyboard::E
 };
 std::string codes[101] = {
 
@@ -356,6 +356,7 @@ shared_ptr<Entity> makeNibble(const Vector2f& nl, Color col, float size)
 }
 void GameScene::respawn()
 {
+	MonsterSpawner* spawner = MonsterSpawner::getInstance();
 	for (auto n : ghosts)
 	{
 		n->setForDelete();
@@ -372,22 +373,9 @@ void GameScene::respawn()
 
 	for (int i = 0; i < GHOSTS_COUNT; ++i)
 	{
-		auto ghost = make_shared<Entity>();
-		ghost->addComponent<ActorMovementComponent>();
-		auto s = ghost->addComponent<CharacterSpriteComponent>();
-		s->getSprite().setTexture(zombieTexture);
-		s->getSprite().setTextureRect({ 0,0,16,21 });
-		s->getSprite().setScale({ 2.0f*WX / 1280, 2.0f*WY / 720 });
-		s->getSprite().setOrigin(8.0f, 12.0f);
-		ghost->addComponent<HealthComponent>();
-		ghost->addComponent<EnemyHealthBarComponent>();
-		auto p = ghost->addComponent<EnemyAttackComponent>();
-		p->setLevel(0);
-		ghost->addComponent<SteeringComponent>(player.get());
-		std::cout << player.get()->getPosition().x;
-		_ents.list.push_back(ghost);
-		ghosts.push_back(ghost);
-		//eatingEnts.push_back(ghost);       ///ghosts can eat
+		
+		ghosts.push_back(spawner->spawn_zombie());
+		
 		
 	}
 	///////standing enemy
@@ -405,16 +393,8 @@ void GameScene::respawn()
 	_ents.list.push_back(ghost);
 	ghosts.push_back(ghost);
 	/////////////////////////////////////////////////////////////////EXAMPLE NPC/////////////////////////////////////
-	auto npc = make_shared<Entity>();
-	auto n = npc->addComponent<CharacterSpriteComponent>();
-	n->getSprite().setTexture(playerTexture);
-	n->getSprite().setTextureRect({ 0,0,16,21 });
-	n->getSprite().setScale({ 2.0f*WX / 1280, 2.0f*WY/720 });
-	n->getSprite().setOrigin(8.0f, 12.0f);
-	auto d = npc->addComponent<NPCComponent>();
-	d->setDialogue("HELLO THERE, ADVENTURER! HELLO THERE, \nADVENTURER! HELLO THERE, ADVENTURER! ");
-	_ents.list.push_back(npc);
-	npcs.push_back(npc);
+
+	
 
 	auto att = _ents.list[0]->GetComponent<AttackComponent>();
 	att->setEntities(ghosts);
@@ -432,7 +412,7 @@ void GameScene::respawn()
 	for (int i = 1; i < _ents.list.size(); ++i) {
 		_ents.list[i]->setPosition(ghost_spawns[rand() % ghost_spawns.size()]);
 	}
-	
+	npcs.push_back(spawner->spawn_NPC_WELCOME({ 100,100 }));
 	auto nibbleLoc = ls::findTiles(ls::EMPTY);
 	for (const auto &nl : nibbleLoc)
 	{
@@ -483,6 +463,9 @@ void GameScene::load()
 		cout << "Cannot load img!" << endl;
 	}
 	if (!spell_icons.loadFromFile("res/img/spell_icons.png")) {
+		cout << "Cannot load img!" << endl;
+	}
+	if (!tile_textures.loadFromFile("res/img/spell_icons.png")) {
 		cout << "Cannot load img!" << endl;
 	}
 
@@ -608,14 +591,14 @@ void OptionsScene::load()
 	right_list.setOutlineThickness(3.0f);
 
 	right_list2.setPosition(rect.getPosition() + Vector2f(0.6f*WX, 0.1f*WY));
-	right_list2.setString("Spell 5\n\nInventory\n\nCancel");
+	right_list2.setString("Spell 5\n\nInventory\n\nCancel\n\nInteract");
 	right_list2.setFont(font);
 	right_list2.setCharacterSize(20.0f);
 	right_list2.setScale(WX / 1280, WY / 720);
 	right_list2.setColor(sf::Color::White);
 	right_list2.setOutlineColor(sf::Color::Black);
 	right_list2.setOutlineThickness(3.0f);
-	for (int i = 0; i < 12; i++)
+	for (int i = 0; i < 13; i++)
 	{
 		control_labels[i].setString(codes[controls[i]]);
 		control_labels[i].setFont(font);
@@ -637,6 +620,7 @@ void OptionsScene::load()
 	control_labels[9].setPosition(rect.getPosition() + Vector2f(0.75f*WX, 0.09f*WY));
 	control_labels[10].setPosition(rect.getPosition() + Vector2f(0.75f*WX, 0.17f*WY));
 	control_labels[11].setPosition(rect.getPosition() + Vector2f(0.75f*WX, 0.25f*WY));
+	control_labels[12].setPosition(rect.getPosition() + Vector2f(0.75f*WX, 0.33f*WY));
 
 	bg_resolution.setOutlineColor(sf::Color::Black);
 	bg_resolution.setOutlineThickness(5.0f);
@@ -689,7 +673,7 @@ void OptionsScene::update(double dt)
 	delay -= dt;
 	if (evs->is_for_refresh())
 	{
-		for (int i = 0; i < 12; i++)
+		for (int i = 0; i < 13; i++)
 			control_labels[i].setString(codes[controls[i]]);
 
 			evs->refreshed();
@@ -838,7 +822,7 @@ void OptionsScene::update(double dt)
 		}
 	}
 	if(!anyKeySelected)
-	for (int i = 0; i < 12; i++)
+	for (int i = 0; i < 13; i++)
 	{
 		if (mousePos.x >= control_labels[i].getPosition().x - 0.04f*WX && mousePos.x <= control_labels[i].getPosition().x + 0.06f*WX)
 		{
@@ -890,7 +874,7 @@ void OptionsScene::render()
 	Renderer::queue(0, &bg_screenmode);
 	Renderer::queue(0, &text_screenmode);
 	Renderer::queue(0, &button_screenmode_dot);
-	for (int i = 0; i < 12; i++)
+	for (int i = 0; i < 13; i++)
 	{
 		Renderer::queue(0, &control_labels[i]);
 	}

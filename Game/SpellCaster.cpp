@@ -15,6 +15,10 @@ SpellCaster::SpellCaster()
 	cooldowns.push_back(0.5f);//////////earth spike cooldown
 	cooldowns.push_back(0.25f);////////////////////////////////SWORD ATTACK cooldown
 	cooldowns.push_back(0.05f);//////////deagon breath cooldonw
+	cooldowns.push_back(0.15f);///////////ice barrage
+	cooldowns.push_back(1.0f);///////////wind scythe
+	cooldowns.push_back(1.0f);///////////rolling boulder
+	cooldowns.push_back(2.0f);//////////explosion
 }
 SpellCaster* SpellCaster::getInstance()
 {
@@ -50,6 +54,18 @@ void SpellCaster::cast_spell_id(int id, sf::Vector2f location)
 	case 5:
 		cast_dragon_breath(location);
 		break;
+	case 6:
+		cast_ice_barrage(location);
+		break;
+	case 7:
+		cast_wind_scythe(location);
+		break;
+	case 8:
+		cast_rolling_boulder(location);
+		break;
+	case 9:
+		cast_explosion(location);
+		break;
 	default:
 		break;
 	}
@@ -57,9 +73,9 @@ void SpellCaster::cast_spell_id(int id, sf::Vector2f location)
 void SpellCaster::cast_fire_ball(sf::Vector2f location)
 {////////////////////spell ID: 0//////////////////////////////////////
 	auto health_mana = player->GetComponent<HealthComponent>();
-	if (health_mana->getMana()>=15)
+	if (health_mana->getMana()>=10)
 	{
-		health_mana->reduceMana(15);
+		health_mana->reduceMana(10);
 
 		auto bullet = std::make_shared<Entity>();
 		bullet->setPosition(player->getPosition());
@@ -84,9 +100,9 @@ void SpellCaster::cast_fire_ball(sf::Vector2f location)
 void SpellCaster::cast_water_gun(sf::Vector2f location)
 {////////////////////spell ID: 1//////////////////////////////////////
 	auto health_mana = player->GetComponent<HealthComponent>();
-	if (health_mana->getMana()>=15)
+	if (health_mana->getMana()>=10)
 	{
-		health_mana->reduceMana(15);
+		health_mana->reduceMana(10);
 		auto bullet = std::make_shared<Entity>();
 		bullet->setPosition(player->getPosition());
 		auto pr = bullet->addComponent<ProjectileMovementComponent>();
@@ -110,9 +126,9 @@ void SpellCaster::cast_water_gun(sf::Vector2f location)
 void SpellCaster::cast_sonic_boom(sf::Vector2f location)
 {////////////////////spell ID: 2//////////////////////////////////////
 	auto health_mana = player->GetComponent<HealthComponent>();
-	if (health_mana->getMana()>=15)
+	if (health_mana->getMana()>=10)
 	{
-		health_mana->reduceMana(15);
+		health_mana->reduceMana(10);
 		auto bullet = std::make_shared<Entity>();
 		bullet->setPosition(player->getPosition());
 		auto pr = bullet->addComponent<ProjectileMovementComponent>();
@@ -137,9 +153,9 @@ void SpellCaster::cast_sonic_boom(sf::Vector2f location)
 void SpellCaster::cast_earth_spike(sf::Vector2f location)
 {////////////////////spell ID: 3//////////////////////////////////////
 	auto health_mana = player->GetComponent<HealthComponent>();
-	if (health_mana->getMana()>=15)
+	if (health_mana->getMana()>=10)
 	{
-		health_mana->reduceMana(15);
+		health_mana->reduceMana(10);
 		auto bullet = std::make_shared<Entity>();
 		bullet->setPosition(player->getPosition());
 		auto pr = bullet->addComponent<ProjectileMovementComponent>();
@@ -154,7 +170,7 @@ void SpellCaster::cast_earth_spike(sf::Vector2f location)
 		s->getSprite().setOrigin({ 15.0f, 15.0f });
 		s->getSprite().setTextureRect({ 0,0,30,30 });
 		s->setDelay(0.1f);
-		s->setScale();
+		s->getSprite().setScale(2.0f*WX / 1280, 2.0f*WY / 720);
 		s->addFrame(sf::IntRect(0, 0, 30, 30));
 		s->addFrame(sf::IntRect(0, 0, 30, 30));
 		s->addFrame(sf::IntRect(30, 0, 30, 30));
@@ -225,17 +241,17 @@ void SpellCaster::cast_sword_swing(sf::Vector2f location)
 void SpellCaster::cast_dragon_breath(sf::Vector2f location)
 {////////////////////spell ID: 5//////////////////////////////////////
 	auto health_mana = player->GetComponent<HealthComponent>();
-	if (health_mana->getMana() >= 1)
+	if (health_mana->getMana() >= 2)
 	{
-		health_mana->reduceMana(1);
+		health_mana->reduceMana(2);
 		auto bullet = std::make_shared<Entity>();
-		bullet->setPosition(player->getPosition());
+		bullet->setPosition(player->getPosition() +sf::Vector2f(-3 + rand() % 7, -3+ rand() % 7));
 		auto pr = bullet->addComponent<ProjectileMovementComponent>();
 		bullet->setFace(player->getFace());
 		auto c2 = bullet->addComponent<ProjectileComponent>();
 		c2->setEntities(_entities);
 		auto dmg = player->GetComponent<CharacterSheetComponent>();
-		c2->setDamage(dmg->getLevelFire()*0.7f);
+		c2->setDamage(dmg->getLevelFire());
 		c2->setType(1);
 		auto s = bullet->addComponent<AnimatedSpriteComponent>();
 		s->getSprite().setTexture(animatedSpellsTexture);
@@ -254,4 +270,152 @@ void SpellCaster::cast_dragon_breath(sf::Vector2f location)
 		activeScene->getEnts().push_back(bullet);
 	}
 
+}
+void SpellCaster::cast_ice_barrage(sf::Vector2f location)
+{////////////////////spell ID: 6//////////////////////////////////////
+	auto health_mana = player->GetComponent<HealthComponent>();
+	if (health_mana->getMana() >= 2)
+	{
+		health_mana->reduceMana(2);
+		auto bullet = std::make_shared<Entity>();
+		bullet->setPosition(player->getPosition() + sf::Vector2f(-7+ rand()%15,-7+rand()%15 ));
+		auto pr = bullet->addComponent<ProjectileMovementComponent>();
+		bullet->setFace(player->getFace());
+		auto c2 = bullet->addComponent<ProjectileComponent>();
+		c2->setEntities(_entities);
+		auto dmg = player->GetComponent<CharacterSheetComponent>();
+		c2->setDamage(dmg->getLevelWater());
+		c2->setType(2);
+		auto s = bullet->addComponent<StaticSpriteComponent>();
+		s->getSprite().setTexture(spellsTexture);
+		s->getSprite().setOrigin({ 15.0f, 15.0f });
+		s->getSprite().setTextureRect({ 90,0,30,30 });
+		if (player->getFace() == 1)
+		{
+			
+			s->getSprite().rotate(-90);
+		}
+		else if (player->getFace() == 3)
+		{
+			
+			s->getSprite().rotate(90);
+		}
+		s->setScale();
+
+
+		activeScene->getEnts().push_back(bullet);
+	}
+
+}
+void SpellCaster::cast_wind_scythe(sf::Vector2f location)
+{////////////////////spell ID: 7//////////////////////////////////////
+	auto health_mana = player->GetComponent<HealthComponent>();
+	if (health_mana->getMana() >= 20)
+	{
+		health_mana->reduceMana(20);
+		auto bullet = std::make_shared<Entity>();
+		bullet->setPosition(player->getPosition());
+		auto pr = bullet->addComponent<ProjectileMovementComponent>();
+		bullet->setFace(player->getFace());
+		auto c2 = bullet->addComponent<ProjectileComponent>();
+		c2->setEntities(_entities);
+		c2->addKnockback();
+		c2->setIndestructable();
+		c2->addContinuousDmg();
+		auto dmg = player->GetComponent<CharacterSheetComponent>();
+		c2->setDamage(dmg->getLevelWind() *2.0f + 30);
+		c2->setType(3);
+		auto s = bullet->addComponent<StaticSpriteComponent>();
+		s->getSprite().setTexture(spellsTexture);
+		s->getSprite().setOrigin({ 15.0f, 15.0f });
+		s->getSprite().setTextureRect({ 60,0,30,30 });
+		if (player->getFace() == 1)
+		{
+			s->getSprite().rotate(-90);
+		}
+		else if (player->getFace() == 2)
+		{
+			
+		}
+		else if (player->getFace() == 3)
+		{
+
+			s->getSprite().rotate(90);
+		}
+		else if (player->getFace() == 4)
+		{
+			s->getSprite().rotate(180);
+		}
+		s->getSprite().setScale(2.0f*WX / 1280, 2.0f*WY / 720);
+
+
+		activeScene->getEnts().push_back(bullet);
+	}
+
+}
+void SpellCaster::cast_rolling_boulder(sf::Vector2f location)
+{////////////////////spell ID: 7//////////////////////////////////////
+	auto health_mana = player->GetComponent<HealthComponent>();
+	if (health_mana->getMana() >= 20)
+	{
+		health_mana->reduceMana(20);
+		auto bullet = std::make_shared<Entity>();
+		bullet->setPosition(player->getPosition());
+		auto pr = bullet->addComponent<ProjectileMovementComponent>();
+		bullet->setFace(player->getFace());
+		auto c2 = bullet->addComponent<ProjectileComponent>();
+		c2->setEntities(_entities);
+		c2->addKnockback();
+		c2->setIndestructable();
+		c2->addContinuousDmg();
+		auto dmg = player->GetComponent<CharacterSheetComponent>();
+		c2->setDamage(dmg->getLevelEarth() *2.0f + 30);
+		c2->setType(4);
+		auto s = bullet->addComponent<StaticSpriteComponent>();
+		s->getSprite().setTexture(spellsTexture);
+		s->getSprite().setOrigin({ 15.0f, 15.0f });
+		s->addSpin();
+		s->getSprite().setTextureRect({ 120,0,30,30 });
+		s->getSprite().setScale(2.0f*WX / 1280, 2.0f*WY / 720);
+		activeScene->getEnts().push_back(bullet);
+	}
+
+}
+void SpellCaster::cast_explosion(sf::Vector2f location)
+{////////////////////spell ID: 8//////////////////////////////////////
+
+	auto health_mana = player->GetComponent<HealthComponent>();
+	if (health_mana->getMana() >= 35)
+	{
+		health_mana->reduceMana(35);
+		auto bullet = std::make_shared<Entity>();
+		bullet->setPosition(player->getPosition());
+		auto c2 = bullet->addComponent<ProjectileComponent>();
+		c2->finishAnimationFirst();
+		c2->setEntities(_entities);
+		c2->addKnockback();
+		c2->setRange(90.0f);
+		auto dmg = player->GetComponent<CharacterSheetComponent>();
+		c2->setDamage((dmg->getLevelFire()+5)*10.0f);
+		c2->setType(1);
+		auto s = bullet->addComponent<AnimatedSpriteComponent>();
+		s->getSprite().setTexture(animatedSpellsTexture);
+		s->getSprite().setOrigin({ 45, 45 });
+		c2->setTimer(0.54f);
+		s->setDelay(0.07f);
+		s->getSprite().setScale(2.0f*WX / 1280, 2.0f*WY / 720);
+		s->playOnce();
+		s->addFrame(sf::IntRect(0, 60, 90, 90));
+		s->addFrame(sf::IntRect(90, 60, 90, 90));
+		s->addFrame(sf::IntRect(180, 60, 90, 90));
+		s->addFrame(sf::IntRect(270, 60, 90, 90));
+		s->addFrame(sf::IntRect(360, 60, 90, 90));
+		s->addFrame(sf::IntRect(450, 60, 90, 90));
+		s->addFrame(sf::IntRect(540, 60, 90, 90));
+		s->addFrame(sf::IntRect(630, 60, 90, 90));
+		s->addFrame(sf::IntRect(720, 60, 90, 90));
+		s->getSprite().setTextureRect({ 0, 60, 90, 90 });
+		activeScene->getEnts().push_back(bullet);
+
+	}
 }

@@ -492,13 +492,17 @@ HudComponent::HudComponent(Entity *p) : Component(p)
 	info_spells_text.setCharacterSize(16.0f);
 	info_spells_text.setScale(WX / 1280, WY / 720);
 	info_spells_area.setFillColor(sf::Color(255, 255, 255, 150));
-	info_spells_area.setSize({ 0.17f*WX, 0.15f*WY });
-	descriptions.push_back("Fireball");
-	descriptions.push_back("Water gun");
-	descriptions.push_back("Sonic boom");
-	descriptions.push_back("Earth Spike");
+	info_spells_area.setSize({ 0.17f*WX, 0.14f*WY });
+	descriptions.push_back("Fireball\nMana cost: 10\nCooldown: 0.5\nDamage: Low");
+	descriptions.push_back("Water gun\nMana cost: 10\nCooldown: 0.5\nDamage: Low");
+	descriptions.push_back("Sonic boom\nMana cost: 10\nCooldown: 0.5\nDamage: Low");
+	descriptions.push_back("Earth Spike\nMana cost: 10\nCooldown: 0.5\nDamage: Low");
 	descriptions.push_back("Sword Swing");
-	descriptions.push_back("Dragon breath");
+	descriptions.push_back("Dragon breath\nMana cost: 2\nCooldown: 0.05\nDamage: Very Low");
+	descriptions.push_back("Ice Barrage\nMana cost: 2\nCooldown: 0.15\nDamage: Very Low");
+	descriptions.push_back("Wind Scythe\nMana cost: 20\nCooldown: 1.0\nDamage: High");
+	descriptions.push_back("Rolling boulder\nMana cost: 20\nCooldown: 1.0\nDamage: High");
+	descriptions.push_back("Explosion\nMana cost: 35\nCooldown: 2.0\nDamage: Very High");
 }
 
 void HudComponent::getStats()
@@ -772,77 +776,30 @@ void HudComponent::update(double dt)
 			spell_slots[2].setColor(sf::Color(255, 255, 255, 255));
 			spell_available[2] = true;
 		}
-		if (fire_lv >= 7)
-		{
-			spell_slots[3].setColor(sf::Color(255, 255, 255, 255));
-			spell_available[3] = true;
-		}
-		if (fire_lv >= 9)
-		{
-			spell_slots[4].setColor(sf::Color(255, 255, 255, 255));
-			spell_available[4] = true;
-		}
+
+
 		if (water_lv >= 3)
 		{
 			spell_slots[6].setColor(sf::Color(255, 255, 255, 255));
 			spell_available[6] = true;
 		}
-		if (water_lv >= 5)
-		{
-			spell_slots[7].setColor(sf::Color(255, 255, 255, 255));
-			spell_available[7] = true;
-		}
-		if (water_lv >= 7)
-		{
-			spell_slots[8].setColor(sf::Color(255, 255, 255, 255));
-			spell_available[8] = true;
-		}
-		if (water_lv >= 9)
-		{
-			spell_slots[9].setColor(sf::Color(255, 255, 255, 255));
-			spell_available[9] = true;
-		}
+
+
 		if (wind_lv >= 3)
 		{
 			spell_slots[11].setColor(sf::Color(255, 255, 255, 255));
 			spell_available[11] = true;
 		}
-		if (wind_lv >= 5)
-		{
-			spell_slots[12].setColor(sf::Color(255, 255, 255, 255));
-			spell_available[12] = true;
-		}
-		if (wind_lv >= 7)
-		{
-			spell_slots[13].setColor(sf::Color(255, 255, 255, 255));
-			spell_available[13] = true;
-		}
-		if (wind_lv >= 9)
-		{
-			spell_slots[14].setColor(sf::Color(255, 255, 255, 255));
-			spell_available[14] = true;
-		}
+
+
 
 		if (earth_lv >= 3)
 		{
 			spell_slots[16].setColor(sf::Color(255, 255, 255, 255));
 			spell_available[16] = true;
 		}
-		if (earth_lv >= 5)
-		{
-			spell_slots[17].setColor(sf::Color(255, 255, 255, 255));
-			spell_available[17] = true;
-		}
-		if (earth_lv >= 7)
-		{
-			spell_slots[18].setColor(sf::Color(255, 255, 255, 255));
-			spell_available[18] = true;
-		}
-		if (earth_lv >= 9)
-		{
-			spell_slots[19].setColor(sf::Color(255, 255, 255, 255));
-			spell_available[19] = true;
-		}
+
+
 
 		evs->switch_level_up();
 	}
@@ -883,7 +840,7 @@ void HudComponent::update(double dt)
 				{
 					show_spell_info = true;
 					show_spell_options = false;
-					info_spells_text.setPosition(mousePos.x + windowZero.x + 0.015f*WX, mousePos.y + windowZero.y + 0.01f*WY);
+					info_spells_text.setPosition(mousePos.x + windowZero.x + 0.005f*WX, mousePos.y + windowZero.y + 0.01f*WY);
 					info_spells_area.setPosition(mousePos.x + windowZero.x, mousePos.y + windowZero.y);
 					info_spells_text.setString(descriptions[spell_ids[i]]);
 					

@@ -19,6 +19,7 @@ extern sf::Texture animatedSpellsTexture;
 extern sf::Texture iconsTexture;
 extern sf::Texture itemsTexture;
 extern sf::Texture spell_icons;
+extern sf::Texture tile_textures;
 extern sf::Texture swordSwingTexture;
 extern std::shared_ptr<Entity> player;
 extern sf::SoundBuffer buffer;
@@ -32,7 +33,7 @@ extern bool fullscreen;
 #define WY 1.0f*Renderer::gameHeight[resolution_index]
 
 extern std::string codes[101];
-extern sf::Keyboard::Key controls[12];
+extern sf::Keyboard::Key controls[13];
 class MenuScene : public Scene
 {
 private:
@@ -84,9 +85,9 @@ private:
 	sf::Text left_list;
 	sf::Text right_list;
 	sf::Text right_list2;
-	sf::Text control_labels[12];
+	sf::Text control_labels[13];
 	float delay = 0.2f;
-	bool keySelected[12] = { false,false,false,false,false,false,false,false,false,false,false,false };
+	bool keySelected[13] = { false,false,false,false,false,false,false,false,false,false,false,false,false };
 	bool anyKeySelected=false;
 	int selectedKey = 0;
 

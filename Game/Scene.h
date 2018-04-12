@@ -15,5 +15,6 @@ public:
 	std::vector<std::shared_ptr<Entity>> &getEnts() { return _ents.list; };
 protected:
 	int scene_number;
+
 	EntityManager _ents;
 };

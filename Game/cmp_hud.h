@@ -109,17 +109,17 @@ protected:
 	sf::Sprite spell_slots[20];
 	sf::Sprite equipped_spells[5];
 	bool spell_available[20];
-	int spell_ids[20] = {0,5,-1,-1,-1, 1,-1,-1,-1,-1, 2,-1,-1,-1,-1, 3 ,-1,-1,-1,-1};
+	int spell_ids[20] = {0,5,9,-1,-1, 1,6,-1,-1,-1, 2, 7,-1,-1,-1, 3 ,8,-1,-1,-1};
 	int id_to_slot[21] = { 0,   ///////////ID 0 = SLOT 0 ////// FIREBALL
 							5, ///////////ID 1 = SLOT 5 ////// Water gun
 							10, ///////////ID 2 = SLOT 10 ////// Sonic Boom
 							15, ///////////ID 3 = SLOT 15 ////// Earth spike
 							-1, ///////////ID 4                  SWORD SWING
 							1, ///////////ID 5 = SLOT 1 ////// Dragonbreath
-							5,
-							10,
-							15,
-							1,
+							6,  ///////////ID 6 = SLOT 6 ////// ice barrage
+							11,  ///////////ID 7 = SLOT 11 ////// wind scythe
+							16, ///////////ID 8 = SLOT 16 ////// earth boulder
+							2,  ///////////ID 9 = SLOT 2 ////// earth boulder
 							0,
 							5,
 							10,

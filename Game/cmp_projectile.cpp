@@ -34,7 +34,7 @@ void ProjectileComponent::update(double dt)
 	if(!_parent->is_forDeletion())
 	for(auto g: _entities)
 	if(!g->is_forDeletion())
-	if (length(g->getPosition() - _parent->getPosition()) < 30.0f*WX / 1280)
+	if (length(g->getPosition() - _parent->getPosition()) < range*WX / 1280)
 	{
 		auto health_mana = g->GetComponent<HealthComponent>();
 		if (!damage_dealt)
@@ -46,6 +46,7 @@ void ProjectileComponent::update(double dt)
 			txt->setText(damage);
 			gameScene->getEnts().push_back(dmg);
 			events->addExp(type, 10);
+			if(!conDmg)
 			damage_dealt = true;
 		}
 		if (knockback)
@@ -53,8 +54,11 @@ void ProjectileComponent::update(double dt)
 			auto d = g->GetComponent<ActorMovementComponent>();
 			d->push((g->getPosition() - _parent->getPosition()));
 		}
-		if(!finishAnimation)
-		_parent->setForDelete();
+		if (!indestructable)
+		{
+			if (!finishAnimation)
+				_parent->setForDelete();
+		}
 	}
 	
 	
