@@ -5,6 +5,7 @@
 #include "cmp_enemy_attack.h"
 #include "cmp_ai_steering.h"
 #include "cmp_npc.h"
+#include "cmp_status.h"
 
 MonsterSpawner* MonsterSpawner::instance;
 MonsterSpawner::MonsterSpawner()

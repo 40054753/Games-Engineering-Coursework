@@ -8,7 +8,6 @@ private:
 	MonsterSpawner();
 	static MonsterSpawner* instance;
 public:
-	void load(int id, bool equipped);
 	static MonsterSpawner* getInstance();
 	~MonsterSpawner()=default;
 

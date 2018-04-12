@@ -373,30 +373,8 @@ void GameScene::respawn()
 
 
 	for (int i = 0; i < GHOSTS_COUNT; ++i)
-	{
-<<<<<<< HEAD
-		
-		ghosts.push_back(spawner->spawn_zombie());
-		
-=======
-		auto ghost = make_shared<Entity>();
-		ghost->addComponent<ActorMovementComponent>();
-		auto s = ghost->addComponent<CharacterSpriteComponent>();
-		s->getSprite().setTexture(zombieTexture);
-		s->getSprite().setTextureRect({ 0,0,16,21 });
-		s->getSprite().setScale({ 2.0f*WX / 1280, 2.0f*WY / 720 });
-		s->getSprite().setOrigin(8.0f, 12.0f);
-		ghost->addComponent<HealthComponent>();
-		ghost->addComponent<EnemyHealthBarComponent>();
-		auto p = ghost->addComponent<EnemyAttackComponent>();
-		ghost->addComponent<StatusComponent>();
-		p->setLevel(0);
-		ghost->addComponent<SteeringComponent>(player.get());
-		_ents.list.push_back(ghost);
-		ghosts.push_back(ghost);
-		//eatingEnts.push_back(ghost);       ///ghosts can eat
->>>>>>> 7beab659b1d8d6194ba001e2fc3fdf96d5fe4b29
-		
+	{		
+		ghosts.push_back(spawner->spawn_zombie());				
 	}
 	///////standing enemy
 	auto ghost = make_shared<Entity>();

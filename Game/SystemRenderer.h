@@ -8,7 +8,6 @@ namespace  Renderer
 	constexpr uint16_t gameHeight[3] = { 720,900, 1080};
 	void initialise(sf::RenderWindow &);
 	sf::RenderWindow &getWindow();
-	void updateView();
 	void shutdown();
 	void fullscreen();
 	void not_fullscreen();

@@ -55,13 +55,6 @@ void ProjectileComponent::update(double dt)
 			auto d = g->GetComponent<ActorMovementComponent>();
 			d->push((g->getPosition() - _parent->getPosition()));
 		}
-<<<<<<< HEAD
-		if (!indestructable)
-		{
-			if (!finishAnimation)
-				_parent->setForDelete();
-		}
-=======
 		if (blind) {
 			auto blindcmp = g->GetComponent<StatusComponent>();
 			blindcmp->setBlinded();
@@ -94,9 +87,11 @@ void ProjectileComponent::update(double dt)
 			stext->setText("Burning!");
 			gameScene->getEnts().push_back(burnText);
 		}
-		if(!finishAnimation)
-		_parent->setForDelete();
->>>>>>> 7beab659b1d8d6194ba001e2fc3fdf96d5fe4b29
+		if (!indestructable)
+		{
+			if (!finishAnimation)
+				_parent->setForDelete();
+		}
 	}
 	
 	
