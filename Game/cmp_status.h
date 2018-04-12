@@ -8,8 +8,10 @@ protected:
 	bool blinded = false;
 	bool slowed = false;
 	float blindTimer = 3.0f;
-	float burnTimer = 5.0f;
+	float burnTimer = 7.0f;
 	float slowTimer = 2.0f;
+	float burnDamageDelay = 1.0f;
+	float burnDamageTimer = 1.0f;
 public:
 	explicit StatusComponent(Entity *p);
 	StatusComponent() = delete;

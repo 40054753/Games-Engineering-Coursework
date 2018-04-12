@@ -191,7 +191,7 @@ StatusTextComponent::StatusTextComponent(Entity *p) : Component(p)
 	statusText.setFont(font);
 	statusText.setCharacterSize(15);
 	statusText.setScale(WX / 1280, WY / 720);
-	statusText.setColor(sf::Color::Red);
+	statusText.setColor(sf::Color::Cyan);
 
 
 }
@@ -201,7 +201,8 @@ void StatusTextComponent::setText(std::string x)
 }
 void StatusTextComponent::update(double dt)
 {
-	if (statusText.getString() == "Blinded!") {
+	if (blind) {
+		statusText.setString("Blind");
 		blindTextTime -= dt;
 		statusText.setPosition(_parent->getPosition() + Vector2f(-14.0f*WX / 1280, -75.0f*WY / 720));
 		if (blindTextTime < 0) {
@@ -209,14 +210,16 @@ void StatusTextComponent::update(double dt)
 		}
 	}
 
-	if (statusText.getString() == "Slowed!") {
+	if (slow) {
+		statusText.setString("Slow");
 		slowTextTime -= dt;
 		statusText.setPosition(_parent->getPosition() + Vector2f(-14.0f*WX / 1280, -75.0f*WY / 720));
 		if (slowTextTime < 0) {
 			_parent->setForDelete();
 		}
 	}
-	if (statusText.getString() == "Burning!") {
+	if (burn) {
+		statusText.setString("Burning");
 		burnTextTime -= dt;
 		statusText.setPosition(_parent->getPosition() + Vector2f(-14.0f*WX / 1280, -75.0f*WY / 720));
 		if (burnTextTime < 0) {
@@ -226,7 +229,7 @@ void StatusTextComponent::update(double dt)
 }
 void StatusTextComponent::render()
 {
-	Renderer::queue(&statusText);
+	Renderer::queue(1,&statusText);
 }
 	
 sf::Sprite& StaticSpriteComponent::getSprite() const {

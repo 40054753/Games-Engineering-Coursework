@@ -62,13 +62,18 @@ public:
 
 class StatusTextComponent : public Component {
 protected:
+	bool slow = false;
+	bool burn = false;
+	bool blind = false;
 	sf::Text statusText;
 	std::vector<sf::Text> statusArray;
 	float blindTextTime = 0.5f;
 	float slowTextTime = 0.5f;
 	float burnTextTime = 0.5f;
 public:
-	void setScale();
+	void setSlow() { slow = true; }
+	void setBurn() { burn = true; }
+	void setBlind() { blind = true; }
 	StatusTextComponent() = delete;
 	explicit StatusTextComponent(Entity *p);
 	void setText(std::string x);

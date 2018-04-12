@@ -109,7 +109,6 @@ void SpellCaster::cast_water_gun(sf::Vector2f location)
 		auto pr = bullet->addComponent<ProjectileMovementComponent>();
 		bullet->setFace(player->getFace());
 		auto c2 = bullet->addComponent<ProjectileComponent>();
-		c2->addSlow();
 		c2->setEntities(_entities);
 		auto dmg = player->GetComponent<CharacterSheetComponent>();
 		c2->setDamage((dmg->getLevelWater()*8.0f) + 20.0f);
@@ -251,8 +250,10 @@ void SpellCaster::cast_dragon_breath(sf::Vector2f location)
 		bullet->setPosition(player->getPosition() +sf::Vector2f(-3 + rand() % 7, -3+ rand() % 7));
 		auto pr = bullet->addComponent<ProjectileMovementComponent>();
 		bullet->setFace(player->getFace());
+		
 		auto c2 = bullet->addComponent<ProjectileComponent>();
 		c2->setEntities(_entities);
+		c2->addBurn();
 		auto dmg = player->GetComponent<CharacterSheetComponent>();
 		c2->setDamage(dmg->getLevelFire());
 		c2->setType(1);
@@ -289,6 +290,7 @@ void SpellCaster::cast_ice_barrage(sf::Vector2f location)
 		auto dmg = player->GetComponent<CharacterSheetComponent>();
 		c2->setDamage(dmg->getLevelWater());
 		c2->setType(2);
+		c2->addSlow();
 		auto s = bullet->addComponent<StaticSpriteComponent>();
 		s->getSprite().setTexture(spellsTexture);
 		s->getSprite().setOrigin({ 15.0f, 15.0f });
@@ -369,6 +371,7 @@ void SpellCaster::cast_rolling_boulder(sf::Vector2f location)
 		auto c2 = bullet->addComponent<ProjectileComponent>();
 		c2->setEntities(_entities);
 		c2->addKnockback();
+		c2->addBlind();
 		c2->setIndestructable();
 		c2->addContinuousDmg();
 		auto dmg = player->GetComponent<CharacterSheetComponent>();
@@ -397,6 +400,7 @@ void SpellCaster::cast_explosion(sf::Vector2f location)
 		c2->finishAnimationFirst();
 		c2->setEntities(_entities);
 		c2->addKnockback();
+		c2->addBurn();
 		c2->setRange(90.0f);
 		auto dmg = player->GetComponent<CharacterSheetComponent>();
 		c2->setDamage((dmg->getLevelFire()+5)*10.0f);

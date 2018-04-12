@@ -24,6 +24,7 @@ void ProjectileComponent::render()
 }
 void ProjectileComponent::update(double dt)
 {
+	int chance = rand() % 10 + 1;
 	if (finishAnimation)
 	{
 		timer -= dt;
@@ -55,36 +56,39 @@ void ProjectileComponent::update(double dt)
 			auto d = g->GetComponent<ActorMovementComponent>();
 			d->push((g->getPosition() - _parent->getPosition()));
 		}
-		if (blind) {
+		if (chance > 5 && blind) {
 			auto blindcmp = g->GetComponent<StatusComponent>();
 			blindcmp->setBlinded();
-
+			auto s = g->GetComponent<CharacterSpriteComponent>();
+			s->getSprite().setColor(sf::Color::Yellow);
 			auto blindText = std::make_shared<Entity>();
 			auto stext = blindText->addComponent<StatusTextComponent>();
+			stext->setBlind();
 			blindText->setPosition(g->getPosition());
-			stext->setText("Blinded!");
 			gameScene->getEnts().push_back(blindText);
 		}
 		if (slow) {
 			auto slowcmp = g->GetComponent<StatusComponent>();
 			slowcmp->setSlowed();
-
+			auto s = g->GetComponent<CharacterSpriteComponent>();
+			s->getSprite().setColor(sf::Color(123, 119, 255,255));
 			//insertslowtext
 			auto slowText = std::make_shared<Entity>();
 			auto stext = slowText->addComponent<StatusTextComponent>();
+			stext->setSlow();
 			slowText->setPosition(g->getPosition());
-			stext->setText("Slowed!");
 			gameScene->getEnts().push_back(slowText);
 		}
-		if (burn) {
+		if (chance >= 4 && burn) {
 			auto burncmp = g->GetComponent<StatusComponent>();
 			burncmp->setBurning();
-
+			auto s = g->GetComponent<CharacterSpriteComponent>();
+			s->getSprite().setColor(sf::Color(255, 0, 0, 190));
 			//insert burn text (maybe just add a damage text component or something i duno)
 			auto burnText = std::make_shared<Entity>();
 			auto stext = burnText->addComponent<StatusTextComponent>();
+			stext->setBurn();
 			burnText->setPosition(g->getPosition());
-			stext->setText("Burning!");
 			gameScene->getEnts().push_back(burnText);
 		}
 		if (!indestructable)
