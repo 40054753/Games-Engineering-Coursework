@@ -30,11 +30,11 @@ sf::IntRect LevelSystem::getRect(int t) {
 void LevelSystem::fillRects()
 {
 	int id = 0;
-	for (int j = 0; j < 36; j++)
+	for (int j = 0; j < 31; j++)
 	{
-		for (int i = 0; i < 40; i++)
+		for (int i = 0; i < 57; i++)
 		{
-			_rects.insert(std::pair<int, sf::IntRect>(id, {i*16,j*16,16,16}));
+			_rects.insert(std::pair<int, sf::IntRect>(id, {(i*17),(j*17),16,16}));
 			id++;
 		}
 	}
