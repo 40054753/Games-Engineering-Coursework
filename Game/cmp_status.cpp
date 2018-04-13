@@ -30,8 +30,6 @@ void StatusComponent::update(double dt)
 			blinded = false;
 			st->setNormal();
 			blindTimer = 3.0f;
-			auto s =_parent->GetComponent<CharacterSpriteComponent>();
-			s->getSprite().setColor(sf::Color::White);
 		}
 	}
 	if (burning) {
@@ -54,8 +52,6 @@ void StatusComponent::update(double dt)
 			burning = false;
 			st->setNormal();
 			burnTimer = 5.0f;
-			auto s = _parent->GetComponent<CharacterSpriteComponent>();
-			s->getSprite().setColor(sf::Color::White);
 		}
 	}
 	if (slowed) {
@@ -66,8 +62,6 @@ void StatusComponent::update(double dt)
 			slowed = false;
 			slowTimer = 2.0f;
 			st->setNormal();
-			auto s = _parent->GetComponent<CharacterSpriteComponent>();
-			s->getSprite().setColor(sf::Color::White);
 		}
 	}
 }

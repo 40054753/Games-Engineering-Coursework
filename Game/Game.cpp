@@ -422,7 +422,7 @@ void GameScene::load()
 		cout << "Cannot load img!" << endl;
 	}
 
-	ls::loadLevelFile("res/levels/example.txt", 25.0f * WX/1280);
+	ls::loadLevelFile("res/levels/example.txt", 32.0f * WX/1280);
 
 
 	auto pl = std::make_shared<Entity>();
