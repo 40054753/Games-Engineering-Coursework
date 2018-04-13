@@ -1075,7 +1075,7 @@ void HudComponent::update(double dt)
 		hide_skill_tree = false;
 	}
 
-	if (buttonDelay<0 && Keyboard::isKeyPressed(controls[10]))
+	if (buttonDelay<0 && (Keyboard::isKeyPressed(controls[10]) || (sf::Joystick::isConnected(0) && sf::Joystick::isButtonPressed(0, 9))))
 	{
 		sound.play();
 		buttonDelay = 0.2f;
@@ -1085,7 +1085,7 @@ void HudComponent::update(double dt)
 			hideInventory = true;
 
 	}
-	if (buttonDelay<0 && Keyboard::isKeyPressed(Keyboard::K))
+	if (buttonDelay<0 && (Keyboard::isKeyPressed(Keyboard::K) || (sf::Joystick::isConnected(0) && sf::Joystick::isButtonPressed(0, 8))))
 	{
 		sound.play();
 		buttonDelay = 0.2f;

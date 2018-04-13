@@ -45,7 +45,7 @@ void AttackComponent::update(double dt)
 	int spell3 = char_sheet->getSpell(2);
 	int spell4 = char_sheet->getSpell(3);
 	int spell5 = char_sheet->getSpell(4);
-	if (sf::Keyboard::isKeyPressed(controls[5]))
+	if (sf::Keyboard::isKeyPressed(controls[5]) || (sf::Joystick::isConnected(0) && sf::Joystick::isButtonPressed(0, sf::Joystick::Z)))
 	{
 		if (cooldowns[spell1] < 0)
 		{
@@ -53,7 +53,7 @@ void AttackComponent::update(double dt)
 			cooldowns[spell1] = cooldownTimes[spell1];
 		}
 	}
-	if (sf::Keyboard::isKeyPressed(controls[6]))
+	if (sf::Keyboard::isKeyPressed(controls[6]) || (sf::Joystick::isConnected(0) && sf::Joystick::isButtonPressed(0, sf::Joystick::X)))
 	{
 		if (cooldowns[spell2] < 0)
 		{
@@ -61,7 +61,7 @@ void AttackComponent::update(double dt)
 			cooldowns[spell2] = cooldownTimes[spell2];
 		}
 	}
-	if (sf::Keyboard::isKeyPressed(controls[7]))
+	if (sf::Keyboard::isKeyPressed(controls[7]) || (sf::Joystick::isConnected(0) && sf::Joystick::isButtonPressed(0, sf::Joystick::Y)))
 	{
 		if (cooldowns[spell3] < 0)
 		{
@@ -69,7 +69,7 @@ void AttackComponent::update(double dt)
 			cooldowns[spell3] = cooldownTimes[spell3];
 		}
 	}
-	if (sf::Keyboard::isKeyPressed(controls[8]))
+	if (sf::Keyboard::isKeyPressed(controls[8]) || (sf::Joystick::isConnected(0) && sf::Joystick::isButtonPressed(0, sf::Joystick::R)))
 	{
 		if (cooldowns[spell4] < 0)
 		{
@@ -85,7 +85,7 @@ void AttackComponent::update(double dt)
 			cooldowns[spell5] = cooldownTimes[spell5];
 		}
 	}
-	if (sf::Keyboard::isKeyPressed(controls[4]))
+	if (sf::Keyboard::isKeyPressed(controls[4]) || (sf::Joystick::isConnected(0) && sf::Joystick::isButtonPressed(0, sf::Joystick::V)))
 	{
 		if (cooldowns[4] < 0)
 		{

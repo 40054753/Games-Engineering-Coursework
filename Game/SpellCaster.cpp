@@ -113,7 +113,7 @@ void SpellCaster::cast_water_gun(sf::Vector2f location)
 		auto dmg = player->GetComponent<CharacterSheetComponent>();
 		c2->setDamage((dmg->getLevelWater()*8.0f) + 20.0f);
 		c2->setType(2);
-
+		c2->addSlow();
 		auto s = bullet->addComponent<StaticSpriteComponent>();
 		s->getSprite().setTexture(spellsTexture);
 		s->addSpin();

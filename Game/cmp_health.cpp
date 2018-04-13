@@ -40,7 +40,6 @@ void HealthComponent::update(double dt)
 
 	auto statuscmp = _parent->GetComponent<StatusComponent>();
 	if (statuscmp->getBurning() && burnTimer >= 0) { //if status is burning, and timer is good
-		std::cout << health << std::endl;
 		burnTimer -= dt; //lower burn timer
 		dotTick -= dt; //lower dot tick
 		if (dotTick <= 0.0f) { //if it ticks

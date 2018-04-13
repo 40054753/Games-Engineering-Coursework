@@ -22,7 +22,7 @@ using namespace sf;
 using namespace std;
 const int GHOSTS_COUNT = 4;
 Font font;
-Texture playerTexture, tile_textures, zombieTexture,spell_icons, spellsTexture, snowEffect, iconsTexture, itemsTexture, animatedSpellsTexture, swordSwingTexture;
+Texture playerTexture, tile_textures, zombieTexture, spell_icons, spellsTexture, snowEffect, iconsTexture, itemsTexture, animatedSpellsTexture, swordSwingTexture;
 Texture menuBg;
 sf::Sprite background;
 SoundBuffer buffer;
@@ -47,6 +47,7 @@ sf::Keyboard::Key controls[13] =
 	sf::Keyboard::Escape,
 	sf::Keyboard::E
 };
+
 std::string codes[101] = {
 
 	"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q",
@@ -73,6 +74,24 @@ std::string codes[101] = {
 	"F11", "F12", "F13", "F14", "F15", "Pause"
 
 };
+sf::Joystick::Axis buttons[8] =
+{
+	sf::Joystick::Axis::PovX,
+	sf::Joystick::Axis::PovY,
+	sf::Joystick::Axis::R,
+	sf::Joystick::Axis::U,
+	sf::Joystick::Axis::V,
+	sf::Joystick::Axis::X,
+	sf::Joystick::Axis::Y,
+	sf::Joystick::Axis::Z
+};
+
+std::string buttonCodes[8] = {
+	"Back", "Start",
+
+	"Y", "LB", "RB", "A", "B", "X"
+};
+
 MenuScene::MenuScene() {
 }
 void MenuScene::load() {
@@ -95,7 +114,7 @@ void MenuScene::load() {
 	button_return.setOutlineThickness(5.0f);
 	button_return.setFillColor(sf::Color(79, 79, 79, 255));
 	button_return.setSize({ 0.35f*WX, 0.07f * WY });
-	button_return.setPosition({0.70f*WX, 0.01f * WY });
+	button_return.setPosition({ 0.70f*WX, 0.01f * WY });
 	text_return.setFont(font);
 	text_return.setColor(sf::Color::Black);
 	text_return.setString("Return to game");
@@ -109,22 +128,22 @@ void MenuScene::load() {
 		auto snow = make_shared<Entity>();
 		auto s = snow->addComponent<StaticSpriteComponent>();
 		s->getSprite().setTexture(snowEffect);
-		s->getSprite().setScale({ scale,scale});
-		snow->setPosition(Vector2f(rand()% ((int)WX), rand() % ((int)WY)));
+		s->getSprite().setScale({ scale,scale });
+		snow->setPosition(Vector2f(rand() % ((int)WX), rand() % ((int)WY)));
 		snow->addComponent<SnowComponent>();
 		_ents.list.push_back(snow);
 	}
 	background.setTexture(menuBg);
-	background.setScale(WX/1280,WY/720);
+	background.setScale(WX / 1280, WY / 720);
 	rect.setPosition(sf::Vector2f(3.92f * WX / 5, WY / (MAX_NUMBER_OF_ITEMS)  * 2.15f));
 	//rect.setScale({ 3.0f,3.0f });
 	rect.setSize({ WX / 5.3f,WY / 2.8f });
-	rect.setFillColor(sf::Color(1,1,1,130));
+	rect.setFillColor(sf::Color(1, 1, 1, 130));
 
 	title.setPosition(sf::Vector2f(WX / 6.0f, WY / 5.5f));
 	title.setString("ICY DEAD PEOPLE");
 	title.setFont(font);
-	title.setCharacterSize(60.0f*WX/1280);
+	title.setCharacterSize(60.0f*WX / 1280);
 	title.setScale(1.0f, 2.0f);
 	title.setColor(sf::Color::Black);
 	//list of menu items
@@ -132,25 +151,25 @@ void MenuScene::load() {
 	menu[0].setColor(sf::Color::Red);
 	menu[0].setString("New Game");
 	menu[0].setCharacterSize(30 * WX / 1280);
-	menu[0].setPosition(sf::Vector2f(4*WX / 5, WY / (MAX_NUMBER_OF_ITEMS)  * 2.5f));
+	menu[0].setPosition(sf::Vector2f(4 * WX / 5, WY / (MAX_NUMBER_OF_ITEMS)  * 2.5f));
 
 	menu[1].setFont(font);
 	menu[1].setColor(sf::Color::White);
 	menu[1].setString("Load");
 	menu[1].setCharacterSize(30 * WX / 1280);
-	menu[1].setPosition(sf::Vector2f(4*WX / 5, WY / (MAX_NUMBER_OF_ITEMS ) *2.75f));
+	menu[1].setPosition(sf::Vector2f(4 * WX / 5, WY / (MAX_NUMBER_OF_ITEMS) *2.75f));
 
 	menu[2].setFont(font);
 	menu[2].setColor(sf::Color::White);
 	menu[2].setString("Options");
 	menu[2].setCharacterSize(30 * WX / 1280);
-	menu[2].setPosition(sf::Vector2f(4*WX / 5, WY / (MAX_NUMBER_OF_ITEMS) * 3.0f));
+	menu[2].setPosition(sf::Vector2f(4 * WX / 5, WY / (MAX_NUMBER_OF_ITEMS) * 3.0f));
 
 	menu[3].setFont(font);
 	menu[3].setColor(sf::Color::White);
 	menu[3].setString("Close");
 	menu[3].setCharacterSize(30 * WX / 1280);
-	menu[3].setPosition(sf::Vector2f(4*WX / 5, WY / (MAX_NUMBER_OF_ITEMS ) *3.25f));
+	menu[3].setPosition(sf::Vector2f(4 * WX / 5, WY / (MAX_NUMBER_OF_ITEMS) *3.25f));
 
 	selectedItemIndex = 0;
 
@@ -169,11 +188,11 @@ void MenuScene::moveUp()
 		selectedItemIndex--;
 		menu[selectedItemIndex].setColor(sf::Color::Red);
 		sound.play();
-	} 
+	}
 	else
 	{
 		menu[selectedItemIndex].setColor(sf::Color::White);
-		selectedItemIndex= MAX_NUMBER_OF_ITEMS-1;
+		selectedItemIndex = MAX_NUMBER_OF_ITEMS - 1;
 		menu[selectedItemIndex].setColor(sf::Color::Red);
 		sound.play();
 	}
@@ -199,46 +218,49 @@ void MenuScene::moveDown()
 	else
 	{
 		menu[selectedItemIndex].setColor(sf::Color::White);
-		selectedItemIndex=0;
+		selectedItemIndex = 0;
 		menu[selectedItemIndex].setColor(sf::Color::Red);
 		sound.play();
 	}
 }
 
-void MenuScene::update(double dt) 
+void MenuScene::update(double dt)
 {
 	EventSystem* evs = EventSystem::getInstance();
-
 	mousePos = sf::Mouse::getPosition(Renderer::getWindow());
-
 	moveTime -= dt;
-	if(evs->isLoaded())
-	if (mousePos.x >= button_return.getPosition().x  && mousePos.x <= WX)
-	{
-		if (mousePos.y >= button_return.getPosition().y && mousePos.y <= button_return.getPosition().y + 0.07f*WY)
+	if (evs->isLoaded())
+		if (sf::Joystick::isConnected(0) && sf::Joystick::isButtonPressed(0, sf::Joystick::PovY))
 		{
-			
-			text_return.setOutlineColor(sf::Color::Green);
-			if (sf::Mouse::isButtonPressed(Mouse::Left))
+			activeScene = gameScene;
+			evs->refresh();
+		}
+		if (mousePos.x >= button_return.getPosition().x  && mousePos.x <= WX)
+		{
+			if (mousePos.y >= button_return.getPosition().y && mousePos.y <= button_return.getPosition().y + 0.07f*WY)
 			{
-				activeScene = gameScene;
-				evs->refresh();
+
+				text_return.setOutlineColor(sf::Color::Green);
+				if (sf::Mouse::isButtonPressed(Mouse::Left))
+				{
+					activeScene = gameScene;
+					evs->refresh();
+				}
+			}
+			else
+			{
+				text_return.setOutlineColor(sf::Color::Red);
 			}
 		}
 		else
 		{
 			text_return.setOutlineColor(sf::Color::Red);
 		}
-	}
-	else
-	{
-		text_return.setOutlineColor(sf::Color::Red);
-	}
-	if (mousePos.x >=  0.78f * WX && mousePos.x <= 0.94f * WX )
+	if (mousePos.x >= 0.78f * WX && mousePos.x <= 0.94f * WX)
 	{
 		if (moveTime <= 0 && mousePos.y >= menu[0].getPosition().y && mousePos.y <  menu[1].getPosition().y)
 		{
-			
+
 			moveTo(0);
 			if (sf::Mouse::isButtonPressed(Mouse::Left))
 			{
@@ -251,7 +273,7 @@ void MenuScene::update(double dt)
 		}
 		else if (moveTime <= 0 && mousePos.y >= menu[1].getPosition().y && mousePos.y <  menu[2].getPosition().y)
 		{
-		
+
 			moveTo(1);
 			if (sf::Mouse::isButtonPressed(Mouse::Left))
 			{
@@ -261,7 +283,7 @@ void MenuScene::update(double dt)
 		}
 		else if (moveTime <= 0 && mousePos.y >= menu[2].getPosition().y && mousePos.y <  menu[3].getPosition().y)
 		{
-			
+
 			moveTo(2);
 			if (sf::Mouse::isButtonPressed(Mouse::Left))
 			{
@@ -271,9 +293,9 @@ void MenuScene::update(double dt)
 
 			}
 		}
-		else if (moveTime <= 0 && mousePos.y >= menu[3].getPosition().y && mousePos.y <  menu[3].getPosition().y+30.0f)
+		else if (moveTime <= 0 && mousePos.y >= menu[3].getPosition().y && mousePos.y <  menu[3].getPosition().y + 30.0f)
 		{
-			
+
 			moveTo(3);
 			if (sf::Mouse::isButtonPressed(Mouse::Left))
 			{
@@ -291,7 +313,7 @@ void MenuScene::update(double dt)
 		moveDown();
 		moveTime = 0.2f;
 	}
-	if (moveTime <= 0 && (Keyboard::isKeyPressed(Keyboard::Return) || Keyboard::isKeyPressed(Keyboard::Space)) ) {
+	if (moveTime <= 0 && (Keyboard::isKeyPressed(Keyboard::Return) || Keyboard::isKeyPressed(Keyboard::Space)) || (sf::Joystick::isConnected(0) && sf::Joystick::isButtonPressed(0, sf::Joystick::Z))) {
 		moveTime = 0.2f;
 		if (selectedItemIndex == 0) {
 			gameScene.reset(new GameScene());
@@ -312,27 +334,38 @@ void MenuScene::update(double dt)
 			Renderer::getWindow().close();
 		}
 	}
-	Renderer::setCenter(Vector2f(WX / 2 + 25, WY/2));
+	if (sf::Joystick::isConnected(0)) {
+		if (moveTime <= 0 && sf::Joystick::getAxisPosition(0, sf::Joystick::Axis::PovY) == 100) {
+			moveUp();
+			moveTime = 0.2f;
+		}
+
+		if (moveTime <= 0 && sf::Joystick::getAxisPosition(0, sf::Joystick::Axis::PovY) == -100) {
+			moveDown();
+			moveTime = 0.2f;
+		}
+	}
+	Renderer::setCenter(Vector2f(WX / 2 + 25, WY / 2));
 	Scene::update(dt);
 	_ents.update(dt);
 }
-void MenuScene::render() 
+void MenuScene::render()
 {
 	EventSystem* evs = EventSystem::getInstance();
 	Scene::render();
 	Renderer::queue(&background);
 	Renderer::queue(&title);
 	_ents.render();
-	Renderer::queue(0,&rect);
-	Renderer::queue(0,&text);
+	Renderer::queue(0, &rect);
+	Renderer::queue(0, &text);
 	if (evs->isLoaded())
 	{
-		Renderer::queue(0,&button_return);
-		Renderer::queue(0,&text_return);
+		Renderer::queue(0, &button_return);
+		Renderer::queue(0, &text_return);
 	}
 
 	for (int i = 0; i < MAX_NUMBER_OF_ITEMS; i++) { //for every menu item		
-		Renderer::queue(0,&menu[i]);
+		Renderer::queue(0, &menu[i]);
 	}
 }
 vector<shared_ptr<Entity>> ghosts;
@@ -373,8 +406,8 @@ void GameScene::respawn()
 
 
 	for (int i = 0; i < GHOSTS_COUNT; ++i)
-	{		
-		ghosts.push_back(spawner->spawn_zombie());				
+	{
+		ghosts.push_back(spawner->spawn_zombie());
 	}
 
 
@@ -410,7 +443,7 @@ void GameScene::respawn()
 		_ents.list.push_back(cherry);
 		nibbles.push_back(cherry);
 	}
-	
+
 }
 void GameScene::load()
 {
@@ -451,7 +484,7 @@ void GameScene::load()
 		cout << "Cannot load img!" << endl;
 	}
 
-	ls::loadLevelFile("res/levels/example.txt", 25.0f * WX/1280);
+	ls::loadLevelFile("res/levels/example.txt", 25.0f * WX / 1280);
 
 
 	auto pl = std::make_shared<Entity>();
@@ -462,7 +495,7 @@ void GameScene::load()
 	s->getSprite().setTexture(playerTexture);
 	s->getSprite().setTextureRect({ 0,0,16,21 });
 	s->setDefaultFrames();
-	s->getSprite().setScale({ 2.0f*WX/1280, 2.0f*WY/720 });
+	s->getSprite().setScale({ 2.0f*WX / 1280, 2.0f*WY / 720 });
 	s->getSprite().setOrigin({ 8.0f, 12.0f });
 	s->getSprite().setPosition({ 100.0f, 100.0f });
 	gameScene->getEnts().push_back(pl);
@@ -477,21 +510,21 @@ void GameScene::load()
 	eatingEnts.push_back(player);
 	respawn();
 	SpellCaster::getInstance()->setEntities(ghosts);
-	
+
 }
 
 
 void GameScene::update(double dt)
 {
 	auto health_mana = player->GetComponent<HealthComponent>();
-	if (health_mana->getHealth()<=0)
+	if (health_mana->getHealth() <= 0)
 	{
 		health_mana->reset();
 		std::cout << "Game over!" << std::endl;
 		respawn();
 		SpellCaster::getInstance()->setEntities(ghosts);
 	}
-	if (Keyboard::isKeyPressed(Keyboard::Tab))
+	if (Keyboard::isKeyPressed(Keyboard::Tab) || (sf::Joystick::isConnected(0) && sf::Joystick::isButtonPressed(0, sf::Joystick::PovY)))
 	{
 		activeScene = menuScene;
 		std::cout << "Active Scene: " + std::to_string(activeScene->getID()) << std::endl;
@@ -510,7 +543,7 @@ void GameScene::render()
 OptionsScene::OptionsScene() {
 }
 
-void OptionsScene::load() 
+void OptionsScene::load()
 {
 	setID(2);
 	for (int i = 0; i < 30; i++)
@@ -537,7 +570,7 @@ void OptionsScene::load()
 	text_return.setOutlineThickness(3.0f);
 	text_return.setPosition(button_return.getPosition() + Vector2f(0.01f*WX, 0.015f*WY));
 
-	
+
 	background.setTexture(menuBg);
 	background.setScale(WX / 1280, WY / 720);
 
@@ -547,10 +580,10 @@ void OptionsScene::load()
 	rect.setOutlineColor(sf::Color::Black);
 	rect.setOutlineThickness(5.0f);
 
-	title.setPosition(rect.getPosition() + Vector2f(0.01f*WX,0.01f*WY));
+	title.setPosition(rect.getPosition() + Vector2f(0.01f*WX, 0.01f*WY));
 	title.setString("Options");
 	title.setFont(font);
-	title.setCharacterSize(30.0f*WY/720);
+	title.setCharacterSize(30.0f*WY / 720);
 	title.setColor(sf::Color::White);
 	title.setScale(WX / 1280, WY / 720);
 	title.setOutlineColor(sf::Color::Black);
@@ -560,7 +593,7 @@ void OptionsScene::load()
 	left_list.setString("Resolution\n\n\nScreen Mode\n\n\nOption3\n\n\nOption4");
 	left_list.setFont(font);
 	left_list.setCharacterSize(25.0f);
-	left_list.setScale(WX/1280, WY/720);
+	left_list.setScale(WX / 1280, WY / 720);
 	left_list.setColor(sf::Color::White);
 	left_list.setOutlineColor(sf::Color::Black);
 	left_list.setOutlineThickness(3.0f);
@@ -615,9 +648,9 @@ void OptionsScene::load()
 	text_resolution.setFont(font);
 	text_resolution.setColor(sf::Color::White);
 	text_resolution.setScale(WX / 1280, WY / 720);
-	text_resolution.setString(to_string((int)WX) + "x"+to_string((int)WY));
+	text_resolution.setString(to_string((int)WX) + "x" + to_string((int)WY));
 	text_resolution.setPosition(bg_resolution.getPosition() + Vector2f(0.07f*WX, 0.015f*WY));
-	
+
 	button_resolution_right = sf::CircleShape(17, 3);
 	button_resolution_right.rotate(-30.0f);
 	button_resolution_right.setFillColor(sf::Color(79, 79, 79, 255));
@@ -649,7 +682,7 @@ void OptionsScene::load()
 	button_screenmode_dot.setOutlineColor(sf::Color::White);
 	button_screenmode_dot.setOutlineThickness(5.0f);
 	button_screenmode_dot.setPosition(bg_screenmode.getPosition() + Vector2f(0.24f*WX, 0.013f*WY));
-	
+
 }
 void OptionsScene::update(double dt)
 {
@@ -660,12 +693,12 @@ void OptionsScene::update(double dt)
 		for (int i = 0; i < 13; i++)
 			control_labels[i].setString(codes[controls[i]]);
 
-			evs->refreshed();
+		evs->refreshed();
 	}
-	if(!fullscreen)
-	mousePos = sf::Mouse::getPosition(Renderer::getWindow());
+	if (!fullscreen)
+		mousePos = sf::Mouse::getPosition(Renderer::getWindow());
 	else
-	mousePos = sf::Mouse::getPosition();
+		mousePos = sf::Mouse::getPosition();
 	//if(evs->isLoaded())
 	if (mousePos.x >= button_return.getPosition().x  && mousePos.x <= button_return.getPosition().x + 0.3f*WX)
 	{
@@ -687,11 +720,11 @@ void OptionsScene::update(double dt)
 	{
 		text_return.setOutlineColor(sf::Color::Red);
 	}
-	if (mousePos.x >= button_resolution_right.getPosition().x- 0.013f*WX  && mousePos.x <= button_resolution_right.getPosition().x + 0.013f*WX)
+	if (mousePos.x >= button_resolution_right.getPosition().x - 0.013f*WX  && mousePos.x <= button_resolution_right.getPosition().x + 0.013f*WX)
 	{
 		if (mousePos.y >= button_resolution_right.getPosition().y - 0.025f*WY && mousePos.y <= button_resolution_right.getPosition().y + 0.025f*WY)
 		{
-	
+
 			button_resolution_right.setOutlineColor(sf::Color::Green);
 			if (sf::Mouse::isButtonPressed(Mouse::Left))
 			{
@@ -707,7 +740,7 @@ void OptionsScene::update(double dt)
 					activeScene = optionsScene;
 				}
 			}
-			
+
 		}
 		else
 		{
@@ -742,7 +775,7 @@ void OptionsScene::update(double dt)
 					activeScene = menuScene;
 					Renderer::resizeView();
 					activeScene = optionsScene;
-					
+
 				}
 			}
 
@@ -764,7 +797,7 @@ void OptionsScene::update(double dt)
 			button_screenmode_dot.setOutlineColor(sf::Color::Green);
 			if (sf::Mouse::isButtonPressed(Mouse::Left))
 			{
-				
+
 				if (!fullscreen)
 				{
 					Renderer::fullscreen();
@@ -777,7 +810,7 @@ void OptionsScene::update(double dt)
 					fullscreen = false;
 					text_screenmode.setString("Window");
 				}
-				
+
 			}
 
 		}
@@ -805,36 +838,36 @@ void OptionsScene::update(double dt)
 			}
 		}
 	}
-	if(!anyKeySelected)
-	for (int i = 0; i < 13; i++)
-	{
-		if (mousePos.x >= control_labels[i].getPosition().x - 0.04f*WX && mousePos.x <= control_labels[i].getPosition().x + 0.06f*WX)
+	if (!anyKeySelected)
+		for (int i = 0; i < 13; i++)
 		{
-			if (mousePos.y >= control_labels[i].getPosition().y - 0.02f*WY && mousePos.y <= control_labels[i].getPosition().y + 0.06f*WY)
+			if (mousePos.x >= control_labels[i].getPosition().x - 0.04f*WX && mousePos.x <= control_labels[i].getPosition().x + 0.06f*WX)
 			{
-
-				control_labels[i].setOutlineColor(sf::Color::Green);
-				if (delay<0 && sf::Mouse::isButtonPressed(Mouse::Left))
+				if (mousePos.y >= control_labels[i].getPosition().y - 0.02f*WY && mousePos.y <= control_labels[i].getPosition().y + 0.06f*WY)
 				{
-					delay = 0.1f;
-					keySelected[i] = true;
-					anyKeySelected = true;
-					selectedKey = i;
-				}
 
+					control_labels[i].setOutlineColor(sf::Color::Green);
+					if (delay<0 && sf::Mouse::isButtonPressed(Mouse::Left))
+					{
+						delay = 0.1f;
+						keySelected[i] = true;
+						anyKeySelected = true;
+						selectedKey = i;
+					}
+
+				}
+				else
+				{
+					if (!keySelected[i])
+						control_labels[i].setOutlineColor(sf::Color::Red);
+				}
 			}
 			else
 			{
-				if(!keySelected[i])
-				control_labels[i].setOutlineColor(sf::Color::Red);
+				if (!keySelected[i])
+					control_labels[i].setOutlineColor(sf::Color::Red);
 			}
 		}
-		else
-		{
-			if (!keySelected[i])
-			control_labels[i].setOutlineColor(sf::Color::Red);
-		}
-	}
 	Renderer::setCenter(Vector2f(WX / 2 + 25, WY / 2));
 	Scene::update(dt);
 	_ents.update(dt);
@@ -844,12 +877,12 @@ void OptionsScene::render()
 	Scene::render();
 	Renderer::queue(&background);
 	_ents.render();
-	Renderer::queue(0,&rect);
-	Renderer::queue(0,&title);
-	Renderer::queue(0,&left_list);
-	Renderer::queue(0,&bg_resolution);
-	Renderer::queue(0,&text_resolution);
-	Renderer::queue(0,&right_list);
+	Renderer::queue(0, &rect);
+	Renderer::queue(0, &title);
+	Renderer::queue(0, &left_list);
+	Renderer::queue(0, &bg_resolution);
+	Renderer::queue(0, &text_resolution);
+	Renderer::queue(0, &right_list);
 	Renderer::queue(0, &right_list2);
 	Renderer::queue(0, &button_return);
 	Renderer::queue(0, &text_return);

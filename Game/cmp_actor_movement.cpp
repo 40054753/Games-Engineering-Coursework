@@ -153,19 +153,19 @@ void PlayerMovementComponent::update(double dt)
 	if (!immobilized)
 	{
 		int xdir = 0, ydir = 0;
-		if (Keyboard::isKeyPressed(controls[0])) {
+		if (Keyboard::isKeyPressed(controls[0]) || (sf::Joystick::isConnected(0) && sf::Joystick::getAxisPosition(0, sf::Joystick::Axis::PovY) == 100)) {
 			_parent->setFace(1);
 			move(Vector2f(0, -_speed * dt));
 		}
-		else if (Keyboard::isKeyPressed(controls[1])) {
+		else if (Keyboard::isKeyPressed(controls[1]) || (sf::Joystick::isConnected(0) && sf::Joystick::getAxisPosition(0, sf::Joystick::Axis::PovY) == -100)) {
 			_parent->setFace(3);
 			move(Vector2f(0, _speed * dt));
 		}
-		else if (Keyboard::isKeyPressed(controls[3])) {
+		else if (Keyboard::isKeyPressed(controls[3]) || (sf::Joystick::isConnected(0) && sf::Joystick::getAxisPosition(0, sf::Joystick::Axis::PovX) == -100)) {
 			_parent->setFace(4);
 			move(Vector2f(-_speed * dt, 0));
 		}
-		else if (Keyboard::isKeyPressed(controls[2])) {
+		else if (Keyboard::isKeyPressed(controls[2]) || (sf::Joystick::isConnected(0) && sf::Joystick::getAxisPosition(0, sf::Joystick::Axis::PovX) == 100)) {
 			_parent->setFace(2);
 			move(Vector2f(_speed * dt, 0));
 		}

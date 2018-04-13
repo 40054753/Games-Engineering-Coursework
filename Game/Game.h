@@ -34,6 +34,7 @@ extern bool fullscreen;
 
 extern std::string codes[101];
 extern sf::Keyboard::Key controls[13];
+extern sf::Joystick::Axis buttons[8];
 class MenuScene : public Scene
 {
 private:

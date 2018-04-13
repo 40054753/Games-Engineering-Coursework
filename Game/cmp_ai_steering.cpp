@@ -15,6 +15,7 @@ void SteeringComponent::update(double dt)
 {
 	auto slowed = _parent->GetComponent<StatusComponent>();
 	if (slowed->getSlowed()) {
+		std::cout << "asdf";
 		_speed = 40.0f;
 	}
 	else {
