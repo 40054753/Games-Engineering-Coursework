@@ -39,6 +39,7 @@ class MenuScene : public Scene
 {
 private:
 	float moveTime=0.0f;
+	float pauseTimer = 0.0f;
 	int selectedItemIndex;
 	sf::Text menu[MAX_NUMBER_OF_ITEMS];
 	sf::Text text;
@@ -57,7 +58,8 @@ public:
 
 class GameScene : public Scene
 {
-private:	
+private:
+	float pauseTimer = 0.0f;
 	sf::Text text;
 	void respawn();
 public:

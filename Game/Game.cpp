@@ -122,7 +122,7 @@ void MenuScene::load() {
 	text_return.setOutlineThickness(3.0f);
 	text_return.setPosition(button_return.getPosition() + Vector2f(0.01f*WX, 0.015f*WY));
 
-	/*for (int i = 0; i < 30; i++)
+	for (int i = 0; i < 30; i++)
 	{
 		float scale = (float)(rand() % 10) / 50.0f;
 		auto snow = make_shared<Entity>();
@@ -132,7 +132,7 @@ void MenuScene::load() {
 		snow->setPosition(Vector2f(rand() % ((int)WX), rand() % ((int)WY)));
 		snow->addComponent<SnowComponent>();
 		_ents.list.push_back(snow);
-	}*/
+	}
 	background.setTexture(menuBg);
 	background.setScale(WX / 1280, WY / 720);
 	rect.setPosition(sf::Vector2f(3.92f * WX / 5, WY / (MAX_NUMBER_OF_ITEMS)  * 2.15f));
@@ -226,12 +226,14 @@ void MenuScene::moveDown()
 
 void MenuScene::update(double dt)
 {
+	pauseTimer -= dt;
 	EventSystem* evs = EventSystem::getInstance();
 	mousePos = sf::Mouse::getPosition(Renderer::getWindow());
 	moveTime -= dt;
 	if (evs->isLoaded())
-		if (sf::Joystick::isConnected(0) && sf::Joystick::isButtonPressed(0, sf::Joystick::PovY))
+		if (sf::Joystick::isConnected(0) && sf::Joystick::isButtonPressed(0, sf::Joystick::PovY) && pauseTimer <= 0)
 		{
+			pauseTimer = 0.2f;
 			activeScene = gameScene;
 			evs->refresh();
 		}
@@ -264,6 +266,7 @@ void MenuScene::update(double dt)
 			moveTo(0);
 			if (sf::Mouse::isButtonPressed(Mouse::Left))
 			{
+				pauseTimer = 0.2f;
 				gameScene.reset(new GameScene());
 				gameScene->load();
 				evs->refresh();
@@ -316,6 +319,7 @@ void MenuScene::update(double dt)
 	if (moveTime <= 0 && (Keyboard::isKeyPressed(Keyboard::Return) || Keyboard::isKeyPressed(Keyboard::Space)) || (sf::Joystick::isConnected(0) && sf::Joystick::isButtonPressed(0, sf::Joystick::Z))) {
 		moveTime = 0.2f;
 		if (selectedItemIndex == 0) {
+			pauseTimer = 0.2f;
 			gameScene.reset(new GameScene());
 			gameScene->load();
 			activeScene = gameScene; //switch to game
@@ -344,6 +348,9 @@ void MenuScene::update(double dt)
 			moveDown();
 			moveTime = 0.2f;
 		}
+	}
+	if (pauseTimer < 0) {
+		pauseTimer = 0;
 	}
 	Renderer::setCenter(Vector2f(WX / 2 + 25, WY / 2));
 	Scene::update(dt);
@@ -486,6 +493,7 @@ void GameScene::load()
 
 void GameScene::update(double dt)
 {
+	pauseTimer -= dt;
 	auto health_mana = player->GetComponent<HealthComponent>();
 	if (health_mana->getHealth() <= 0)
 	{
@@ -494,10 +502,14 @@ void GameScene::update(double dt)
 		respawn();
 		SpellCaster::getInstance()->setEntities(ghosts);
 	}
-	if (Keyboard::isKeyPressed(Keyboard::Tab) || (sf::Joystick::isConnected(0) && sf::Joystick::isButtonPressed(0, sf::Joystick::PovY)))
+	if (Keyboard::isKeyPressed(Keyboard::Tab) || (sf::Joystick::isConnected(0) && sf::Joystick::isButtonPressed(0, sf::Joystick::PovY)) && pauseTimer <= 0)
 	{
+		pauseTimer = 0.2f;
 		activeScene = menuScene;
 		std::cout << "Active Scene: " + std::to_string(activeScene->getID()) << std::endl;
+	}
+	if (pauseTimer < 0) {
+		pauseTimer = 0;
 	}
 	_ents.update(dt);
 	Renderer::setCenter(player->getPosition());
@@ -516,7 +528,7 @@ OptionsScene::OptionsScene() {
 void OptionsScene::load()
 {
 	setID(2);
-/*	for (int i = 0; i < 30; i++)
+	for (int i = 0; i < 30; i++)
 	{
 		float scale = (float)(rand() % 10) / 50.0f;
 		auto snow = make_shared<Entity>();
@@ -526,7 +538,7 @@ void OptionsScene::load()
 		snow->setPosition(Vector2f(rand() % ((int)WX), rand() % ((int)WY)));
 		snow->addComponent<SnowComponent>();
 		_ents.list.push_back(snow);
-	}*/
+	}
 	button_return.setOutlineColor(sf::Color::Black);
 	button_return.setOutlineThickness(5.0f);
 	button_return.setFillColor(sf::Color(79, 79, 79, 255));
