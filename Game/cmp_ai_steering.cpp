@@ -55,7 +55,8 @@ void SteeringComponent::update(double dt)
 
 bool SteeringComponent::validMove(const sf::Vector2f& pos) const
 {
-	return (LevelSystem::getTileAt(pos) != LevelSystem::WALL);
+	////////////////////////////////////////INSTERT ALLL WALLS
+	return (LevelSystem::getTileAt(pos) != 10);
 }
 
 void SteeringComponent::move(const Vector2f& p)

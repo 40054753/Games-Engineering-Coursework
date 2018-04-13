@@ -368,9 +368,9 @@ void GameScene::respawn()
 	auto att = _ents.list[0]->GetComponent<AttackComponent>();
 	att->setEntities(ghosts);
 
-	_ents.list[0]->setPosition(ls::findTiles(ls::START)[0]);
+	_ents.list[0]->setPosition(ls::findTiles2(-5)[0]);
 
-	auto ghost_spawns = ls::findTiles(ls::ENEMY);
+	auto ghost_spawns = ls::findTiles2(-3);
 	for (int i = 1; i < _ents.list.size(); ++i) {
 		_ents.list[i]->setPosition(ghost_spawns[rand() % ghost_spawns.size()]);
 	}
@@ -422,7 +422,8 @@ void GameScene::load()
 		cout << "Cannot load img!" << endl;
 	}
 
-	ls::loadLevelFile("res/levels/example.txt", 32.0f * WX/1280);
+	ls::loadLevelFile("res/levels/map.csv", 32.0f * WX/1280);
+	ls::loadLevelFile2("res/levels/map_high.csv");
 
 
 	auto pl = std::make_shared<Entity>();
@@ -474,6 +475,7 @@ void GameScene::render()
 {
 	ls::Render(Renderer::getWindow());
 	_ents.render();
+	ls::Render2(Renderer::getWindow());
 	Scene::render();
 }
 

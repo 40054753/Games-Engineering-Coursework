@@ -33,7 +33,7 @@ void ActorMovementComponent::update(double dt)
 ActorMovementComponent::ActorMovementComponent(Entity *p) : _speed(100.0f*WX/1280), Component(p) {}
 
 bool ActorMovementComponent::validMove(const sf::Vector2f &pos) {
-	return (LevelSystem::getTileAt(pos) != LevelSystem::WALL);
+	return (LevelSystem::getTileAt(pos) != 10);
 }
 
 void ActorMovementComponent::move(const Vector2f &p) 
@@ -207,7 +207,7 @@ void EnemyAIComponent::update(double dt) {
 	switch (_state)
 	{
 	case EnemyAIComponent::ROAMING:
-		if (ls::getTileAt(newPos) == ls::WALL || ls::getTileAt(pos) == ls::WAYPOINT) { //if wall in front or at waypoint
+		if (ls::getTileAt(newPos) == 10 || ls::getTileAt(pos) == 10) { //if wall in front or at waypoint
 			_state = ROTATING; //start rotating
 		}
 		else {
@@ -217,7 +217,7 @@ void EnemyAIComponent::update(double dt) {
 	case EnemyAIComponent::ROTATING:
 		//don't reverse and don't pick a direction which leads to a wall
 		//std::cout << badDir << ";" << _direction << std::endl;
-		while (newDir == badDir || ls::getTileAt(pos + Vector2f(newDir) * mva) == ls::WALL) {
+		while (newDir == badDir || ls::getTileAt(pos + Vector2f(newDir) * mva) == 10) {
 			newDir = directions[rand() % 4]; 		//pick a new direction
 													//std::cout << "WHILE LOOP: " << _state << newDir << badDir << std::endl;
 		}
@@ -226,7 +226,7 @@ void EnemyAIComponent::update(double dt) {
 		break;
 	case EnemyAIComponent::ROTATED:
 		//has it left the waypoint?
-		if (ls::getTileAt(newPos) != ls::WAYPOINT) {
+		if (ls::getTileAt(newPos) != 10) {
 			_state = ROAMING; //yes, roam
 		}
 		move(_direction * mva); //No
