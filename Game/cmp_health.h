@@ -23,6 +23,7 @@ public:
 	float getMana() { return mana; }
 	float getMaxStamina() { return maxStamina; }
 	float getStamina() { return stamina; }
+	void setMaxHealth(float x) { maxHealth = x; health = maxHealth; }
 	void reduceHealth(float x);
 	void reset();
 	void reduceMana(float x);

@@ -65,33 +65,25 @@ public:
 
 };
 
-class StatusTextComponent : public Component {
+
+class EnemyHealthBarComponent : public Component {
 protected:
 	bool slow = false;
 	bool burn = false;
 	bool blind = false;
-	sf::Text statusText;
-	std::vector<sf::Text> statusArray;
+	bool back_to_normal = false;
+	sf::RectangleShape hp;
+	sf::Text text_hp;
+	sf::Sprite status;
 	float blindTextTime = 0.5f;
 	float slowTextTime = 0.5f;
 	float burnTextTime = 0.5f;
 public:
+	EnemyHealthBarComponent() = delete;
+	void setNormal() { back_to_normal = true; slow = false; burn = false; blind = false; }
 	void setSlow() { slow = true; }
 	void setBurn() { burn = true; }
 	void setBlind() { blind = true; }
-	StatusTextComponent() = delete;
-	explicit StatusTextComponent(Entity *p);
-	void setText(std::string x);
-	void update(double dt) override;
-	void render() override;
-
-};
-
-class EnemyHealthBarComponent : public Component {
-protected:
-	sf::RectangleShape hp;
-public:
-	EnemyHealthBarComponent() = delete;
 	explicit EnemyHealthBarComponent(Entity *p);
 	void update(double dt) override;
 	void render() override;
