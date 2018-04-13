@@ -24,63 +24,65 @@ void ProjectileComponent::render()
 }
 void ProjectileComponent::update(double dt)
 {
-	int chance = rand() % 10 + 1;
-	if (finishAnimation)
+	if (!_parent->is_forDeletion())
 	{
-		timer -= dt;
-		if (timer < 0)
+		int chance = rand() % 10 + 1;
+		if (finishAnimation)
 		{
-			finishAnimation = false;
+			timer -= dt;
+			if (timer < 0)
+			{
+				finishAnimation = false;
+			}
 		}
+		if (!_parent->is_forDeletion())
+			for (auto g : _entities)
+				if (!g->is_forDeletion())
+					if (length(g->getPosition() - _parent->getPosition()) < range*WX / 1280)
+					{
+						auto health_mana = g->GetComponent<HealthComponent>();
+						if (!damage_dealt)
+						{
+							auto dmg = std::make_shared<Entity>();
+							auto txt = dmg->addComponent<DamageTextComponent>();
+							dmg->setPosition(g->getPosition());
+							health_mana->reduceHealth(damage); //should be changed to the player's attack damage
+							txt->setText(damage);
+							gameScene->getEnts().push_back(dmg);
+							events->addExp(type, 10);
+							if (!conDmg)
+								damage_dealt = true;
+						}
+						if (knockback)
+						{
+							auto d = g->GetComponent<ActorMovementComponent>();
+							d->push((g->getPosition() - _parent->getPosition()));
+						}
+						if (chance > 5 && blind) {
+							auto blindcmp = g->GetComponent<StatusComponent>();
+							blindcmp->setBlinded();
+							auto s = g->GetComponent<CharacterSpriteComponent>();
+							s->getSprite().setColor(sf::Color::Yellow);
+						}
+						if (slow) {
+							auto slowcmp = g->GetComponent<StatusComponent>();
+							slowcmp->setSlowed();
+							auto s = g->GetComponent<CharacterSpriteComponent>();
+							s->getSprite().setColor(sf::Color(123, 119, 255, 255));
+
+						}
+						if (chance >= 4 && burn) {
+							auto burncmp = g->GetComponent<StatusComponent>();
+							burncmp->setBurning();
+							auto s = g->GetComponent<CharacterSpriteComponent>();
+							s->getSprite().setColor(sf::Color(255, 0, 0, 190));
+						}
+						if (!indestructable)
+						{
+							if (!finishAnimation)
+								_parent->setForDelete();
+						}
+					}
 	}
-	if(!_parent->is_forDeletion())
-	for(auto g: _entities)
-	if(!g->is_forDeletion())
-	if (length(g->getPosition() - _parent->getPosition()) < range*WX / 1280)
-	{
-		auto health_mana = g->GetComponent<HealthComponent>();
-		if (!damage_dealt)
-		{
-			auto dmg = std::make_shared<Entity>();
-			auto txt = dmg->addComponent<DamageTextComponent>();		
-			dmg->setPosition(g->getPosition());
-			health_mana->reduceHealth(damage); //should be changed to the player's attack damage
-			txt->setText(damage);
-			gameScene->getEnts().push_back(dmg);
-			events->addExp(type, 10);
-			if(!conDmg)
-			damage_dealt = true;
-		}
-		if (knockback)
-		{
-			auto d = g->GetComponent<ActorMovementComponent>();
-			d->push((g->getPosition() - _parent->getPosition()));
-		}
-		if (chance > 5 && blind) {
-			auto blindcmp = g->GetComponent<StatusComponent>();
-			blindcmp->setBlinded();
-			auto s = g->GetComponent<CharacterSpriteComponent>();
-			s->getSprite().setColor(sf::Color::Yellow);
-		}
-		if (slow) {
-			auto slowcmp = g->GetComponent<StatusComponent>();
-			slowcmp->setSlowed();
-			auto s = g->GetComponent<CharacterSpriteComponent>();
-			s->getSprite().setColor(sf::Color(123, 119, 255,255));
-			
-		}
-		if (chance >= 4 && burn) {
-			auto burncmp = g->GetComponent<StatusComponent>();
-			burncmp->setBurning();
-			auto s = g->GetComponent<CharacterSpriteComponent>();
-			s->getSprite().setColor(sf::Color(255, 0, 0, 190));
-		}
-		if (!indestructable)
-		{
-			if (!finishAnimation)
-				_parent->setForDelete();
-		}
-	}
-	
 	
 }

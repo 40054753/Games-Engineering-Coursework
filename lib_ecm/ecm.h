@@ -13,12 +13,11 @@ class Entity {
 private:
 	std::vector<std::shared_ptr<Component>> _components;
 	sf::Vector2f _position;
-	int face=3;
-	int _points;
-	float _rotation;
-	bool _alive;
-	bool _visible;
-	bool _forDeletion;
+	int face=rand()%3+1;
+	float _rotation=0.0f;
+	bool _alive=true;
+	bool _visible=true;
+	bool _forDeletion=false;
 	bool _isPlayer = false;
 public:
 	Entity();
@@ -40,8 +39,7 @@ public:
 	void setForDelete();
 	bool isVisible() const;
 	void setVisible(bool _value);
-	void setPoints(int p);
-	int getPoints();
+
 
 	template <typename T, typename... Targs>
 	std::shared_ptr<T> addComponent(Targs... params) {

@@ -4,7 +4,6 @@
 Entity::Entity()
 {
 	_forDeletion = false;
-	_points = 0;
 }
 
 void Entity::update(double dt) {
@@ -14,7 +13,6 @@ void Entity::update(double dt) {
 				_c->update(dt);
 		}
 	}
-	//std::cout << std::to_string(_points) << std::endl;
 }
 
 void Entity::render()
@@ -63,7 +61,9 @@ void Entity::setAlive(bool _value)
 
 void Entity::setForDelete()
 {
+	
 	_forDeletion = true;
+
 }
 
 bool Entity::isVisible() const
@@ -76,15 +76,6 @@ void Entity::setVisible(bool _value)
 	_visible = _value;
 }
 
-void Entity::setPoints(int p)
-{
-	_points += p;
-}
-
-int Entity::getPoints()
-{
-	return _points;
-}
 
 //Component
 Component::Component(Entity *p)
@@ -114,7 +105,9 @@ void EntityManager::render() {
 }
 
 void EntityManager::update(double dt) {
-	for (auto &e : list) {
-		e->update(dt);
+	for (auto &e : list) 
+	{
+			e->update(dt);		
 	}
+	
 }
