@@ -2,7 +2,8 @@
 #include "cmp_status.h"
 #include "SystemRenderer.h"
 #include <maths.h>
-
+#include "Game.h"
+#include "levelsystem.h"
 using namespace sf;
 
 SteeringComponent::SteeringComponent(Entity * p, Entity* player)
@@ -51,12 +52,7 @@ void SteeringComponent::update(double dt)
 
 bool SteeringComponent::validMove(const sf::Vector2f& pos) const
 {
-	if (pos.x < 0.0f || pos.y > Renderer::getWindow().getSize().x ||
-		pos.y < 0.0f || pos.y > Renderer::getWindow().getSize().y)
-	{
-		return false;
-	}
-	return true;
+	return (LevelSystem::getTileAt(pos) != LevelSystem::WALL);
 }
 
 void SteeringComponent::move(const Vector2f& p)
@@ -66,6 +62,16 @@ void SteeringComponent::move(const Vector2f& p)
 	{
 		_parent->setPosition(new_pos);
 	}
+	else if (validMove(Vector2f(new_pos.x, _parent->getPosition().y)))
+	{
+		_parent->setPosition(Vector2f(new_pos.x, _parent->getPosition().y));
+	}
+	else if (validMove(Vector2f(_parent->getPosition().x, new_pos.y)))
+	{
+		_parent->setPosition(Vector2f(_parent->getPosition().x, new_pos.y));
+	}
+	
+	
 }
 
 void SteeringComponent::move(float x, float y)

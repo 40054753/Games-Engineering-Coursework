@@ -36,8 +36,8 @@ std::shared_ptr<Entity> MonsterSpawner::spawn_zombie()
 	ghost->addComponent<StatusComponent>();
 	auto p = ghost->addComponent<EnemyAttackComponent>();
 	p->setLevel(0);
-	//ghost->addComponent<SteeringComponent>(player.get());
-	//ghost->addComponent<StatusComponent>();
+	ghost->addComponent<SteeringComponent>(player.get());
+	ghost->addComponent<StatusComponent>();
 	gameScene->getEnts().push_back(ghost);
 	return ghost;
 }
