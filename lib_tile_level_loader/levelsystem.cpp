@@ -9,9 +9,9 @@ std::unique_ptr<LevelSystem::TILE[]> LevelSystem::_tiles;
 size_t LevelSystem::_width;
 size_t LevelSystem::_height;
 Vector2f LevelSystem::_offset = Vector2f{ 0 , 0 };
-
+sf::Texture texture;
 float LevelSystem::_tileSize = 25.0f;
-vector<std::unique_ptr<sf::RectangleShape>> LevelSystem::_sprites;
+vector<std::unique_ptr<sf::Sprite>> LevelSystem::_sprites;
 std::map<LevelSystem::TILE, sf::Color> LevelSystem::_colours{
 	{ WALL, Color::Blue },
 { START, Color::Red },
@@ -20,6 +20,20 @@ std::map<LevelSystem::TILE, sf::Color> LevelSystem::_colours{
 { WAYPOINT, Color::Black }
 };
 
+std::map<LevelSystem::TILE, sf::IntRect> LevelSystem::_rects{
+{ WALL,		{ 368,16,16,16	} },
+{ START,	{ 16,64,16,16 } },
+{ END,		{ 0,0,16,16 } },
+{ EMPTY,	{ 0,0,16,16 } },
+{ WAYPOINT,	{ 0,0,16,16 } }
+};
+sf::IntRect LevelSystem::getRect(LevelSystem::TILE t) {
+	auto it = _rects.find(t);
+	if (it == _rects.end()) {
+		_rects[t] = { 32,32,16,16 };
+	}
+	return _rects[t];
+}
 sf::Color LevelSystem::getColor(LevelSystem::TILE t) {
 	auto it = _colours.find(t);
 	if (it == _colours.end()) {
@@ -27,11 +41,12 @@ sf::Color LevelSystem::getColor(LevelSystem::TILE t) {
 	}
 	return _colours[t];
 }
-
 void LevelSystem::setColor(LevelSystem::TILE t, sf::Color c) {
 	_colours.insert(std::pair<LevelSystem::TILE, sf::Color>(t, c));
 }
-
+void LevelSystem::setRect(LevelSystem::TILE t, sf::IntRect c) {
+	_rects.insert(std::pair<LevelSystem::TILE, sf::IntRect>(t, c));
+}
 void LevelSystem::loadLevelFile(const std::string &path, float tileSize) {
 	_tileSize = tileSize;
 	size_t w = 0, h = 0;
@@ -98,19 +113,23 @@ void LevelSystem::loadLevelFile(const std::string &path, float tileSize) {
 	cout << "Level " << path << " loaded! " << w << "x" << h << endl;
 	buildSprites();
 }
-
 void LevelSystem::buildSprites() {
 	_sprites.clear();
+	if (!texture.loadFromFile("res/img/world.png")) {
+		cout << "Cannot load texture!" << endl;
+	}
 	for (size_t y = 0; y < LevelSystem::getHeight(); ++y) {
 		for (size_t x = 0; x < LevelSystem::getWidth(); ++x) {
-			auto s = make_unique<sf::RectangleShape>();
+			auto s = make_unique<sf::Sprite>();
 			s->setPosition(getTilePosition({ x, y }));
-			s->setSize(Vector2f(_tileSize, _tileSize));
-			s->setFillColor(getColor(getTile({ x, y })));
+			s->setTexture(texture);
+			s->setScale(Vector2f(_tileSize / 16, _tileSize / 16));
+			s->setTextureRect(getRect(getTile({ x, y })));
 			_sprites.push_back(move(s));
 		}
 	}
 }
+
 
 sf::Vector2f LevelSystem::getTilePosition(sf::Vector2ul p) {
 	return (Vector2f(p.x * _tileSize, p.y * _tileSize));
