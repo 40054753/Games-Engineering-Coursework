@@ -23,9 +23,12 @@ void StatusComponent::update(double dt)
 	////timers for status
 	if (blinded) {
 		blindTimer -= dt;
+		auto st = _parent->GetComponent<EnemyHealthBarComponent>();
+		st->setBlind();
 		if (blindTimer <= 0)
 		{
 			blinded = false;
+			st->setNormal();
 			blindTimer = 3.0f;
 			auto s =_parent->GetComponent<CharacterSpriteComponent>();
 			s->getSprite().setColor(sf::Color::White);
@@ -33,6 +36,8 @@ void StatusComponent::update(double dt)
 	}
 	if (burning) {
 		burnDamageTimer -= dt;
+		auto st = _parent->GetComponent<EnemyHealthBarComponent>();
+		st->setBurn();
 		if (burnDamageTimer < 0)
 		{
 			auto health = _parent->GetComponent<HealthComponent>();
@@ -47,6 +52,7 @@ void StatusComponent::update(double dt)
 		burnTimer -= dt;
 		if (burnTimer <= 0) {
 			burning = false;
+			st->setNormal();
 			burnTimer = 5.0f;
 			auto s = _parent->GetComponent<CharacterSpriteComponent>();
 			s->getSprite().setColor(sf::Color::White);
@@ -54,9 +60,12 @@ void StatusComponent::update(double dt)
 	}
 	if (slowed) {
 		slowTimer -= dt;
+		auto st = _parent->GetComponent<EnemyHealthBarComponent>();
+		st->setSlow();
 		if (slowTimer < 0) {
 			slowed = false;
 			slowTimer = 2.0f;
+			st->setNormal();
 			auto s = _parent->GetComponent<CharacterSpriteComponent>();
 			s->getSprite().setColor(sf::Color::White);
 		}

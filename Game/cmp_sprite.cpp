@@ -166,7 +166,7 @@ sf::Sprite& CharacterSpriteComponent::getSprite() const {
 DamageTextComponent::DamageTextComponent(Entity *p) : Component(p) 
 {
 	damageText.setFont(font);
-	damageText.setCharacterSize(15);
+	damageText.setCharacterSize(12);
 	damageText.setScale(WX/1280,WY/720);
 	damageText.setColor(sf::Color::Red);
 	
@@ -179,61 +179,18 @@ void DamageTextComponent::setText(int x)
 void DamageTextComponent::update(double dt)
 {
 	textTime -= dt;
-	damageText.setPosition(_parent->getPosition()+Vector2f(-14.0f*WX/1280,-50.0f*WY/720));
+	damageText.setPosition(_parent->getPosition()+Vector2f(-14.0f*WX/1280,-15.0f*WY/720));
 	if (textTime < 0)
 		_parent->setForDelete();
 	
 }
 void DamageTextComponent::render()
 {
-	Renderer::queue(&damageText);
+	Renderer::queue(1,&damageText);
 }
 
-StatusTextComponent::StatusTextComponent(Entity *p) : Component(p)
-{
-	statusText.setFont(font);
-	statusText.setCharacterSize(15);
-	statusText.setScale(WX / 1280, WY / 720);
-	statusText.setColor(sf::Color::Cyan);
 
 
-}
-void StatusTextComponent::setText(std::string x)
-{
-	statusText.setString(x);
-}
-void StatusTextComponent::update(double dt)
-{
-	if (blind) {
-		statusText.setString("Blind");
-		blindTextTime -= dt;
-		statusText.setPosition(_parent->getPosition() + Vector2f(-14.0f*WX / 1280, -75.0f*WY / 720));
-		if (blindTextTime < 0) {
-			_parent->setForDelete();
-		}
-	}
-
-	if (slow) {
-		statusText.setString("Slow");
-		slowTextTime -= dt;
-		statusText.setPosition(_parent->getPosition() + Vector2f(-14.0f*WX / 1280, -75.0f*WY / 720));
-		if (slowTextTime < 0) {
-			_parent->setForDelete();
-		}
-	}
-	if (burn) {
-		statusText.setString("Burning");
-		burnTextTime -= dt;
-		statusText.setPosition(_parent->getPosition() + Vector2f(-14.0f*WX / 1280, -75.0f*WY / 720));
-		if (burnTextTime < 0) {
-			_parent->setForDelete();
-		}
-	}
-}
-void StatusTextComponent::render()
-{
-	Renderer::queue(1,&statusText);
-}
 	
 sf::Sprite& StaticSpriteComponent::getSprite() const {
 	return *_sprite;
@@ -261,20 +218,54 @@ void StaticSpriteComponent::render()
 }
 EnemyHealthBarComponent::EnemyHealthBarComponent(Entity *p) : Component(p) 
 {
-	
+	status.setTexture(spellsTexture);
+	status.setTextureRect({95,30,30,30});
+	status.setScale(WX / 1280, WY / 720);
+	text_hp.setFont(font);
+	text_hp.setCharacterSize(12);
+	text_hp.setScale(WX / 1280, WY / 720);
+	text_hp.setColor(sf::Color::Red);
 	hp.setFillColor(sf::Color::Red);
 	hp.setSize({31.0f, 4.0f});
+	auto health = _parent->GetComponent<HealthComponent>();
+	text_hp.setString(std::to_string((int)health->getHealth()) + "/" + std::to_string((int)health->getMaxHealth()));
 }
 void EnemyHealthBarComponent::update(double dt)
 {
+	if (back_to_normal)
+	{
+		status.setTextureRect({ 95,30,30,30 });
+		back_to_normal = false;
+	}
+	else if (slow)
+	{
+		status.setTextureRect({ 30,30,30,30 });
+		slow = false;
+	}
+	else if (blind)
+	{
+		status.setTextureRect({ 60,30,30,30 });
+		blind = false;
+	}
+	else if (burn)
+	{
+		status.setTextureRect({ 0,30,30,30 });
+		burn = false;
+	}
+
 	auto health = _parent->GetComponent<HealthComponent>();
 	float scaleX = health->getHealth() / health->getMaxHealth();
 	hp.setScale(scaleX * (WX / 1280) , WY / 720);
+	status.setPosition(_parent->getPosition() + Vector2f(15.0*WX / 1280, -35.0f*WY / 720));
 	hp.setPosition(_parent->getPosition() + Vector2f(-15.0*WX/1280, -30.0f*WY/720));
+	text_hp.setPosition(_parent->getPosition() + Vector2f(-33.0*WX / 1280, -50.0f*WY / 720));
+	text_hp.setString(std::to_string((int)health->getHealth()) + "/" + std::to_string((int)health->getMaxHealth()));
 }
 void EnemyHealthBarComponent::render()
 {
-	Renderer::queue(&hp);
+	Renderer::queue(1,&status);
+	Renderer::queue(1,&hp);
+	Renderer::queue(1,&text_hp);
 }
 AnimatedSpriteComponent::AnimatedSpriteComponent(Entity *p) : Component(p), _sprite(std::make_shared<sf::Sprite>())
 {

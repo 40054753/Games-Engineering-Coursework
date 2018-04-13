@@ -94,7 +94,7 @@ void SpellCaster::cast_fire_ball(sf::Vector2f location)
 		s->getSprite().setTextureRect({ 0,0,30,30 });
 		s->getSprite().setOrigin({ 17.0f, 19.0f });
 
-		activeScene->getEnts().push_back(bullet);
+		gameScene->getEnts().push_back(bullet);
 	}
 }
 
@@ -121,7 +121,7 @@ void SpellCaster::cast_water_gun(sf::Vector2f location)
 		s->getSprite().setTextureRect({ 30,0,30,30 });
 		s->getSprite().setOrigin({ 15.0f, 15.0f });
 
-		activeScene->getEnts().push_back(bullet);
+		gameScene->getEnts().push_back(bullet);
 	}
 }
 void SpellCaster::cast_sonic_boom(sf::Vector2f location)
@@ -147,7 +147,7 @@ void SpellCaster::cast_sonic_boom(sf::Vector2f location)
 		s->getSprite().setTextureRect({ 60,0,30,30 });
 		s->getSprite().setOrigin({ 15.0f, 15.0f });
 
-		activeScene->getEnts().push_back(bullet);
+		gameScene->getEnts().push_back(bullet);
 	}
 
 }
@@ -180,7 +180,7 @@ void SpellCaster::cast_earth_spike(sf::Vector2f location)
 		s->addFrame(sf::IntRect(90, 0, 30, 30));
 		s->addFrame(sf::IntRect(120, 0, 30, 30));
 
-		activeScene->getEnts().push_back(bullet);
+		gameScene->getEnts().push_back(bullet);
 	}
 
 }
@@ -236,7 +236,7 @@ void SpellCaster::cast_sword_swing(sf::Vector2f location)
 			bullet->setPosition(player->getPosition() + sf::Vector2f(-15 * WX / 1280, 0));
 			s->getSprite().rotate(180);
 		}
-		activeScene->getEnts().push_back(bullet);
+		gameScene->getEnts().push_back(bullet);
 
 	}
 }
@@ -271,7 +271,7 @@ void SpellCaster::cast_dragon_breath(sf::Vector2f location)
 		s->setScale();
 
 
-		activeScene->getEnts().push_back(bullet);
+		gameScene->getEnts().push_back(bullet);
 	}
 
 }
@@ -308,7 +308,7 @@ void SpellCaster::cast_ice_barrage(sf::Vector2f location)
 		s->setScale();
 
 
-		activeScene->getEnts().push_back(bullet);
+		gameScene->getEnts().push_back(bullet);
 	}
 
 }
@@ -354,7 +354,7 @@ void SpellCaster::cast_wind_scythe(sf::Vector2f location)
 		s->getSprite().setScale(2.0f*WX / 1280, 2.0f*WY / 720);
 
 
-		activeScene->getEnts().push_back(bullet);
+		gameScene->getEnts().push_back(bullet);
 	}
 
 }
@@ -383,7 +383,7 @@ void SpellCaster::cast_rolling_boulder(sf::Vector2f location)
 		s->addSpin();
 		s->getSprite().setTextureRect({ 120,0,30,30 });
 		s->getSprite().setScale(2.0f*WX / 1280, 2.0f*WY / 720);
-		activeScene->getEnts().push_back(bullet);
+		gameScene->getEnts().push_back(bullet);
 	}
 
 }
@@ -422,7 +422,7 @@ void SpellCaster::cast_explosion(sf::Vector2f location)
 		s->addFrame(sf::IntRect(630, 60, 90, 90));
 		s->addFrame(sf::IntRect(720, 60, 90, 90));
 		s->getSprite().setTextureRect({ 0, 60, 90, 90 });
-		activeScene->getEnts().push_back(bullet);
+		gameScene->getEnts().push_back(bullet);
 
 	}
 }

@@ -122,7 +122,7 @@ void MenuScene::load() {
 	text_return.setOutlineThickness(3.0f);
 	text_return.setPosition(button_return.getPosition() + Vector2f(0.01f*WX, 0.015f*WY));
 
-	for (int i = 0; i < 30; i++)
+	/*for (int i = 0; i < 30; i++)
 	{
 		float scale = (float)(rand() % 10) / 50.0f;
 		auto snow = make_shared<Entity>();
@@ -132,7 +132,7 @@ void MenuScene::load() {
 		snow->setPosition(Vector2f(rand() % ((int)WX), rand() % ((int)WY)));
 		snow->addComponent<SnowComponent>();
 		_ents.list.push_back(snow);
-	}
+	}*/
 	background.setTexture(menuBg);
 	background.setScale(WX / 1280, WY / 720);
 	rect.setPosition(sf::Vector2f(3.92f * WX / 5, WY / (MAX_NUMBER_OF_ITEMS)  * 2.15f));
@@ -370,24 +370,11 @@ void MenuScene::render()
 }
 vector<shared_ptr<Entity>> ghosts;
 vector<shared_ptr<Entity>> npcs;
-vector<shared_ptr<Entity>> eatingEnts;
+
 shared_ptr<Entity> player;
 shared_ptr<Entity> hud;
-vector<shared_ptr<Entity>> nibbles;
 
-shared_ptr<Entity> makeNibble(const Vector2f& nl, Color col, float size)
-{
-	auto cherry = make_shared<Entity>();
-	auto s = cherry->addComponent<ShapeComponent>();
-	s->setShape<sf::CircleShape>(size);
-	s->getShape().setFillColor(col);
-	s->getShape().setOrigin(size, size);
 
-	auto pickup = cherry->addComponent<PickupComponent>();
-	pickup->setEntities(eatingEnts);
-	cherry->setPosition(nl);
-	return cherry;
-}
 void GameScene::respawn()
 {
 	MonsterSpawner* spawner = MonsterSpawner::getInstance();
@@ -414,13 +401,6 @@ void GameScene::respawn()
 	auto att = _ents.list[0]->GetComponent<AttackComponent>();
 	att->setEntities(ghosts);
 
-	for (auto n : nibbles)
-	{
-		n->setForDelete();
-		n.reset();
-	}
-	nibbles.clear();
-
 	_ents.list[0]->setPosition(ls::findTiles(ls::START)[0]);
 
 	auto ghost_spawns = ls::findTiles(ls::ENEMY);
@@ -428,20 +408,11 @@ void GameScene::respawn()
 		_ents.list[i]->setPosition(ghost_spawns[rand() % ghost_spawns.size()]);
 	}
 	npcs.push_back(spawner->spawn_NPC_WELCOME({ 100,100 }));
-	auto nibbleLoc = ls::findTiles(ls::EMPTY);
-	for (const auto &nl : nibbleLoc)
+	for (int i=0;i<10000;i++)
 	{
-		auto cherry = makeNibble(nl, Color::White, 2.0f);
+		auto cherry = make_shared<Entity>();
+		cherry->setForDelete();
 		_ents.list.push_back(cherry);
-		nibbles.push_back(cherry);
-	}
-
-	nibbleLoc = ls::findTiles(ls::WAYPOINT);
-	for (const auto &nl : nibbleLoc)
-	{
-		auto cherry = makeNibble(nl, Color::Red, 3.0f);
-		_ents.list.push_back(cherry);
-		nibbles.push_back(cherry);
 	}
 
 }
@@ -499,15 +470,14 @@ void GameScene::load()
 	s->getSprite().setOrigin({ 8.0f, 12.0f });
 	s->getSprite().setPosition({ 100.0f, 100.0f });
 	gameScene->getEnts().push_back(pl);
-	player = pl;
 	pl->addComponent<AttackComponent>();
 	pl->addComponent<StatusComponent>();
+	player = pl;
 	auto hd = make_shared<Entity>();
 	auto hb = hd->addComponent<HudComponent>();
 	hud = hd;
 	_ents.list.push_back(hud);
 
-	eatingEnts.push_back(player);
 	respawn();
 	SpellCaster::getInstance()->setEntities(ghosts);
 
@@ -531,7 +501,7 @@ void GameScene::update(double dt)
 	}
 	_ents.update(dt);
 	Renderer::setCenter(player->getPosition());
-	Scene::update(dt);
+	//Scene::update(dt);
 }
 void GameScene::render()
 {
@@ -546,7 +516,7 @@ OptionsScene::OptionsScene() {
 void OptionsScene::load()
 {
 	setID(2);
-	for (int i = 0; i < 30; i++)
+/*	for (int i = 0; i < 30; i++)
 	{
 		float scale = (float)(rand() % 10) / 50.0f;
 		auto snow = make_shared<Entity>();
@@ -556,7 +526,7 @@ void OptionsScene::load()
 		snow->setPosition(Vector2f(rand() % ((int)WX), rand() % ((int)WY)));
 		snow->addComponent<SnowComponent>();
 		_ents.list.push_back(snow);
-	}
+	}*/
 	button_return.setOutlineColor(sf::Color::Black);
 	button_return.setOutlineThickness(5.0f);
 	button_return.setFillColor(sf::Color(79, 79, 79, 255));

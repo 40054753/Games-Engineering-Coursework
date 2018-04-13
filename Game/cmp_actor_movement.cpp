@@ -11,19 +11,22 @@ void ActorMovementComponent::render() {}
 
 void ActorMovementComponent::update(double dt) 
 {
-	if (pushed)
+	if (!_parent->is_forDeletion())
 	{
-		pushTimer -= dt;
-		move(pushVector);
-		immobilize();
-	}
-	if (pushed && pushTimer <= 0)
-	{
-		mobilize();
-		pushTimer = 0.1f;
-		pushed = false;
-		auto c = _parent->GetComponent<CharacterSpriteComponent>();
-		c->getSprite().setColor(sf::Color::White);
+		if (pushed)
+		{
+			pushTimer -= dt;
+			move(pushVector);
+			immobilize();
+		}
+		if (pushed && pushTimer <= 0)
+		{
+			mobilize();
+			pushTimer = 0.1f;
+			pushed = false;
+			auto c = _parent->GetComponent<CharacterSpriteComponent>();
+			c->getSprite().setColor(sf::Color::White);
+		}
 	}
 }
 
@@ -71,18 +74,21 @@ void ProjectileMovementComponent::render() {}
 
 void ProjectileMovementComponent::update(double dt)
 {//amount to move
-	auto face = _parent->getFace();
-	if (face==1) {
-		move(Vector2f(0, -_speed * dt));
-	}
-	else if (face == 3) {
-		move(Vector2f(0, _speed * dt));
-	}
-	else if (face == 4) {
-		move(Vector2f(-_speed * dt, 0));
-	}
-	else if (face == 2) {
-		move(Vector2f(_speed * dt, 0));
+	if (!_parent->is_forDeletion())
+	{
+		auto face = _parent->getFace();
+		if (face == 1) {
+			move(Vector2f(0, -_speed * dt));
+		}
+		else if (face == 3) {
+			move(Vector2f(0, _speed * dt));
+		}
+		else if (face == 4) {
+			move(Vector2f(-_speed * dt, 0));
+		}
+		else if (face == 2) {
+			move(Vector2f(_speed * dt, 0));
+		}
 	}
 }
 void ProjectileMovementComponent::move(const Vector2f &p)
