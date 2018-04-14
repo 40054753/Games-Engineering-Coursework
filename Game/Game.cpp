@@ -103,7 +103,7 @@ void MenuScene::load() {
 	text_return.setOutlineThickness(3.0f);
 	text_return.setPosition(button_return.getPosition() + Vector2f(0.01f*WX, 0.015f*WY));
 
-	/*for (int i = 0; i < 30; i++)
+	for (int i = 0; i < 30; i++)
 	{
 		float scale = (float)(rand() % 10) / 50.0f;
 		auto snow = make_shared<Entity>();
@@ -113,7 +113,7 @@ void MenuScene::load() {
 		snow->setPosition(Vector2f(rand()% ((int)WX), rand() % ((int)WY)));
 		snow->addComponent<SnowComponent>();
 		_ents.list.push_back(snow);
-	}*/
+	}
 	background.setTexture(menuBg);
 	background.setScale(WX/1280,WY/720);
 	rect.setPosition(sf::Vector2f(3.92f * WX / 5, WY / (MAX_NUMBER_OF_ITEMS)  * 2.15f));
@@ -372,7 +372,7 @@ void GameScene::respawn()
 
 	auto ghost_spawns = ls::findTiles2(-3);
 	for (int i = 1; i < _ents.list.size(); ++i) {
-		_ents.list[i]->setPosition(ghost_spawns[rand() % ghost_spawns.size()]);
+		_ents.list[i]->setPosition(ghost_spawns[i-1]);
 	}
 	npcs.push_back(spawner->spawn_NPC_WELCOME({ 100,100 }));
 	for (int i=0;i<10000;i++)
@@ -422,8 +422,8 @@ void GameScene::load()
 		cout << "Cannot load img!" << endl;
 	}
 
-	ls::loadLevelFile("res/levels/map.csv", 32.0f * WX/1280);
-	ls::loadLevelFile2("res/levels/map_high.csv");
+	ls::loadLevelFile("res/levels/village0_Tile Layer 1.csv", 32.0f * WX/1280);
+	ls::loadLevelFile2("res/levels/village0_Tile Layer 2.csv");
 
 
 	auto pl = std::make_shared<Entity>();
@@ -475,8 +475,8 @@ void GameScene::render()
 {
 	ls::Render(Renderer::getWindow());
 	_ents.render();
-	ls::Render2(Renderer::getWindow());
 	Scene::render();
+	ls::Render2(Renderer::getWindow());
 }
 
 OptionsScene::OptionsScene() {
@@ -485,7 +485,7 @@ OptionsScene::OptionsScene() {
 void OptionsScene::load() 
 {
 	setID(2);
-/*	for (int i = 0; i < 30; i++)
+	for (int i = 0; i < 30; i++)
 	{
 		float scale = (float)(rand() % 10) / 50.0f;
 		auto snow = make_shared<Entity>();
@@ -495,7 +495,7 @@ void OptionsScene::load()
 		snow->setPosition(Vector2f(rand() % ((int)WX), rand() % ((int)WY)));
 		snow->addComponent<SnowComponent>();
 		_ents.list.push_back(snow);
-	}*/
+	}
 	button_return.setOutlineColor(sf::Color::Black);
 	button_return.setOutlineThickness(5.0f);
 	button_return.setFillColor(sf::Color(79, 79, 79, 255));
