@@ -38,9 +38,9 @@ void LevelSystem::fillRects()
 			id++;
 		}
 	}
-	_rects.insert(std::pair<int, sf::IntRect>(-1, { 608, 560,16,16 }));
-	_rects.insert(std::pair<int, sf::IntRect>(-5, { 0, 0,16,16 }));
-	_rects.insert(std::pair<int, sf::IntRect>(-3, { 0, 0,16,16 }));
+	_rects.insert(std::pair<int, sf::IntRect>(-1, { 0, 85,16,16 }));
+	_rects.insert(std::pair<int, sf::IntRect>(-5, { 0, 85,16,16 }));
+	_rects.insert(std::pair<int, sf::IntRect>(-3, { 0, 85,16,16 }));
 }
 void LevelSystem::setRect(int t, sf::IntRect c) {
 	_rects.insert(std::pair<int, sf::IntRect>(t, c));
@@ -197,7 +197,13 @@ int LevelSystem::getTile2(sf::Vector2ul p) {
 	}
 	return _tiles2[(p.y * _width) + p.x];
 }
-
+bool LevelSystem::isWalkable(int id)
+{
+	if ((id >= 526 && id <= 540) || (id >= 583 && id <= 597) || (id >= 640 && id <= 654) || (id >= 697 && id <= 724) || (id >= 754 && id <= 781) || (id >= 811 && id <= 838) || (id >= 868 && id <= 895) || (id >= 925 && id <= 952) || (id >= 982 && id <= 1009) || (id >= 1039 && id <= 1066) || (id >= 1096 && id <= 1124) || (id >= 1153 && id <= 1180) || (id >= 1210 && id <= 1237) || (id >= 1267 && id <= 1294) || (id >= 1324 && id <= 1351) || (id >= 1381 && id <= 1406))
+		return false;
+	else
+		return true;
+}
 int LevelSystem::getTileAt(Vector2f v) {
 	auto a = v - _offset;
 	if (a.x < 0 || a.y < 0) {
@@ -205,7 +211,13 @@ int LevelSystem::getTileAt(Vector2f v) {
 	}
 	return getTile(Vector2ul((v - _offset) / (_tileSize)));
 }
-
+int LevelSystem::getTileAt2(Vector2f v) {
+	auto a = v - _offset;
+	if (a.x < 0 || a.y < 0) {
+		throw string("Tile out of range");
+	}
+	return getTile2(Vector2ul((v - _offset) / (_tileSize)));
+}
 std::vector<sf::Vector2f> LevelSystem::findTiles(int t)
 {
 	vector<Vector2f> found;

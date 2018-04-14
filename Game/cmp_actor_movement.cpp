@@ -33,7 +33,7 @@ void ActorMovementComponent::update(double dt)
 ActorMovementComponent::ActorMovementComponent(Entity *p) : _speed(100.0f*WX/1280), Component(p) {}
 
 bool ActorMovementComponent::validMove(const sf::Vector2f &pos) {
-	return (LevelSystem::getTileAt(pos) != 10);
+	return (LevelSystem::isWalkable(LevelSystem::getTileAt(pos)) && LevelSystem::isWalkable(LevelSystem::getTileAt2(pos)));
 }
 
 void ActorMovementComponent::move(const Vector2f &p) 

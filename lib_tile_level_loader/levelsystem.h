@@ -26,11 +26,13 @@ public:
 	static sf::Vector2f getTilePosition(sf::Vector2ul);
 	//get tile at screen space pos
 	static int getTileAt(sf::Vector2f);
+	static int getTileAt2(sf::Vector2f);
 	static std::vector<sf::Vector2f> findTiles(int t);
 	static std::vector<sf::Vector2f> findTiles2(int t);
 	const static size_t getHeight() {return _height;}
 	const static size_t getWidth() {return _width;}
 	static sf::Vector2f getStart();
+	static bool isWalkable(int id);
 	static void fillRects();
 //	static void setTexture(sf::Texture a) { texture = a; }
 protected:
