@@ -169,6 +169,7 @@ void MenuScene::moveUp()
 		selectedItemIndex--;
 		menu[selectedItemIndex].setColor(sf::Color::Red);
 		sound.play();
+
 	} 
 	else
 	{
