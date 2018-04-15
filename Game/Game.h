@@ -57,8 +57,13 @@ public:
 class GameScene : public Scene
 {
 private:	
+	bool start_blackout = false;
+	bool stop_blackout = false;
+	float blackout_slider=0;
+	sf::RectangleShape blackout;
 	sf::Text text;
-	void respawn();
+	void respawn_interior0();
+	void respawn_village0();
 public:
 	GameScene() { }
 	void update(double dt) override;

@@ -17,10 +17,10 @@
 #include <string>
 #include "MonsterSpawner.h"
 #include "cmp_pickups.h"
+#include "cmp_world_item.h"
 
 using namespace sf;
 using namespace std;
-const int GHOSTS_COUNT = 4;
 Font font;
 Texture playerTexture, tile_textures, zombieTexture,spell_icons, spellsTexture, snowEffect, iconsTexture, itemsTexture, animatedSpellsTexture, swordSwingTexture;
 Texture menuBg;
@@ -243,8 +243,15 @@ void MenuScene::update(double dt)
 			moveTo(0);
 			if (sf::Mouse::isButtonPressed(Mouse::Left))
 			{
+				evs->setNewGame();
 				gameScene.reset(new GameScene());
 				gameScene->load();
+				for (int i = 0; i<10000; i++)
+				{
+					auto cherry = std::make_shared<Entity>();
+					cherry->setForDelete();
+					gameScene->getEnts().push_back(cherry);
+				}
 				evs->refresh();
 				activeScene = gameScene; //switch to game
 				std::cout << "Active Scene: " + std::to_string(activeScene->getID()) << std::endl;
@@ -295,8 +302,15 @@ void MenuScene::update(double dt)
 	if (moveTime <= 0 && (Keyboard::isKeyPressed(Keyboard::Return) || Keyboard::isKeyPressed(Keyboard::Space)) ) {
 		moveTime = 0.2f;
 		if (selectedItemIndex == 0) {
+			evs->setNewGame();
 			gameScene.reset(new GameScene());
 			gameScene->load();
+			for (int i = 0; i<10000; i++)
+			{
+				auto cherry = std::make_shared<Entity>();
+				cherry->setForDelete();
+				gameScene->getEnts().push_back(cherry);
+			}
 			activeScene = gameScene; //switch to game
 			std::cout << "Active Scene: " + std::to_string(activeScene->getID()) << std::endl;
 		}
@@ -338,13 +352,16 @@ void MenuScene::render()
 }
 vector<shared_ptr<Entity>> ghosts;
 vector<shared_ptr<Entity>> npcs;
+vector<shared_ptr<Entity>> teleporters;
 
 shared_ptr<Entity> player;
 shared_ptr<Entity> hud;
 
 
-void GameScene::respawn()
+void GameScene::respawn_village0()
 {
+	blackout.setPosition(sf::Vector2f(player->getPosition().x - WX / 2, player->getPosition().y - WY / 2));
+	int number_of_enemies = 4;
 	MonsterSpawner* spawner = MonsterSpawner::getInstance();
 	for (auto n : ghosts)
 	{
@@ -358,9 +375,17 @@ void GameScene::respawn()
 		n.reset();
 	}
 	npcs.clear();
+	for (auto n : teleporters)
+	{
+		n->setForDelete();
+		n.reset();
+	}
+	teleporters.clear();
 
+	
+	_ents.list[0]->setPosition(EventSystem::getInstance()->getDest());
 
-	for (int i = 0; i < GHOSTS_COUNT; ++i)
+	for (int i = 0; i < number_of_enemies; ++i)
 	{		
 		ghosts.push_back(spawner->spawn_zombie());				
 	}
@@ -368,24 +393,121 @@ void GameScene::respawn()
 
 	auto att = _ents.list[0]->GetComponent<AttackComponent>();
 	att->setEntities(ghosts);
-
-	_ents.list[0]->setPosition(ls::findTiles2(-5)[0]);
-
 	auto ghost_spawns = ls::findTiles2(-3);
+
 	for (int i = 1; i < _ents.list.size(); ++i) {
-		_ents.list[i]->setPosition(ghost_spawns[i-1]);
+		_ents.list[i]->setPosition(ghost_spawns[rand()%ghost_spawns.size()]);
 	}
-	npcs.push_back(spawner->spawn_NPC_WELCOME({ 100,100 }));
-	for (int i=0;i<10000;i++)
-	{
-		auto cherry = make_shared<Entity>();
-		cherry->setForDelete();
-		_ents.list.push_back(cherry);
-	}
+	npcs.push_back(spawner->spawn_NPC_WELCOME({ 300,300 }));
+
+	SpellCaster::getInstance()->setEntities(ghosts);
+	//////////////////////////////////DOORS  MAP CHANGER//////////////////////////////
+	auto tp3 = make_shared<Entity>();
+	tp3->setPosition({ 463 * WX / 1280,740 * WY / 720 });
+	auto x = tp3->addComponent<WorldItemComponent>();
+	x->setMapChanger(0);
+	x->setTeleportDestination({ 290,1130 });
+	auto helper3 = tp3->addComponent<AnimatedSpriteComponent>();
+	helper3->getSprite().setTexture(animatedSpellsTexture);
+	helper3->getSprite().setOrigin(10, 15);
+	helper3->getSprite().setScale(WX / 1280, WY / 720);
+	helper3->getSprite().setTextureRect({ 150,0,30,30 });
+	helper3->setDelay(0.25f);
+	helper3->addFrame({ 150,0,30,30 });
+	helper3->addFrame({ 180,0,30,30 });
+	helper3->addFrame({ 210,0,30,30 });
+	helper3->addFrame({ 240,0,30,30 });
+	teleporters.push_back(tp3);
+	_ents.list.push_back(tp3);
+	_ents.list[0]->setPosition(EventSystem::getInstance()->getDest());
 	
+}
+void GameScene::respawn_interior0()
+{
+	blackout.setPosition(sf::Vector2f(player->getPosition().x - WX / 2, player->getPosition().y - WY / 2));
+	for (auto n : ghosts)
+	{
+		n->setForDelete();
+		n.reset();
+	}
+	ghosts.clear();
+	for (auto n : npcs)
+	{
+		n->setForDelete();
+		n.reset();
+	}
+	npcs.clear();
+	for (auto n : teleporters)
+	{
+		n->setForDelete();
+		n.reset();
+	}
+	teleporters.clear();
+	//////////////////////////////////UPSTAIRS STAIRS TELEPORTER//////////////////////////////
+	auto tp = make_shared<Entity>();
+	tp->setPosition({ 620,145 });
+	auto d = tp->addComponent<WorldItemComponent>();
+	d->setTeleporter();
+	d->setTeleportDestination({590,915});
+	auto helper = tp->addComponent<AnimatedSpriteComponent>();
+	helper->getSprite().setTexture(animatedSpellsTexture);
+	helper->getSprite().setOrigin(10, 15);
+	helper->getSprite().setScale(WX/1280,WY/720);
+	helper->getSprite().setTextureRect({150,0,30,30});
+	helper->setDelay(0.25f);
+	helper->addFrame({ 150,0,30,30 });
+	helper->addFrame({ 180,0,30,30 });
+	helper->addFrame({ 210,0,30,30 });
+	helper->addFrame({ 240,0,30,30 });
+	teleporters.push_back(tp);
+	_ents.list.push_back(tp);
+	//////////////////////////////////DOWNSTAIRS STAIRS TELEPORTER//////////////////////////////
+	auto tp2= make_shared<Entity>();
+	tp2->setPosition({ 620,915 });
+	auto s = tp2->addComponent<WorldItemComponent>();
+	s->setTeleporter();
+	s->setTeleportDestination({ 590,145 });
+	auto helper2 = tp2->addComponent<AnimatedSpriteComponent>();
+	helper2->getSprite().setTexture(animatedSpellsTexture);
+	helper2->getSprite().setOrigin(10, 15);
+	helper2->getSprite().setScale(WX / 1280, WY / 720);
+	helper2->getSprite().setTextureRect({ 150,0,30,30 });
+	helper2->setDelay(0.25f);
+	helper2->addFrame({ 150,0,30,30 });
+	helper2->addFrame({ 180,0,30,30 });
+	helper2->addFrame({ 210,0,30,30 });
+	helper2->addFrame({ 240,0,30,30 });
+	teleporters.push_back(tp2);
+	_ents.list.push_back(tp2);
+
+	//////////////////////////////////DOORS  MAP CHANGER//////////////////////////////
+	auto tp3 = make_shared<Entity>();
+	tp3->setPosition({ 290,1170 });
+	auto x = tp3->addComponent<WorldItemComponent>();
+	x->setMapChanger(1);
+	x->setTeleportDestination({ 463,756 });
+	auto helper3 = tp3->addComponent<AnimatedSpriteComponent>();
+	helper3->getSprite().setTexture(animatedSpellsTexture);
+	helper3->getSprite().setOrigin(10, 15);
+	helper3->getSprite().setScale(WX / 1280, WY / 720);
+	helper3->getSprite().setTextureRect({ 150,0,30,30 });
+	helper3->setDelay(0.25f);
+	helper3->addFrame({ 150,0,30,30 });
+	helper3->addFrame({ 180,0,30,30 });
+	helper3->addFrame({ 210,0,30,30 });
+	helper3->addFrame({ 240,0,30,30 });
+	teleporters.push_back(tp3);
+	_ents.list.push_back(tp3);
+	
+	_ents.list[0]->setPosition(EventSystem::getInstance()->getDest());
+
+	
+
 }
 void GameScene::load()
 {
+	blackout.setFillColor(sf::Color(0, 0, 0, blackout_slider));
+	blackout.setSize({ WX, WY });
 	setID(1);
 	EventSystem* events = EventSystem::getInstance();
 	events->gameLoad();
@@ -422,10 +544,11 @@ void GameScene::load()
 	if (!tile_textures.loadFromFile("res/img/spell_icons.png")) {
 		cout << "Cannot load img!" << endl;
 	}
-
-	ls::loadLevelFile("res/levels/village0_Tile Layer 1.csv", 32.0f * WX/1280);
-	ls::loadLevelFile2("res/levels/village0_Tile Layer 2.csv");
-
+	if (EventSystem::getInstance()->is_newGame())
+	{
+		ls::loadLevelFile("res/levels/interior_Tile Layer 1.csv", 32.0f * WX / 1280);
+		ls::loadLevelFile2("res/levels/interior_Tile Layer 2.csv");
+	}
 
 	auto pl = std::make_shared<Entity>();
 	pl->addComponent<CharacterSheetComponent>();
@@ -436,7 +559,7 @@ void GameScene::load()
 	s->getSprite().setTextureRect({ 0,0,16,21 });
 	s->setDefaultFrames();
 	s->getSprite().setScale({ 2.0f*WX/1280, 2.0f*WY/720 });
-	s->getSprite().setOrigin({ 8.0f, 12.0f });
+	s->getSprite().setOrigin({ 8.0f, 18.0f });
 	s->getSprite().setPosition({ 100.0f, 100.0f });
 	gameScene->getEnts().push_back(pl);
 	pl->addComponent<AttackComponent>();
@@ -446,21 +569,71 @@ void GameScene::load()
 	auto hb = hd->addComponent<HudComponent>();
 	hud = hd;
 	_ents.list.push_back(hud);
-
-	respawn();
-	SpellCaster::getInstance()->setEntities(ghosts);
+	respawn_interior0();
 	
 }
 
 
 void GameScene::update(double dt)
 {
+	
+	EventSystem* evs = EventSystem::getInstance();
+	if (start_blackout && blackout_slider<=255)
+	{
+		blackout.setPosition(sf::Vector2f(player->getPosition().x - WX / 2, player->getPosition().y - WY / 2));
+		blackout.setFillColor(sf::Color(0, 0, 0, blackout_slider));
+		blackout_slider += 1000*dt;
+	}
+	if (blackout_slider > 255)
+	{
+		stop_blackout = true;
+		start_blackout = false;
+	}
+	if (stop_blackout && blackout_slider > 0)
+	{
+		blackout.setPosition(sf::Vector2f(player->getPosition().x - WX / 2, player->getPosition().y - WY / 2));
+		blackout.setFillColor(sf::Color(0, 0, 0, blackout_slider));
+		blackout_slider -= 1000*dt;
+	}
+	if (blackout_slider <= 0)
+	{
+		stop_blackout = false;
+		start_blackout = false;
+	}
+
+	if (evs->if_changeMap() && evs->if_village0())
+	{
+		if(!start_blackout)
+		start_blackout = true;
+		if (stop_blackout)
+		{
+			ls::loadLevelFile("res/levels/village0_Tile Layer 1.csv", 32.0f * WX / 1280);
+			ls::loadLevelFile2("res/levels/village0_Tile Layer 2.csv");
+			respawn_village0();
+			evs->changeMapFinished();
+			evs->SaveGame();
+		}
+	}
+	if (evs->if_changeMap() && evs->if_interior0())
+	{
+		if (!start_blackout)
+			start_blackout = true;
+		if (stop_blackout)
+		{
+			start_blackout = true;
+			ls::loadLevelFile("res/levels/interior_Tile Layer 1.csv", 32.0f * WX / 1280);
+			ls::loadLevelFile2("res/levels/interior_Tile Layer 2.csv");
+			respawn_interior0();
+			evs->changeMapFinished();
+			evs->SaveGame();
+		}
+	}
 	auto health_mana = player->GetComponent<HealthComponent>();
 	if (health_mana->getHealth()<=0)
 	{
 		health_mana->reset();
 		std::cout << "Game over!" << std::endl;
-		respawn();
+		evs->LoadGame();
 		SpellCaster::getInstance()->setEntities(ghosts);
 	}
 	if (Keyboard::isKeyPressed(Keyboard::Tab))
@@ -478,6 +651,7 @@ void GameScene::render()
 	_ents.render();
 	Scene::render();
 	ls::Render2(Renderer::getWindow());
+	Renderer::queue(0, &blackout);
 }
 
 OptionsScene::OptionsScene() {

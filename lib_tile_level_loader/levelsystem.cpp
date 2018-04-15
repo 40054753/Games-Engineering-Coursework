@@ -65,16 +65,14 @@ void LevelSystem::loadLevelFile(const std::string &path, float tileSize) {
 			while (ss >> i)
 			{
 					buffer.push_back(i);
-					std::cout << i<<",";
 				if (ss.peek() == ',')
 					ss.ignore();
 			}
 			h++;
-			std::cout <<" ========="<<h<< std::endl;
+			
 		}
 	}
 	w = buffer.size() / h;
-	std::cout << " =========" << w << std::endl;
 
 	std::vector<int> temp_tiles;
 	for (int i = 0; i < buffer.size(); ++i) {
@@ -114,16 +112,13 @@ void LevelSystem::loadLevelFile2(const std::string &path) {
 			while (ss >> i)
 			{
 				buffer.push_back(i);
-				std::cout << i << ",";
 				if (ss.peek() == ',')
 					ss.ignore();
 			}
 			h++;
-			std::cout << " =========" << h << std::endl;
 		}
 	}
 	w = buffer.size() / h;
-	std::cout << " =========" << w << std::endl;
 
 	std::vector<int> temp_tiles;
 	for (int i = 0; i < buffer.size(); ++i) {
@@ -199,7 +194,7 @@ int LevelSystem::getTile2(sf::Vector2ul p) {
 }
 bool LevelSystem::isWalkable(int id)
 {
-	if ((id >= 526 && id <= 540) || (id >= 583 && id <= 597) || (id >= 640 && id <= 654) || (id >= 697 && id <= 724) || (id >= 754 && id <= 781) || (id >= 811 && id <= 838) || (id >= 868 && id <= 895) || (id >= 925 && id <= 952) || (id >= 982 && id <= 1009) || (id >= 1039 && id <= 1066) || (id >= 1096 && id <= 1124) || (id >= 1153 && id <= 1180) || (id >= 1210 && id <= 1237) || (id >= 1267 && id <= 1294) || (id >= 1324 && id <= 1351) || (id >= 1381 && id <= 1406))
+	if (id==285 || (id >= 526 && id <= 540) || (id >= 28 && id <= 31) || (id >= 361 && id <= 369) || (id >= 308 && id <= 312) || (id >= 251 && id <= 259) || (id >= 80 && id <= 88) || (id >= 194 && id <= 202) || (id >= 137 && id <= 145) || (id >= 583 && id <= 597) || (id >= 640 && id <= 654) || (id >= 697 && id <= 724) || (id >= 754 && id <= 781) || (id >= 811 && id <= 838) || (id >= 868 && id <= 895) || (id >= 925 && id <= 952) || (id >= 982 && id <= 1009) || (id >= 1096 && id <= 1124) || (id >= 1153 && id <= 1180) || (id >= 1210 && id <= 1237) || (id >= 1267 && id <= 1294) || (id >= 1324 && id <= 1351) || (id >= 1381 && id <= 1406))
 		return false;
 	else
 		return true;
@@ -207,14 +202,14 @@ bool LevelSystem::isWalkable(int id)
 int LevelSystem::getTileAt(Vector2f v) {
 	auto a = v - _offset;
 	if (a.x < 0 || a.y < 0) {
-		throw string("Tile out of range");
+		return -1;
 	}
 	return getTile(Vector2ul((v - _offset) / (_tileSize)));
 }
 int LevelSystem::getTileAt2(Vector2f v) {
 	auto a = v - _offset;
 	if (a.x < 0 || a.y < 0) {
-		throw string("Tile out of range");
+		return -1;
 	}
 	return getTile2(Vector2ul((v - _offset) / (_tileSize)));
 }
