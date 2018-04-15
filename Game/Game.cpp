@@ -497,7 +497,11 @@ void GameScene::respawn_interior0()
 	_ents.list.push_back(tp3);
 	
 	_ents.list[0]->setPosition(EventSystem::getInstance()->getDest());
-
+	if (EventSystem::getInstance()->is_newGame())
+	{
+		npcs.push_back(MonsterSpawner::getInstance()->spawn_NPC_WELCOME({ 0,0 }));
+		EventSystem::getInstance()->switch_new_game_dialogue();
+	}
 	npcs.push_back(MonsterSpawner::getInstance()->spawn_NPC_MOM({ 200*WX/1280,1000*WY/720 }));
 	
 

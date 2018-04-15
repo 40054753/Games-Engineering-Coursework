@@ -13,7 +13,7 @@ private:
 	////////////////////////////CURRENT MAP SWITCHES//////////////////
 	bool village0 = false;
 	bool interior0 = false;
-	sf::Vector2f new_destination = {100,100};
+	sf::Vector2f new_destination = {100,120};
 
 
 	bool LVUP = true;
@@ -24,7 +24,8 @@ private:
 	int resolution_index=0;
 public:
 	bool is_newGame() { return newGame; }
-	void setNewGame() { newGame = true; }
+	void switch_new_game_dialogue() { newGame = false; }
+	void setNewGame() { newGame = true; new_destination = { 100,120 }; }
 	int getCurrentMap();
 	bool if_changeMap() { return mapChange; }
 	void changeMap(sf::Vector2f d) { mapChange = true; new_destination = d; }

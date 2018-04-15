@@ -45,15 +45,10 @@ std::shared_ptr<Entity> MonsterSpawner::spawn_zombie(sf::Vector2f loc)
 std::shared_ptr<Entity> MonsterSpawner::spawn_NPC_WELCOME(sf::Vector2f loc)
 {
 	auto npc = std::make_shared<Entity>();
-	auto n = npc->addComponent<CharacterSpriteComponent>();
-	n->getSprite().setTexture(playerTexture);
-	n->getSprite().setTextureRect({ 0,0,16,21 });
-	n->getSprite().setScale({ 2.0f*WX / 1280, 2.0f*WY / 720 });
-	n->getSprite().setOrigin(8.0f, 12.0f);
-	n->setDefaultFrames();
 	npc->setPosition(loc);
 	auto d = npc->addComponent<NPCComponent>();
-	d->setDialogue("HELLO THERE, ADVENTURER! HELLO THERE, \nADVENTURER! HELLO THERE, ADVENTURER! ");
+	d->setBodyless();
+	d->setDialogue("Shouting and screaming outside wakes you up. As a local \nwizard's apprentice you feel obligated to check this out, \nand see if anyone needs your help!\nPress E to continue. Use the staircase on the right when ready");
 	gameScene->getEnts().push_back(npc);
 	return npc;
 }
@@ -69,7 +64,7 @@ std::shared_ptr<Entity> MonsterSpawner::spawn_NPC_MOM(sf::Vector2f loc)
 	n->setDefaultFrames();
 	npc->setPosition(loc);
 	auto d = npc->addComponent<NPCComponent>();
-	d->setDialogue("MOM: Oh! You finally woke up, hon! Master Kenbobi came looking \nfor you earlier. There are zombies everywhere,and he needs \nyour help! He'll be waiting for you in the forrest.");
+	d->setDialogue("MOM: Oh! You finally woke up, hon! Master Kenbobi came looking \nfor you earlier. There are zombies everywhere,and he needs \nyour help! He'll be waiting for you in the forest.");
 	d->setDialogue2("MOM: Don't keep him waiting, hon!");
 	gameScene->getEnts().push_back(npc);
 	return npc;

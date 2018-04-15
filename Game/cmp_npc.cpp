@@ -29,7 +29,8 @@ void NPCComponent::update(double dt)
 		player->GetComponent<PlayerMovementComponent>()->immobilize();
 		trigger = true;
 	}
-		
+	if (bodylessText)
+		trigger = true;
 	if (!talked)
 	{
 		if (trigger && timer.getElapsedTime().asMilliseconds() > 30.0f && i < dialogue.length())
@@ -52,6 +53,8 @@ void NPCComponent::update(double dt)
 			player->GetComponent<PlayerMovementComponent>()->mobilize();
 			if (twoDialogues)
 				talked = true;
+			if (bodylessText)
+				_parent->setForDelete();
 		}
 	}
 	else
