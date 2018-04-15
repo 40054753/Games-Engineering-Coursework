@@ -24,31 +24,57 @@ void NPCComponent::update(double dt)
 	interactionDelay -= dt;
 	dialogueBox.setPosition(player->getPosition() + sf::Vector2f(-0.49f* WX, 0.14f*WY));
 	text.setPosition(player->getPosition() + sf::Vector2f(-0.48f* WX, 0.15f*WY));
-	if (interactionDelay <= 0 && (length(_parent->getPosition() - player->getPosition()) < 21.0f*WX/1280) && sf::Keyboard::isKeyPressed(controls[12]))
+	if (interactionDelay <= 0 && (length(_parent->getPosition() - player->getPosition()) < 35.0f*WX/1280) && sf::Keyboard::isKeyPressed(controls[12]))
 	{
 		player->GetComponent<PlayerMovementComponent>()->immobilize();
-		interact();
+		trigger = true;
 	}
 		
+	if (!talked)
+	{
+		if (trigger && timer.getElapsedTime().asMilliseconds() > 30.0f && i < dialogue.length())
+		{
+			timer.restart();
+			i++;
+			text.setString(sf::String(dialogue.substr(0, i)));
+		}
 
-	if (trigger && timer.getElapsedTime().asMilliseconds() > 40.0f && i < dialogue.length())
-	{
-		timer.restart();
-		i++;
-		text.setString(sf::String(dialogue.substr(0, i)));
+		if (i >= dialogue.size())
+		{
+			dialogueFinished = true;
+		}
+		if (dialogueFinished && sf::Keyboard::isKeyPressed(controls[12]))
+		{
+			i = 0;
+			trigger = false;
+			dialogueFinished = false;
+			interactionDelay = 0.4f;
+			player->GetComponent<PlayerMovementComponent>()->mobilize();
+			if (twoDialogues)
+				talked = true;
+		}
 	}
-	
-	if (i >= dialogue.size())
+	else
 	{
-		dialogueFinished = true;
-	}
-	if (dialogueFinished && sf::Keyboard::isKeyPressed(controls[12]))
-	{
-		i = 0;
-		trigger = false;
-		dialogueFinished = false;
-		interactionDelay = 0.4f;
-		player->GetComponent<PlayerMovementComponent>()->mobilize();
+		if (trigger && timer.getElapsedTime().asMilliseconds() > 30.0f && i < dialogue2.length())
+		{
+			timer.restart();
+			i++;
+			text.setString(sf::String(dialogue2.substr(0, i)));
+		}
+
+		if (i >= dialogue2.size())
+		{
+			dialogueFinished = true;
+		}
+		if (dialogueFinished && sf::Keyboard::isKeyPressed(controls[12]))
+		{
+			i = 0;
+			trigger = false;
+			dialogueFinished = false;
+			interactionDelay = 0.4f;
+			player->GetComponent<PlayerMovementComponent>()->mobilize();
+		}
 	}
 	
 }
@@ -59,8 +85,4 @@ void NPCComponent::render()
 		Renderer::queue(0,&dialogueBox);
 		Renderer::queue(0,&text);
 	}
-}
-void NPCComponent::interact()
-{
-	trigger = true;
 }

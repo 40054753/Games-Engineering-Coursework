@@ -10,7 +10,7 @@ using namespace sf;
 SteeringComponent::SteeringComponent(Entity * p, Entity* player)
 	: _player(player), _seek(Seek(p, player, 100.f)),
 	_flee(Flee(p, player, 100.0f)), Component(p) {
-	_speed = 80.0f;
+	_speed = 80.0f+rand()%20;
 }
 
 void SteeringComponent::update(double dt)
@@ -24,7 +24,7 @@ void SteeringComponent::update(double dt)
 	}
 	const auto mva = (float)(dt * _speed);
 	// If target (player) is within 300 pixels seek
-	if (length(_parent->getPosition() - _player->getPosition()) < 350.0f*WX/1280 && length(_parent->getPosition() - _player->getPosition()) > 20.0f*WX / 1280)
+	if (length(_parent->getPosition() - _player->getPosition()) < 0.49f*WX && length(_parent->getPosition() - _player->getPosition()) > 20.0f*WX / 1280)
 	{
 		double pi = 3.14159265359;
 		auto output = _seek.getSteering();

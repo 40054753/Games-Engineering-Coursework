@@ -22,7 +22,7 @@
 using namespace sf;
 using namespace std;
 Font font;
-Texture playerTexture, tile_textures, zombieTexture,spell_icons, spellsTexture, snowEffect, iconsTexture, itemsTexture, animatedSpellsTexture, swordSwingTexture;
+Texture playerTexture, tile_textures, zombieTexture,spell_icons, npcsTexture, spellsTexture, snowEffect, iconsTexture, itemsTexture, animatedSpellsTexture, swordSwingTexture;
 Texture menuBg;
 sf::Sprite background;
 SoundBuffer buffer;
@@ -385,20 +385,17 @@ void GameScene::respawn_village0()
 	
 	_ents.list[0]->setPosition(EventSystem::getInstance()->getDest());
 
+	auto ghost_spawns = ls::findTiles2(-3);
 	for (int i = 0; i < number_of_enemies; ++i)
 	{		
-		ghosts.push_back(spawner->spawn_zombie());				
+		ghosts.push_back(spawner->spawn_zombie(ghost_spawns[i]));
 	}
 
 
 	auto att = _ents.list[0]->GetComponent<AttackComponent>();
 	att->setEntities(ghosts);
-	auto ghost_spawns = ls::findTiles2(-3);
 
-	for (int i = 1; i < _ents.list.size(); ++i) {
-		_ents.list[i]->setPosition(ghost_spawns[rand()%ghost_spawns.size()]);
-	}
-	npcs.push_back(spawner->spawn_NPC_WELCOME({ 300,300 }));
+
 
 	SpellCaster::getInstance()->setEntities(ghosts);
 	//////////////////////////////////DOORS  MAP CHANGER//////////////////////////////
@@ -501,6 +498,7 @@ void GameScene::respawn_interior0()
 	
 	_ents.list[0]->setPosition(EventSystem::getInstance()->getDest());
 
+	npcs.push_back(MonsterSpawner::getInstance()->spawn_NPC_MOM({ 200*WX/1280,1000*WY/720 }));
 	
 
 }
@@ -542,6 +540,9 @@ void GameScene::load()
 		cout << "Cannot load img!" << endl;
 	}
 	if (!tile_textures.loadFromFile("res/img/spell_icons.png")) {
+		cout << "Cannot load img!" << endl;
+	}
+	if (!npcsTexture.loadFromFile("res/img/npcs.png")) {
 		cout << "Cannot load img!" << endl;
 	}
 	if (EventSystem::getInstance()->is_newGame())

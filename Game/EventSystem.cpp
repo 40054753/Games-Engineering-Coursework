@@ -98,7 +98,6 @@ void EventSystem::LoadGame()
 		{
 			itemGenerator->load(items[i], (bool)items[i + 1]);
 		}
-		if (!if_interior0())
 		for (int i = 0; i<10000; i++)
 		{
 			

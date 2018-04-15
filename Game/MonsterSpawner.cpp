@@ -21,9 +21,10 @@ MonsterSpawner* MonsterSpawner::getInstance()
 
 	return instance;
 }
-std::shared_ptr<Entity> MonsterSpawner::spawn_zombie()
+std::shared_ptr<Entity> MonsterSpawner::spawn_zombie(sf::Vector2f loc)
 {
 	auto ghost = std::make_shared<Entity>();
+	ghost->setPosition(loc);
 	ghost->addComponent<ActorMovementComponent>();
 	auto s = ghost->addComponent<CharacterSpriteComponent>();
 	s->getSprite().setTexture(zombieTexture);
@@ -53,6 +54,23 @@ std::shared_ptr<Entity> MonsterSpawner::spawn_NPC_WELCOME(sf::Vector2f loc)
 	npc->setPosition(loc);
 	auto d = npc->addComponent<NPCComponent>();
 	d->setDialogue("HELLO THERE, ADVENTURER! HELLO THERE, \nADVENTURER! HELLO THERE, ADVENTURER! ");
+	gameScene->getEnts().push_back(npc);
+	return npc;
+}
+std::shared_ptr<Entity> MonsterSpawner::spawn_NPC_MOM(sf::Vector2f loc)
+{
+	auto npc = std::make_shared<Entity>();
+	npc->setFace(3);
+	auto n = npc->addComponent<CharacterSpriteComponent>();
+	n->getSprite().setTexture(npcsTexture);
+	n->getSprite().setTextureRect({ 0,0,16,21 });
+	n->getSprite().setScale({ 2.0f*WX / 1280, 2.0f*WY / 720 });
+	n->getSprite().setOrigin(8.0f, 12.0f);
+	n->setDefaultFrames();
+	npc->setPosition(loc);
+	auto d = npc->addComponent<NPCComponent>();
+	d->setDialogue("MOM: Oh! You finally woke up, hon! Master Kenbobi came looking \nfor you earlier. There are zombies everywhere,and he needs \nyour help! He'll be waiting for you in the forrest.");
+	d->setDialogue2("MOM: Don't keep him waiting, hon!");
 	gameScene->getEnts().push_back(npc);
 	return npc;
 }

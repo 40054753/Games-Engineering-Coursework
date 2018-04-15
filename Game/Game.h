@@ -18,6 +18,7 @@ extern sf::Texture spellsTexture;
 extern sf::Texture animatedSpellsTexture;
 extern sf::Texture iconsTexture;
 extern sf::Texture itemsTexture;
+extern sf::Texture npcsTexture;
 extern sf::Texture spell_icons;
 extern sf::Texture tile_textures;
 extern sf::Texture swordSwingTexture;
