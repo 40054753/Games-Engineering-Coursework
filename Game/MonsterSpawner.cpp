@@ -52,6 +52,17 @@ std::shared_ptr<Entity> MonsterSpawner::spawn_NPC_WELCOME(sf::Vector2f loc)
 	gameScene->getEnts().push_back(npc);
 	return npc;
 }
+std::shared_ptr<Entity> MonsterSpawner::spawn_NPC_WELCOME2(sf::Vector2f loc)
+{
+	
+	auto npc = std::make_shared<Entity>();
+	npc->setPosition(loc);
+	auto d = npc->addComponent<NPCComponent>();
+	d->setBodyless();
+	d->setDialogue("To attack zombies use keys 1-5 for spells \nor SPACE for melee attack.\nYou can change keys in the options menu.");
+	gameScene->getEnts().push_back(npc);
+	return npc;
+}
 std::shared_ptr<Entity> MonsterSpawner::spawn_NPC_MOM(sf::Vector2f loc)
 {
 	auto npc = std::make_shared<Entity>();
@@ -65,7 +76,6 @@ std::shared_ptr<Entity> MonsterSpawner::spawn_NPC_MOM(sf::Vector2f loc)
 	npc->setPosition(loc);
 	auto d = npc->addComponent<NPCComponent>();
 	d->setDialogue("MOM: Oh! You finally woke up, hon! Master Kenbobi came looking \nfor you earlier. There are zombies everywhere,and he needs \nyour help! He'll be waiting for you in the forest.");
-	d->setDialogue2("MOM: Don't keep him waiting, hon!");
 	gameScene->getEnts().push_back(npc);
 	return npc;
 }

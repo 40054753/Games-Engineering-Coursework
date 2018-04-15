@@ -39,6 +39,7 @@ void EventSystem::LoadGame()
 	std::vector<int> items;
 	std::vector<int> keys;
 	std::vector<int> spells;
+	std::vector<bool> switches;
 	int map;
 	auto character = player->GetComponent<CharacterSheetComponent>();
 	std::ifstream save("save.txt");
@@ -66,6 +67,8 @@ void EventSystem::LoadGame()
 					spells.push_back(i);
 				else if (line_number == 6)
 					map = i;
+				else if (line_number == 7)
+					switches.push_back((bool)i);
 
 				if (ss.peek() == ',')
 					ss.ignore();
@@ -85,6 +88,9 @@ void EventSystem::LoadGame()
 			break;
 		}
 		new_destination = { (float)location[1],(float)location[2] };
+		////////// set switches//////////////////
+		tutorial_text0 = switches[0];
+
 		activeScene = gameScene;
 		player->setPosition({ (float)location[1],(float)location[2] });
 		character->setLevels(levels[0], levels[1], levels[2], levels[3], levels[4]);
@@ -124,6 +130,10 @@ int EventSystem::getCurrentMap()
 	else
 		return 0;
 }
+std::string EventSystem::getSwitches()
+{
+	return std::to_string((int)tutorial_text0) + ",";
+}
 void EventSystem::SaveGame()
 {
 	auto character = player->GetComponent<CharacterSheetComponent>();
@@ -137,6 +147,7 @@ void EventSystem::SaveGame()
 		save << character->saveControls() + "\n";
 		save << character->saveSpells() + "\n";
 		save << std::to_string(getCurrentMap()) + "\n";
+		save << getSwitches() + "\n";
 		save.close();
 	}
 	else std::cout << "Unable to open file";

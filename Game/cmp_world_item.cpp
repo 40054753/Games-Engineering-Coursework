@@ -23,7 +23,7 @@ void WorldItemComponent::update(double dt)
 	interactionDelay -= dt;
 	if (mapChanger)
 	{
-		if (interactionDelay <= 0 && (length(_parent->getPosition() - player->getPosition()) < 10.0f*WX / 1280))
+		if (interactionDelay <= 0 && (length(_parent->getPosition() - player->getPosition()) < 15.0f*WX / 1280))
 		{
 		EventSystem* evs = EventSystem::getInstance();
 		evs->changeMap(destination);
@@ -35,7 +35,7 @@ void WorldItemComponent::update(double dt)
 	}
 	else if (teleporter)
 	{
-		if (interactionDelay <= 0 && (length(_parent->getPosition() - player->getPosition()) < 10.0f*WX / 1280))
+		if (interactionDelay <= 0 && (length(_parent->getPosition() - player->getPosition()) < 15.0f*WX / 1280))
 		{
 			player->setPosition(destination);
 		}

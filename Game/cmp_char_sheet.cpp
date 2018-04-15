@@ -157,11 +157,11 @@ void CharacterSheetComponent::update(double dt)
 {	
 	if (weapon != nullptr)
 		if (!weapon->is_forDeletion())
-			stat_melee_attack = level_melee * 2.0f + weapon->GetComponent<ItemComponent>()->getAtt();
+			stat_melee_attack = 5.0f + (level_melee + weapon->GetComponent<ItemComponent>()->getAtt()) *2.0f;
 		else
-			stat_melee_attack = level_melee * 2.0f;
+			stat_melee_attack = 5.0f + level_melee * 2.0f;
 	else
-		stat_melee_attack = level_melee * 2.0f;
+		stat_melee_attack = 5.0f + level_melee * 2.0f;
 	///////////////////////////////////////making sure items are equipped first, otherwise 0//////////////////
 	float helmet_def = 0;
 	float armour_def = 0;

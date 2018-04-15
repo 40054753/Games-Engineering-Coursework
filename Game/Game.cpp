@@ -417,6 +417,11 @@ void GameScene::respawn_village0()
 	teleporters.push_back(tp3);
 	_ents.list.push_back(tp3);
 	_ents.list[0]->setPosition(EventSystem::getInstance()->getDest());
+	if (EventSystem::getInstance()->is_tutorial())
+	{
+		npcs.push_back(MonsterSpawner::getInstance()->spawn_NPC_WELCOME2({ 0,0 }));
+		EventSystem::getInstance()->switch_tutorial_complete();
+	}
 	
 }
 void GameScene::respawn_interior0()
@@ -479,10 +484,10 @@ void GameScene::respawn_interior0()
 
 	//////////////////////////////////DOORS  MAP CHANGER//////////////////////////////
 	auto tp3 = make_shared<Entity>();
-	tp3->setPosition({ 290,1170 });
+	tp3->setPosition({ 290*WX/1280,1170*WY/720 });
 	auto x = tp3->addComponent<WorldItemComponent>();
 	x->setMapChanger(1);
-	x->setTeleportDestination({ 463,756 });
+	x->setTeleportDestination({ 463*WX/1280,756*WY/720 });
 	auto helper3 = tp3->addComponent<AnimatedSpriteComponent>();
 	helper3->getSprite().setTexture(animatedSpellsTexture);
 	helper3->getSprite().setOrigin(10, 15);
@@ -497,12 +502,13 @@ void GameScene::respawn_interior0()
 	_ents.list.push_back(tp3);
 	
 	_ents.list[0]->setPosition(EventSystem::getInstance()->getDest());
+	npcs.push_back(MonsterSpawner::getInstance()->spawn_NPC_MOM({ 200 * WX / 1280,1000 * WY / 720 }));
 	if (EventSystem::getInstance()->is_newGame())
 	{
 		npcs.push_back(MonsterSpawner::getInstance()->spawn_NPC_WELCOME({ 0,0 }));
 		EventSystem::getInstance()->switch_new_game_dialogue();
 	}
-	npcs.push_back(MonsterSpawner::getInstance()->spawn_NPC_MOM({ 200*WX/1280,1000*WY/720 }));
+	
 	
 
 }

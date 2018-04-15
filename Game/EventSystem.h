@@ -15,7 +15,7 @@ private:
 	bool interior0 = false;
 	sf::Vector2f new_destination = {100,120};
 
-
+	bool tutorial_text0 = true;
 	bool LVUP = true;
 	bool refreshKeyLabels = false;
 	bool gameLoaded = false;
@@ -23,10 +23,13 @@ private:
 	static EventSystem* instance;
 	int resolution_index=0;
 public:
+	bool is_tutorial() { return tutorial_text0; }
+	void switch_tutorial_complete() { tutorial_text0 = false; }
 	bool is_newGame() { return newGame; }
 	void switch_new_game_dialogue() { newGame = false; }
 	void setNewGame() { newGame = true; new_destination = { 100,120 }; }
 	int getCurrentMap();
+	std::string getSwitches();
 	bool if_changeMap() { return mapChange; }
 	void changeMap(sf::Vector2f d) { mapChange = true; new_destination = d; }
 	sf::Vector2f getDest() { return new_destination; }

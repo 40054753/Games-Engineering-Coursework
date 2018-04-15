@@ -15,5 +15,6 @@ public:
 
 	////////////////NPCS
 	std::shared_ptr<Entity> spawn_NPC_WELCOME(sf::Vector2f loc);
+	std::shared_ptr<Entity> spawn_NPC_WELCOME2(sf::Vector2f loc);
 	std::shared_ptr<Entity> spawn_NPC_MOM(sf::Vector2f loc);
 };
