@@ -48,6 +48,21 @@ public:
 	void render() override;
 };
 
+class CursorMovementComponent : public ActorMovementComponent {
+
+protected:
+	float dirTimer = 1.0f;
+	bool dir;
+public:
+	CursorMovementComponent() = delete;
+	explicit CursorMovementComponent(Entity *p);
+	void move(const sf::Vector2f&);
+	bool validMove(const sf::Vector2f & p);
+	void update(double dt) override;
+	void render() override;
+	void reset();
+};
+
 class PlayerMovementComponent : public ActorMovementComponent {
 public:
 	PlayerMovementComponent() = delete;

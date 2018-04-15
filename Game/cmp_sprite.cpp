@@ -216,6 +216,31 @@ void StaticSpriteComponent::render()
 {
 	Renderer::queue(2,_sprite.get());
 }
+
+CursorSpriteComponent::CursorSpriteComponent(Entity *p) : Component(p), _sprite(std::make_shared<sf::Sprite>())
+{
+
+}
+
+void CursorSpriteComponent::setScale()
+{
+	_sprite->setScale(2, 2);
+}
+void CursorSpriteComponent::update(double dt)
+{
+	_sprite->setPosition(_parent->getPosition());
+}
+
+void CursorSpriteComponent::render()
+{
+	Renderer::queue(-1, _sprite.get());
+}
+
+sf::Sprite & CursorSpriteComponent::getSprite() const
+{
+	return *_sprite;
+}
+
 EnemyHealthBarComponent::EnemyHealthBarComponent(Entity *p) : Component(p) 
 {
 	status.setTexture(spellsTexture);

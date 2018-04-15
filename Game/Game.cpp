@@ -14,6 +14,7 @@
 #include "EventSystem.h"
 #include "SpellCaster.h"
 #include "cmp_status.h"
+#include "cmp_cursor.h"
 #include <string>
 #include "MonsterSpawner.h"
 #include "cmp_pickups.h"
@@ -22,7 +23,7 @@ using namespace sf;
 using namespace std;
 const int GHOSTS_COUNT = 4;
 Font font;
-Texture playerTexture, tile_textures, zombieTexture, spell_icons, spellsTexture, snowEffect, iconsTexture, itemsTexture, animatedSpellsTexture, swordSwingTexture;
+Texture playerTexture, tile_textures, zombieTexture, spell_icons, spellsTexture, snowEffect, iconsTexture, itemsTexture, animatedSpellsTexture, swordSwingTexture, cursorTexture;
 Texture menuBg;
 sf::Sprite background;
 SoundBuffer buffer;
@@ -380,7 +381,7 @@ vector<shared_ptr<Entity>> npcs;
 
 shared_ptr<Entity> player;
 shared_ptr<Entity> hud;
-
+shared_ptr<Entity> cursor;
 
 void GameScene::respawn()
 {
@@ -461,7 +462,9 @@ void GameScene::load()
 	if (!tile_textures.loadFromFile("res/img/spell_icons.png")) {
 		cout << "Cannot load img!" << endl;
 	}
-
+	if (!cursorTexture.loadFromFile("res/img/items.png")) {
+		cout << "Cannot load img!" << endl;
+	}
 	ls::loadLevelFile("res/levels/example.txt", 25.0f * WX / 1280);
 
 
@@ -484,6 +487,19 @@ void GameScene::load()
 	auto hb = hd->addComponent<HudComponent>();
 	hud = hd;
 	_ents.list.push_back(hud);
+
+	auto cur = std::make_shared<Entity>();
+	cur->addComponent<CursorMovementComponent>();
+	auto spr = cur->addComponent<CursorSpriteComponent>();
+	spr->getSprite().setTexture(cursorTexture);
+	spr->getSprite().setTextureRect({ 0,112,16,16 });
+	spr->getSprite().setPosition({ WX/2, WY/2});
+	spr->setScale();
+	auto curSprite = spr->getSprite();
+	Renderer::queue(-1, &spr->getSprite());
+	cursor = cur;
+	_ents.list.push_back(cursor);
+
 
 	respawn();
 	SpellCaster::getInstance()->setEntities(ghosts);
@@ -517,6 +533,7 @@ void GameScene::update(double dt)
 }
 void GameScene::render()
 {
+
 	ls::Render(Renderer::getWindow());
 	_ents.render();
 	Scene::render();

@@ -250,3 +250,56 @@ void EnemyAIComponent::update(double dt) {
 void EnemyAIComponent::render() {
 	ActorMovementComponent::render();
 }
+
+CursorMovementComponent::CursorMovementComponent(Entity * p) : ActorMovementComponent(p)
+{
+}
+
+void CursorMovementComponent::move(const sf::Vector2f &p)
+{
+	auto pp = _parent->getPosition() + p;
+	if (validMove(pp))
+	{
+		_parent->setPosition(pp);
+	}
+}
+
+bool CursorMovementComponent::validMove(const sf::Vector2f &p) {
+	int minX = player->getPosition().x - (WX / 2);
+	int maxX = player->getPosition().x + (WX / 2);
+	int minY = player->getPosition().y - (WY / 2);
+	int maxY = player->getPosition().y + (WY / 2);
+
+	int mX = p.x;
+	int mY = p.y;
+
+	if (mX < minX || mY < minY || mX > maxX || mY > maxY)
+	{
+		Vector2f joystick(sf::Joystick::getAxisPosition(0, sf::Joystick::Axis::X) / 20, sf::Joystick::getAxisPosition(0, sf::Joystick::Axis::Y) / 20);
+		return false;
+	}
+	return true;
+}
+
+void CursorMovementComponent::update(double dt)
+{
+	Vector2f joystick(sf::Joystick::getAxisPosition(0, sf::Joystick::Axis::X) / 20, sf::Joystick::getAxisPosition(0, sf::Joystick::Axis::Y) / 20);
+	if (validMove(_parent->getPosition()) == false) {
+		reset();
+	}
+	if (sf::Joystick::isConnected(0)) {
+		if (joystick.x > 0.5f || joystick.x < -0.5f || joystick.y > 0.5f || joystick.y < -0.5f) {
+			if (validMove(_parent->getPosition() + joystick)) {
+				move(joystick);
+			}
+		}
+	}
+}
+
+void CursorMovementComponent::reset() {
+	_parent->setPosition(player->getPosition());
+}
+
+void CursorMovementComponent::render()
+{
+}
