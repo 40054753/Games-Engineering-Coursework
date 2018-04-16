@@ -770,6 +770,9 @@ void HudComponent::reload()
 }
 void HudComponent::update(double dt)
 {
+	Vector2f joystickPos(cursor->getPosition());
+	auto leftBumper = sf::Joystick::U;
+	auto back = sf::Joystick::PovX;
 	auto x = player->GetComponent<CharacterSheetComponent>();
 	if (evs->is_leveled_up())
 	{
@@ -831,16 +834,16 @@ void HudComponent::update(double dt)
 
 		evs->refreshed();
 	}
-
 	for(int i=0; i<19;i++)
 	if (show_skill_tree)
 	{
-		if (mousePos.x >= spell_slots[i].getPosition().x - windowZero.x  && mousePos.x <= spell_slots[i].getPosition().x + 55*WX/1280 - windowZero.x)
+		if (mousePos.x >= spell_slots[i].getPosition().x - windowZero.x  && mousePos.x <= spell_slots[i].getPosition().x + 55 * WX / 1280 - windowZero.x)
 		{
 			if (mousePos.y >= spell_slots[i].getPosition().y - windowZero.y  && mousePos.y <= spell_slots[i].getPosition().y + 55*WY/720 - windowZero.y)
 			{
 				if (spell_available[i] && buttonDelay < 0 && sf::Mouse::isButtonPressed(Mouse::Left))
 				{
+					std::cout << mousePos.x << std::endl;
 					buttonDelay = 0.1f;
 					selectedIndex = i;
 					show_spell_options = true;
@@ -860,11 +863,37 @@ void HudComponent::update(double dt)
 			}
 			
 		}
+		//joystick
+		if (joystickPos.x + 16 - windowZero.x >= spell_slots[i].getPosition().x - windowZero.x  && joystickPos.x + 16 - windowZero.x <= spell_slots[i].getPosition().x + 55 * WX / 1280 - windowZero.x)
+		{
+			if (joystickPos.y - windowZero.y >= spell_slots[i].getPosition().y - windowZero.y  && joystickPos.y - windowZero.y <= spell_slots[i].getPosition().y + 55 * WY / 720 - windowZero.y)
+			{
+				if (spell_available[i] && buttonDelay < 0 && sf::Joystick::isButtonPressed(0, leftBumper))
+				{
+					buttonDelay = 0.1f;
+					selectedIndex = i;
+					show_spell_options = true;
+					show_spell_info = false;
+					bg_spell_options.setPosition(joystickPos.x + 16, joystickPos.y);
+				}
+				if (spell_available[i] && buttonDelay < 0 && sf::Joystick::isButtonPressed(0, back))
+				{
+					show_spell_info = true;
+					show_spell_options = false;
+					info_spells_text.setPosition(joystickPos.x + 16 + 0.005f*WX, joystickPos.y + 0.01f*WY);
+					info_spells_area.setPosition(joystickPos.x + 16, joystickPos.y);
+					info_spells_text.setString(descriptions[spell_ids[i]]);
+
+				}
+
+			}
+
+		}
 		
 	}
 	if (show_spell_info)
 	{
-		if (buttonDelay<0 && (sf::Mouse::isButtonPressed(Mouse::Left) || sf::Keyboard::isKeyPressed(controls[0]) || sf::Keyboard::isKeyPressed(controls[1]) || sf::Keyboard::isKeyPressed(controls[2]) || sf::Keyboard::isKeyPressed(controls[3])))
+		if (buttonDelay<0 && (sf::Joystick::isButtonPressed(0, leftBumper) || sf::Mouse::isButtonPressed(Mouse::Left) || sf::Keyboard::isKeyPressed(controls[0]) || sf::Keyboard::isKeyPressed(controls[1]) || sf::Keyboard::isKeyPressed(controls[2]) || sf::Keyboard::isKeyPressed(controls[3])))
 			{
 				buttonDelay = 0.1f;
 				show_spell_info = false;
@@ -971,6 +1000,108 @@ void HudComponent::update(double dt)
 				show_spell_options = false;
 			}
 		}
+		//joystick
+
+		if (joystickPos.x + 16 - windowZero.x >= label_spell_options_1.getPosition().x - windowZero.x  && joystickPos.x + 16 - windowZero.x <= label_spell_options_1.getPosition().x + 0.2f*WX - windowZero.x)
+		{
+			if (joystickPos.y - windowZero.y >= label_spell_options_1.getPosition().y - windowZero.y  && joystickPos.y - windowZero.y <= label_spell_options_1.getPosition().y + 0.045f*WY - windowZero.y)
+			{
+				if (buttonDelay < 0 && sf::Joystick::isButtonPressed(0, leftBumper))
+				{
+					buttonDelay = 0.1f;
+					x->setSpell(0, spell_ids[selectedIndex]);
+					evs->refresh();
+					show_spell_options = false;
+				}
+				label_spell_options_1.setOutlineColor(Color::Green);
+				label_spell_options_2.setOutlineColor(Color::Black);
+				label_spell_options_3.setOutlineColor(Color::Black);
+				label_spell_options_4.setOutlineColor(Color::Black);
+				label_spell_options_5.setOutlineColor(Color::Black);
+			}
+			else if (joystickPos.y - windowZero.y >= label_spell_options_2.getPosition().y - windowZero.y  && joystickPos.y - windowZero.y <= label_spell_options_2.getPosition().y + 0.045f*WY - windowZero.y)
+			{
+				if (buttonDelay < 0 && sf::Joystick::isButtonPressed(0, leftBumper))
+				{
+					buttonDelay = 0.1f;
+					x->setSpell(1, spell_ids[selectedIndex]);
+					evs->refresh();
+					show_spell_options = false;
+				}
+				label_spell_options_1.setOutlineColor(Color::Black);
+				label_spell_options_2.setOutlineColor(Color::Green);
+				label_spell_options_3.setOutlineColor(Color::Black);
+				label_spell_options_4.setOutlineColor(Color::Black);
+				label_spell_options_5.setOutlineColor(Color::Black);
+
+			}
+			else if (joystickPos.y - windowZero.y >= label_spell_options_3.getPosition().y - windowZero.y  && joystickPos.y - windowZero.y <= label_spell_options_3.getPosition().y + 0.045f*WY - windowZero.y)
+			{
+				if (buttonDelay < 0 && sf::Joystick::isButtonPressed(0, leftBumper))
+				{
+					buttonDelay = 0.1f;
+					x->setSpell(2, spell_ids[selectedIndex]);
+					evs->refresh();
+					show_spell_options = false;
+				}
+				label_spell_options_1.setOutlineColor(Color::Black);
+				label_spell_options_2.setOutlineColor(Color::Black);
+				label_spell_options_3.setOutlineColor(Color::Green);
+				label_spell_options_4.setOutlineColor(Color::Black);
+				label_spell_options_5.setOutlineColor(Color::Black);
+			}
+			else if (joystickPos.y - windowZero.y >= label_spell_options_4.getPosition().y - windowZero.y  && joystickPos.y - windowZero.y <= label_spell_options_4.getPosition().y + 0.045f*WY - windowZero.y)
+			{
+				if (buttonDelay < 0 && sf::Joystick::isButtonPressed(0, leftBumper))
+				{
+					buttonDelay = 0.1f;
+					x->setSpell(3, spell_ids[selectedIndex]);
+					evs->refresh();
+					show_spell_options = false;
+				}
+				label_spell_options_1.setOutlineColor(Color::Black);
+				label_spell_options_2.setOutlineColor(Color::Black);
+				label_spell_options_3.setOutlineColor(Color::Black);
+				label_spell_options_4.setOutlineColor(Color::Green);
+				label_spell_options_5.setOutlineColor(Color::Black);
+			}
+			else if (joystickPos.y - windowZero.y >= label_spell_options_5.getPosition().y - windowZero.y  && joystickPos.y - windowZero.y <= label_spell_options_5.getPosition().y + 0.045f*WY - windowZero.y)
+			{
+				if (buttonDelay < 0 && sf::Joystick::isButtonPressed(0, leftBumper))
+				{
+					buttonDelay = 0.1f;
+					x->setSpell(4, spell_ids[selectedIndex]);
+					evs->refresh();
+					show_spell_options = false;
+				}
+				label_spell_options_1.setOutlineColor(Color::Black);
+				label_spell_options_2.setOutlineColor(Color::Black);
+				label_spell_options_3.setOutlineColor(Color::Black);
+				label_spell_options_4.setOutlineColor(Color::Black);
+				label_spell_options_5.setOutlineColor(Color::Green);
+			}
+			else
+			{
+				if (buttonDelay<0 && (sf::Joystick::isButtonPressed(0, leftBumper)))
+				{
+					buttonDelay = 0.1f;
+					show_spell_options = false;
+				}
+				label_spell_options_1.setOutlineColor(Color::Black);
+				label_spell_options_2.setOutlineColor(Color::Black);
+				label_spell_options_3.setOutlineColor(Color::Black);
+				label_spell_options_4.setOutlineColor(Color::Black);
+				label_spell_options_5.setOutlineColor(Color::Black);
+			}
+		}
+		else
+		{
+			if (buttonDelay<0 && (sf::Joystick::isButtonPressed(0, leftBumper)))
+			{
+				buttonDelay = 0.1f;
+				show_spell_options = false;
+			}
+		}
 	}
 
 	auto backpack = x->getBP();
@@ -1042,6 +1173,71 @@ void HudComponent::update(double dt)
 				displayItemOptions = false;
 			}
 		}
+		//joystick
+		if (joystickPos.x + 16 - windowZero.x >= itemOptionsEquip.getPosition().x - windowZero.x  && joystickPos.x + 16 - windowZero.x <= itemOptionsEquip.getPosition().x + 0.08f*WX - windowZero.x)
+		{
+			if (joystickPos.y - windowZero.y >= itemOptionsEquip.getPosition().y - windowZero.y  && joystickPos.y - windowZero.y <= itemOptionsEquip.getPosition().y + 0.045f*WY - windowZero.y)
+			{
+				if (buttonDelay < 0 && sf::Joystick::isButtonPressed(0, leftBumper))
+				{
+					buttonDelay = 0.1f;
+					auto x = player->GetComponent<CharacterSheetComponent>();
+					x->equip(selectedItem);
+					auto it = selectedItem->GetComponent<ItemComponent>();
+					ITEM_TYPE type = it->getType();
+					switch (type)
+					{
+					case HELMET:
+						equipped_helmet = it->getSprite();
+						break;
+					case ARMOUR:
+						equipped_armour = it->getSprite();
+						break;
+					case BOOTS:
+						equipped_boots = it->getSprite();
+						break;
+					case WEAPON:
+						equipped_weapon = it->getSprite();
+						break;
+					case SHIELD:
+						equipped_shield = it->getSprite();
+						break;
+					default:
+						break;
+					}
+					displayItemOptions = false;
+
+				}
+				itemOptionsEquip.setOutlineColor(Color::Green);
+				itemOptionsDrop.setOutlineColor(Color::Black);
+			}
+			else if (joystickPos.y - windowZero.y >= itemOptionsDrop.getPosition().y - windowZero.y  && joystickPos.y - windowZero.y <= itemOptionsDrop.getPosition().y + 0.045f*WY - windowZero.y)
+			{
+				itemOptionsDrop.setOutlineColor(Color::Green);
+				itemOptionsEquip.setOutlineColor(Color::Black);
+				if (buttonDelay < 0 && sf::Joystick::isButtonPressed(0, leftBumper))
+				{
+					buttonDelay = 0.1f;
+					selectedItem->setForDelete();
+					player->GetComponent<CharacterSheetComponent>()->dropOne();
+					displayItemOptions = false;
+				}
+			}
+			else
+			{
+				itemOptionsDrop.setOutlineColor(Color::Black);
+				itemOptionsEquip.setOutlineColor(Color::Black);
+			}
+		}
+		else
+		{
+			itemOptionsEquip.setOutlineColor(Color::Black);
+			if (buttonDelay<0 && (sf::Joystick::isButtonPressed(0, leftBumper)))
+			{
+				buttonDelay = 0.1f;
+				displayItemOptions = false;
+			}
+		}
 	}
 	if (showInventory && sliderX<= 0.39f*WX)
 	{
@@ -1086,7 +1282,7 @@ void HudComponent::update(double dt)
 		hide_skill_tree = false;
 	}
 
-	if (buttonDelay<0 && Keyboard::isKeyPressed(controls[10]))
+	if (buttonDelay<0 && (Keyboard::isKeyPressed(controls[10]) || (sf::Joystick::isConnected(0) && sf::Joystick::isButtonPressed(0, 9))))
 	{
 		sound.play();
 		buttonDelay = 0.2f;
@@ -1096,8 +1292,9 @@ void HudComponent::update(double dt)
 			hideInventory = true;
 
 	}
-	if (buttonDelay<0 && Keyboard::isKeyPressed(Keyboard::K))
+	if (buttonDelay<0 && (Keyboard::isKeyPressed(Keyboard::K) || (sf::Joystick::isConnected(0) && sf::Joystick::isButtonPressed(0, 8))))
 	{
+		
 		sound.play();
 		buttonDelay = 0.2f;
 		if (!show_skill_tree)
@@ -1105,6 +1302,15 @@ void HudComponent::update(double dt)
 		else
 			hide_skill_tree = true;
 
+	}
+	if (show_skill_tree || showInventory) {
+		auto showCursor = cursor->GetComponent<CursorSpriteComponent>();
+		showCursor->getSprite().setScale(2, 2);
+	}
+	else {
+		auto hideCursor = cursor->GetComponent<CursorSpriteComponent>();
+		hideCursor->getSprite().setScale(0, 0);
+		cursor->setPosition(player->getPosition());
 	}
 	if (Keyboard::isKeyPressed(controls[11]))
 	{
@@ -1172,30 +1378,81 @@ void HudComponent::update(double dt)
 					displayInfo = false;
 				}
 			}
+			//joystick
+			if (joystickPos.y - windowZero.y >= slots[i].getPosition().y - windowZero.y  && joystickPos.y - windowZero.y <= slots[i].getPosition().y + 0.07f*WY - windowZero.y)
+			{
+				if (joystickPos.x - windowZero.x + 16 >= slots[i].getPosition().x - windowZero.x  && joystickPos.x - windowZero.x + 16 <= slots[i].getPosition().x + 0.045f*WX - windowZero.x)
+				{
+					slots[i].setFillColor(Color::White);
+					if (buttonDelay < 0 && sf::Joystick::isButtonPressed(0, back))
+					{
+						selectedItem = item;
+						selectedIndex = i;
+						buttonDelay = 0.1f;
+						itemInfo.setPosition(joystickPos.x + 16 + 0.015f*WX, joystickPos.y + 16 + 0.01f*WY);
+						infoArea.setPosition(joystickPos.x + 16, joystickPos.y + 16);
+						itemInfo.setString(info[selectedIndex]);
+						displayInfo = true;
+						displayItemOptions = false;
+					}
+
+					if (buttonDelay < 0 && sf::Joystick::isButtonPressed(0, leftBumper))
+					{
+						buttonDelay = 0.1f;
+
+						itemOptionsEquip.setPosition(joystickPos.x + 16 + 0.012f*WX, joystickPos.y + 16 + 0.01f*WY);
+						itemOptionsDrop.setPosition(joystickPos.x + 16 + 0.012f*WX, joystickPos.y + 16 + 0.06f*WY);
+						itemOptionsArea.setPosition(joystickPos.x + 16, joystickPos.y + 16);
+						selectedItem = item;
+						selectedIndex = i;
+						displayInfo = false;
+						displayItemOptions = true;
+					}
+
+				}
+				else
+				{
+
+					resetSlot(i);
+					if (buttonDelay < 0 && sf::Joystick::isButtonPressed(0, leftBumper))
+					{
+						displayInfo = false;
+					}
+				}
+			}
+			else
+			{
+
+				resetSlot(i);
+				if (buttonDelay < 0 && sf::Joystick::isButtonPressed(0, leftBumper))
+				{
+					displayInfo = false;
+				}
+			}
 			i++;
 		}
 	}
-	if (mousePos.y >= 0.915f*WY && mousePos.y <= 0.985f*WY)
+	if ((mousePos.y >= 0.915f*WY && mousePos.y <= 0.985f*WY) || (joystickPos.y + 16 - windowZero.y >= 0.915f*WY && joystickPos.y + 16 - windowZero.y <= 0.985f*WY))
 	{
 		
-		if (mousePos.x >= 0.69f*WX && mousePos.x <= 0.735f*WX)
+		if ((mousePos.x >= 0.69f*WX && mousePos.x <= 0.735f*WX) || (joystickPos.x + 16 - windowZero.x >= 0.69f*WX && joystickPos.x + 16 - windowZero.x <= 0.735f*WX))
 		{
 			button_menu.setFillColor(sf::Color::White);
 			if(!highlighted)sound.play();
 			highlighted = true;		
-			if (sf::Mouse::isButtonPressed(Mouse::Left))
+			if (sf::Mouse::isButtonPressed(Mouse::Left) || sf::Joystick::isButtonPressed(0, leftBumper))
 			{
 				buttonDelay = 0.2f;
 				activeScene = menuScene; //switch to game
 				std::cout << "Active Scene: " + std::to_string(activeScene->getID()) << std::endl;
 			}
 		}
-		else if (mousePos.x >= 0.63f*WX  && mousePos.x <= 0.675f*WX)
+		else if ((mousePos.x >= 0.63f*WX  && mousePos.x <= 0.675f*WX) || (joystickPos.x + 16 - windowZero.x >= 0.63f*WX  && joystickPos.x + 16 - windowZero.x <= 0.675f*WX))
 		{
 			button_inventory.setFillColor(sf::Color::White);
 			if (!highlighted)sound.play();
 			highlighted = true;
-			if (buttonDelay<0 && sf::Mouse::isButtonPressed(Mouse::Left))
+			if (buttonDelay<0 && sf::Mouse::isButtonPressed(Mouse::Left) || sf::Joystick::isButtonPressed(0, leftBumper))
 			{
 				buttonDelay = 0.2f;
 				if (!showInventory)
@@ -1205,12 +1462,12 @@ void HudComponent::update(double dt)
 				
 			}
 		}
-		else if (mousePos.x >= 0.57f*WX && mousePos.x <= 0.615f*WX)
+		else if ((mousePos.x >= 0.57f*WX && mousePos.x <= 0.615f*WX) || (joystickPos.x + 16- windowZero.x >= 0.57f*WX && joystickPos.x + 16 - windowZero.x <= 0.615f*WX))
 		{
 			button_save.setFillColor(sf::Color::White);
 			if (!highlighted)sound.play();
 			highlighted = true;
-			if (buttonDelay<0 && sf::Mouse::isButtonPressed(Mouse::Left))
+			if (buttonDelay<0 && sf::Mouse::isButtonPressed(Mouse::Left) || sf::Joystick::isButtonPressed(0, leftBumper))
 			{
 				buttonDelay = 0.2f;
 				evs->SaveGame();
@@ -1234,8 +1491,8 @@ void HudComponent::update(double dt)
 		{
 			resetButtons();
 		}
-		
 	}
+
 	else if (highlighted)
 	{
 		resetButtons();

@@ -135,3 +135,20 @@ public:
 		_sprite.reset(new T(params...));
 	}
 };
+
+class CursorSpriteComponent : public Component {
+protected:
+	std::shared_ptr<sf::Sprite> _sprite;
+
+public:
+	void setScale();
+	CursorSpriteComponent() = delete;
+	explicit CursorSpriteComponent(Entity *p);
+	void update(double dt) override;
+	void render() override;
+	sf::Sprite &getSprite() const;
+	template<typename T, typename... Targs>
+	void setSprite(Targs... params) {
+		_sprite.reset(new T(params...));
+	}
+};

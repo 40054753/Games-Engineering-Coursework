@@ -22,7 +22,9 @@ extern sf::Texture npcsTexture;
 extern sf::Texture spell_icons;
 extern sf::Texture tile_textures;
 extern sf::Texture swordSwingTexture;
+extern sf::Texture cursorTexture;
 extern std::shared_ptr<Entity> player;
+extern std::shared_ptr<Entity> cursor;
 extern sf::SoundBuffer buffer;
 extern sf::Sound sound;
 extern sf::Texture snowEffect;
@@ -35,10 +37,12 @@ extern bool fullscreen;
 
 extern std::string codes[101];
 extern sf::Keyboard::Key controls[13];
+extern sf::Joystick::Axis buttons[8];
 class MenuScene : public Scene
 {
 private:
 	float moveTime=0.0f;
+	float pauseTimer = 0.0f;
 	int selectedItemIndex;
 	sf::Text menu[MAX_NUMBER_OF_ITEMS];
 	sf::Text text;
@@ -57,11 +61,14 @@ public:
 
 class GameScene : public Scene
 {
-private:	
+
+private:
+	float pauseTimer = 0.2f;
 	bool start_blackout = false;
 	bool stop_blackout = false;
 	float blackout_slider=0;
 	sf::RectangleShape blackout;
+
 	sf::Text text;
 	void respawn_interior0();
 	void respawn_village0();

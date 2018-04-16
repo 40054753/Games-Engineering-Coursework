@@ -94,7 +94,7 @@ void CharacterSpriteComponent::update(double dt)
 	}
 	else
 	{
-		if (Keyboard::isKeyPressed(controls[0]))
+		if (Keyboard::isKeyPressed(controls[0]) || (sf::Joystick::isConnected(0) && sf::Joystick::getAxisPosition(0, sf::Joystick::Axis::PovY) == 100))
 		{
 			facing = 1;
 			if (frame > 3) frame = 0;
@@ -105,7 +105,7 @@ void CharacterSpriteComponent::update(double dt)
 				AnimationCounter = AnimationDelay;
 			}
 		}
-		else if (Keyboard::isKeyPressed(controls[1]))
+		else if (Keyboard::isKeyPressed(controls[1]) || (sf::Joystick::isConnected(0) && sf::Joystick::getAxisPosition(0, sf::Joystick::Axis::PovY) == -100))
 		{
 			facing = 3;
 			if (frame > 3) frame = 0;
@@ -116,7 +116,7 @@ void CharacterSpriteComponent::update(double dt)
 				AnimationCounter = AnimationDelay;
 			}
 		}
-		else if (Keyboard::isKeyPressed(controls[3]))
+		else if (Keyboard::isKeyPressed(controls[3]) || (sf::Joystick::isConnected(0) && sf::Joystick::getAxisPosition(0, sf::Joystick::Axis::PovX) == -100))
 		{
 			facing = 4;
 			if (frame > 3) frame = 0;
@@ -127,7 +127,7 @@ void CharacterSpriteComponent::update(double dt)
 				AnimationCounter = AnimationDelay;
 			}
 		}
-		else if (Keyboard::isKeyPressed(controls[2]))
+		else if (Keyboard::isKeyPressed(controls[2]) || (sf::Joystick::isConnected(0) && sf::Joystick::getAxisPosition(0, sf::Joystick::Axis::PovX) == 100))
 		{
 			facing = 2;
 			if (frame > 3) frame = 0;
@@ -234,6 +234,31 @@ void StaticSpriteComponent::render()
 {
 	Renderer::queue(2,_sprite.get());
 }
+
+CursorSpriteComponent::CursorSpriteComponent(Entity *p) : Component(p), _sprite(std::make_shared<sf::Sprite>())
+{
+
+}
+
+void CursorSpriteComponent::setScale()
+{
+	_sprite->setScale(2, 2);
+}
+void CursorSpriteComponent::update(double dt)
+{
+	_sprite->setPosition(_parent->getPosition());
+}
+
+void CursorSpriteComponent::render()
+{
+	Renderer::queue(-1, _sprite.get());
+}
+
+sf::Sprite & CursorSpriteComponent::getSprite() const
+{
+	return *_sprite;
+}
+
 EnemyHealthBarComponent::EnemyHealthBarComponent(Entity *p) : Component(p) 
 {
 	status.setTexture(spellsTexture);
