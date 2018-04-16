@@ -859,7 +859,6 @@ void HudComponent::update(double dt)
 			{
 				if (spell_available[i] && buttonDelay < 0 && sf::Joystick::isButtonPressed(0, leftBumper))
 				{
-					std::cout << "asdfasdf" << std::endl;
 					buttonDelay = 0.1f;
 					selectedIndex = i;
 					show_spell_options = true;

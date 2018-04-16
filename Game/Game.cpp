@@ -14,7 +14,6 @@
 #include "EventSystem.h"
 #include "SpellCaster.h"
 #include "cmp_status.h"
-#include "cmp_cursor.h"
 #include <string>
 #include "MonsterSpawner.h"
 #include "cmp_pickups.h"
@@ -682,9 +681,25 @@ void OptionsScene::load()
 	button_screenmode_dot.setOutlineThickness(5.0f);
 	button_screenmode_dot.setPosition(bg_screenmode.getPosition() + Vector2f(0.24f*WX, 0.013f*WY));
 
+	if (!cursorTexture.loadFromFile("res/img/items.png")) {
+		cout << "Cannot load img!" << endl;
+	}
+
+	auto cur = std::make_shared<Entity>();
+	cur->addComponent<OptionsMovementComponent>();
+	auto spr = cur->addComponent<CursorSpriteComponent>();
+	spr->getSprite().setTexture(cursorTexture);
+	spr->getSprite().setTextureRect({ 0,112,16,16 });
+	spr->getSprite().setPosition({ WX / 2, WY / 2 });
+	spr->setScale();
+	auto curSprite = spr->getSprite();
+	Renderer::queue(-1, &spr->getSprite());
+	cursor = cur;
+	_ents.list.push_back(cursor);
 }
 void OptionsScene::update(double dt)
 {
+	Vector2f joystickPos(cursor->getPosition());
 	EventSystem* evs = EventSystem::getInstance();
 	delay -= dt;
 	if (evs->is_for_refresh())
@@ -694,18 +709,21 @@ void OptionsScene::update(double dt)
 
 		evs->refreshed();
 	}
+	if (sf::Joystick::isButtonPressed(0, sf::Joystick::PovX)) {
+		activeScene = menuScene;
+	}
 	if (!fullscreen)
 		mousePos = sf::Mouse::getPosition(Renderer::getWindow());
 	else
 		mousePos = sf::Mouse::getPosition();
 	//if(evs->isLoaded())
-	if (mousePos.x >= button_return.getPosition().x  && mousePos.x <= button_return.getPosition().x + 0.3f*WX)
+	if ((mousePos.x >= button_return.getPosition().x  && mousePos.x <= button_return.getPosition().x + 0.3f*WX) || (joystickPos.x >= button_return.getPosition().x  && joystickPos.x <= button_return.getPosition().x + 0.3f*WX))
 	{
-		if (mousePos.y >= button_return.getPosition().y && mousePos.y <= button_return.getPosition().y + 0.07f*WY)
+		if (joystickPos.y >= button_return.getPosition().y && joystickPos.y <= button_return.getPosition().y + 0.07f*WY)
 		{
 
 			text_return.setOutlineColor(sf::Color::Green);
-			if (sf::Mouse::isButtonPressed(Mouse::Left))
+			if (sf::Mouse::isButtonPressed(Mouse::Left) || sf::Joystick::isButtonPressed(0, sf::Joystick::U))
 			{
 				activeScene = menuScene;
 			}
@@ -719,13 +737,13 @@ void OptionsScene::update(double dt)
 	{
 		text_return.setOutlineColor(sf::Color::Red);
 	}
-	if (mousePos.x >= button_resolution_right.getPosition().x - 0.013f*WX  && mousePos.x <= button_resolution_right.getPosition().x + 0.013f*WX)
+	if ((mousePos.x >= button_resolution_right.getPosition().x - 0.013f*WX  && mousePos.x <= button_resolution_right.getPosition().x + 0.013f*WX) || (joystickPos.x >= button_resolution_right.getPosition().x - 0.013f*WX  && joystickPos.x <= button_resolution_right.getPosition().x + 0.013f*WX))
 	{
-		if (mousePos.y >= button_resolution_right.getPosition().y - 0.025f*WY && mousePos.y <= button_resolution_right.getPosition().y + 0.025f*WY)
+		if ((mousePos.y >= button_resolution_right.getPosition().y - 0.025f*WY && mousePos.y <= button_resolution_right.getPosition().y + 0.025f*WY) || (joystickPos.y >= button_resolution_right.getPosition().y - 0.025f*WY && joystickPos.y <= button_resolution_right.getPosition().y + 0.025f*WY))
 		{
 
 			button_resolution_right.setOutlineColor(sf::Color::Green);
-			if (sf::Mouse::isButtonPressed(Mouse::Left))
+			if (sf::Mouse::isButtonPressed(Mouse::Left) || sf::Joystick::isButtonPressed(0, sf::Joystick::U))
 			{
 				if (resolution_index < 2)
 				{
@@ -750,13 +768,13 @@ void OptionsScene::update(double dt)
 	{
 		button_resolution_right.setOutlineColor(sf::Color::Red);
 	}
-	if (mousePos.x >= button_resolution_left.getPosition().x - 0.03f*WX && mousePos.x <= button_resolution_left.getPosition().x + 0.01f*WX)
+	if ((mousePos.x >= button_resolution_left.getPosition().x - 0.03f*WX && mousePos.x <= button_resolution_left.getPosition().x + 0.01f*WX) || (joystickPos.x >= button_resolution_left.getPosition().x - 0.03f*WX && joystickPos.x <= button_resolution_left.getPosition().x + 0.01f*WX))
 	{
-		if (mousePos.y >= button_resolution_left.getPosition().y  && mousePos.y <= button_resolution_left.getPosition().y + 0.06f*WY)
+		if ((mousePos.y >= button_resolution_left.getPosition().y  && mousePos.y <= button_resolution_left.getPosition().y + 0.06f*WY) || (joystickPos.y >= button_resolution_left.getPosition().y  && joystickPos.y <= button_resolution_left.getPosition().y + 0.06f*WY))
 		{
 
 			button_resolution_left.setOutlineColor(sf::Color::Green);
-			if (sf::Mouse::isButtonPressed(Mouse::Left))
+			if (sf::Mouse::isButtonPressed(Mouse::Left) || sf::Joystick::isButtonPressed(0, sf::Joystick::U))
 			{
 				if (resolution_index > 0)
 				{
@@ -788,13 +806,13 @@ void OptionsScene::update(double dt)
 	{
 		button_resolution_left.setOutlineColor(sf::Color::Red);
 	}
-	if (mousePos.x >= button_screenmode_dot.getPosition().x - 0.03f*WX && mousePos.x <= button_screenmode_dot.getPosition().x + 0.01f*WX)
+	if ((mousePos.x >= button_screenmode_dot.getPosition().x - 0.03f*WX && mousePos.x <= button_screenmode_dot.getPosition().x + 0.01f*WX) || (joystickPos.x >= button_screenmode_dot.getPosition().x - 0.03f*WX && joystickPos.x <= button_screenmode_dot.getPosition().x + 0.01f*WX))
 	{
-		if (mousePos.y >= button_screenmode_dot.getPosition().y - 0.02f*WY && mousePos.y <= button_screenmode_dot.getPosition().y + 0.06f*WY)
+		if ((mousePos.y >= button_screenmode_dot.getPosition().y - 0.02f*WY && mousePos.y <= button_screenmode_dot.getPosition().y + 0.06f*WY) || (joystickPos.y >= button_screenmode_dot.getPosition().y - 0.02f*WY && joystickPos.y <= button_screenmode_dot.getPosition().y + 0.06f*WY))
 		{
 
 			button_screenmode_dot.setOutlineColor(sf::Color::Green);
-			if (sf::Mouse::isButtonPressed(Mouse::Left))
+			if (sf::Mouse::isButtonPressed(Mouse::Left) || sf::Joystick::isButtonPressed(0, sf::Joystick::U))
 			{
 
 				if (!fullscreen)

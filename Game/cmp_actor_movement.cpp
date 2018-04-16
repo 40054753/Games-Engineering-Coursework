@@ -303,3 +303,53 @@ void CursorMovementComponent::reset() {
 void CursorMovementComponent::render()
 {
 }
+
+//options cursor
+OptionsMovementComponent::OptionsMovementComponent(Entity * p) : ActorMovementComponent(p)
+{
+}
+
+void OptionsMovementComponent::move(const sf::Vector2f &p)
+{
+	auto pp = _parent->getPosition() + p;
+	if (validMove(pp))
+	{
+		_parent->setPosition(pp);
+	}
+}
+
+bool OptionsMovementComponent::validMove(const sf::Vector2f &p) {
+	int minX = 0;
+	int maxX = WX;
+	int minY = 0;
+	int maxY = WY;
+
+	int mX = p.x;
+	int mY = p.y;
+
+	if (mX < minX || mY < minY || mX > maxX || mY > maxY)
+	{
+		return false;
+	}
+	return true;
+}
+
+void OptionsMovementComponent::update(double dt)
+{
+	Vector2f joystick(sf::Joystick::getAxisPosition(0, sf::Joystick::Axis::X) / 20, sf::Joystick::getAxisPosition(0, sf::Joystick::Axis::Y) / 20);
+	if (sf::Joystick::isConnected(0)) {
+		if (joystick.x > 0.5f || joystick.x < -0.5f || joystick.y > 0.5f || joystick.y < -0.5f) {
+			if (validMove(_parent->getPosition() + Vector2f(joystick.x / 5, joystick.y / 5))) {
+				move(Vector2f(joystick.x / 5, joystick.y / 5));
+			}
+		}
+	}
+}
+
+void OptionsMovementComponent::render()
+{
+}
+
+void OptionsMovementComponent::reset()
+{
+}
