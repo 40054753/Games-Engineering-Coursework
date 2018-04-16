@@ -1475,7 +1475,7 @@ void HudComponent::update(double dt)
 				evs->SaveGame();
 			}
 		}
-		else if (mousePos.x >= 0.51f*WX && mousePos.x <= 0.555f*WX)
+		else if ((mousePos.x >= 0.51f*WX && mousePos.x <= 0.555f*WX) || (joystickPos.x + 16 - windowZero.x >= 0.51f*WX && joystickPos.x + 16 - windowZero.x <= 0.555f*WX))
 		{
 			button_skill_tree.setFillColor(sf::Color::White);
 			if (!highlighted)sound.play();

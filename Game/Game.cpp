@@ -1096,7 +1096,7 @@ void OptionsScene::update(double dt)
 	//if(evs->isLoaded())
 	if ((mousePos.x >= button_return.getPosition().x  && mousePos.x <= button_return.getPosition().x + 0.3f*WX) || (joystickPos.x >= button_return.getPosition().x  && joystickPos.x <= button_return.getPosition().x + 0.3f*WX))
 	{
-		if (mousePos.y >= button_return.getPosition().y && mousePos.y <= button_return.getPosition().y + 0.07f*WY)
+		if ((mousePos.y >= button_return.getPosition().y && mousePos.y <= button_return.getPosition().y + 0.07f*WY) || (joystickPos.y >= button_return.getPosition().y && joystickPos.y <= button_return.getPosition().y + 0.07f*WY))
 		{
 
 			text_return.setOutlineColor(sf::Color::Green);
