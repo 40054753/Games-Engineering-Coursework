@@ -22,7 +22,7 @@
 using namespace sf;
 using namespace std;
 Font font;
-Texture playerTexture, tile_textures, zombieTexture,spell_icons, npcsTexture, spellsTexture, snowEffect, iconsTexture, itemsTexture, animatedSpellsTexture, swordSwingTexture;
+Texture playerTexture, tile_textures, zombieTexture,spell_icons, npcsTexture, cursorTexture, spellsTexture, snowEffect, iconsTexture, itemsTexture, animatedSpellsTexture, swordSwingTexture;
 Texture menuBg;
 sf::Sprite background;
 SoundBuffer buffer;
@@ -914,7 +914,7 @@ void OptionsScene::update(double dt)
 	//if(evs->isLoaded())
 	if ((mousePos.x >= button_return.getPosition().x  && mousePos.x <= button_return.getPosition().x + 0.3f*WX) || (joystickPos.x >= button_return.getPosition().x  && joystickPos.x <= button_return.getPosition().x + 0.3f*WX))
 	{
-		if (joystickPos.y >= button_return.getPosition().y && joystickPos.y <= button_return.getPosition().y + 0.07f*WY)
+		if (mousePos.y >= button_return.getPosition().y && mousePos.y <= button_return.getPosition().y + 0.07f*WY)
 		{
 
 			text_return.setOutlineColor(sf::Color::Green);
