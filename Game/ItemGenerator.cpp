@@ -44,6 +44,12 @@ void ItemGenerator::load(int id, bool equipped)
 	case 6:
 		recreate_magic_sword(equipped);
 		break;
+	case 7:
+		recreate_simple_shield(equipped);
+		break;
+	case 8:
+		recreate_nike_jordans(equipped);
+		break;
 	default:
 		break;
 	}
@@ -60,10 +66,20 @@ void ItemGenerator::random_drop(int level, sf::Vector2f location)
 			create_leaf(location);
 		if (drop >= 20 && drop < 30)
 			create_dagger(location);
+		if (drop >= 30 && drop < 35)
+			create_simple_shield(location);
 		break;
 	case 1:
 		if (drop >= 0 && drop < 10)
-			create_short_sword(location);		
+			create_short_sword(location);	
+		if (drop >= 10 && drop < 15)
+			create_templar_sword(location);
+		if (drop >= 15 && drop < 20)
+			create_giant_sword(location);
+		if (drop >= 20 && drop < 35)
+			create_simple_shield(location);
+		if (drop >= 35 && drop < 55)
+			create_nike_jordans(location);
 		break;
 	case 2:
 		if (drop >= 0 && drop < 5)
@@ -360,6 +376,80 @@ void ItemGenerator::recreate_forbidden_item(bool equipped)
 	it->setAtt(150);
 	it->getSprite().setTexture(itemsTexture);
 	it->getSprite().setTextureRect({ 192,128,16,16 });
+	it->getSprite().setScale({ 2 * WX / 1280,2 * WY / 720 });
+	it->getSprite().setOrigin({ 8,8 });
+	activeScene->getEnts().push_back(item);
+	auto x = player->GetComponent<CharacterSheetComponent>();
+	x->pickUp(item);
+	if (equipped) x->equip(item);
+}
+void ItemGenerator::create_simple_shield(sf::Vector2f location)
+{
+	auto item = std::make_shared<Entity>();
+	item->setPosition(location);
+	auto it = item->addComponent<ItemComponent>();
+	it->setID(7);
+	it->point(item);
+	it->setName("SIMPLE SHIELD");
+	it->setType(SHIELD);
+	it->setDef(10);
+	it->getSprite().setTexture(itemsTexture);
+	it->getSprite().setTextureRect({ 80,176,16,16 });
+	it->getSprite().setScale({ 2 * WX / 1280,2 * WY / 720 });
+	it->getSprite().setOrigin({ 8,8 });
+	activeScene->getEnts().push_back(item);
+}
+void ItemGenerator::recreate_simple_shield(bool equipped)
+{
+	auto item = std::make_shared<Entity>();
+	auto it = item->addComponent<ItemComponent>();
+	item->setPosition({ 100,100 });
+	it->setPickedUp();
+	it->setID(7);
+	it->point(item);
+	it->setName("SIMPLE SHIELD");
+	it->setType(SHIELD);
+	it->setDef(10);
+	it->getSprite().setTexture(itemsTexture);
+	it->getSprite().setTextureRect({ 80,176,16,16 });
+	it->getSprite().setScale({ 2 * WX / 1280,2 * WY / 720 });
+	it->getSprite().setOrigin({ 8,8 });
+	activeScene->getEnts().push_back(item);
+	auto x = player->GetComponent<CharacterSheetComponent>();
+	x->pickUp(item);
+	if (equipped) x->equip(item);
+}
+void ItemGenerator::create_nike_jordans(sf::Vector2f location)
+{
+	auto item = std::make_shared<Entity>();
+	item->setPosition(location);
+	auto it = item->addComponent<ItemComponent>();
+	it->setID(8);
+	it->point(item);
+	it->setName("NIKE JORDANS");
+	it->setType(BOOTS);
+	it->setDef(2);
+	it->setSpd(20);
+	it->getSprite().setTexture(itemsTexture);
+	it->getSprite().setTextureRect({ 80,160,16,16 });
+	it->getSprite().setScale({ 2 * WX / 1280,2 * WY / 720 });
+	it->getSprite().setOrigin({ 8,8 });
+	activeScene->getEnts().push_back(item);
+}
+void ItemGenerator::recreate_nike_jordans(bool equipped)
+{
+	auto item = std::make_shared<Entity>();
+	auto it = item->addComponent<ItemComponent>();
+	item->setPosition({ 100,100 });
+	it->setPickedUp();
+	it->setID(8);
+	it->point(item);
+	it->setName("NIKE JORDANS");
+	it->setType(BOOTS);
+	it->setDef(2);
+	it->setSpd(20);
+	it->getSprite().setTexture(itemsTexture);
+	it->getSprite().setTextureRect({ 80,160,16,16 });
 	it->getSprite().setScale({ 2 * WX / 1280,2 * WY / 720 });
 	it->getSprite().setOrigin({ 8,8 });
 	activeScene->getEnts().push_back(item);

@@ -36,6 +36,10 @@ void Update(RenderWindow &window)
 			Renderer::resizeView();
 			return;
 		}
+		if (event.type == Event::Closed) {
+			window.close();
+			return;
+		}
 	}	
 }
 
@@ -50,7 +54,7 @@ int main()
 {
 	sf::Clock clock;
 	float lastTime = 0;
-	RenderWindow window(VideoMode(Renderer::gameWidth[resolution_index], Renderer::gameHeight[resolution_index]), "Icy Dead People v0.01 : ");
+	RenderWindow window(VideoMode(Renderer::gameWidth[resolution_index], Renderer::gameHeight[resolution_index]), "Icy Dead People");
 	Renderer::initialise(window);
 	Load();
 	while (window.isOpen())
@@ -58,7 +62,7 @@ int main()
 		float currentTime = clock.restart().asSeconds();
 		float fps = 1.f / currentTime;
 		lastTime = currentTime;
-		window.setTitle("Icy Dead People v0.01 : " + std::to_string((int)fps));
+		window.setTitle("Icy Dead People v1.0  FPS:" + std::to_string((int)fps));
 		window.clear();
 		Update(window);
 		Render(window);

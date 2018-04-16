@@ -42,6 +42,29 @@ std::shared_ptr<Entity> MonsterSpawner::spawn_zombie(sf::Vector2f loc)
 	gameScene->getEnts().push_back(ghost);
 	return ghost;
 }
+std::shared_ptr<Entity> MonsterSpawner::spawn_strong_zombie(sf::Vector2f loc)
+{
+	auto ghost = std::make_shared<Entity>();
+	ghost->setPosition(loc);
+	ghost->addComponent<ActorMovementComponent>();
+	auto s = ghost->addComponent<CharacterSpriteComponent>();
+	s->getSprite().setTexture(zombieTexture2);
+	s->getSprite().setTextureRect({ 0,0,16,21 });
+	s->getSprite().setScale({ 2.0f*WX / 1280, 2.0f*WY / 720 });
+	s->getSprite().setOrigin(8.0f, 12.0f);
+	s->setDefaultFrames();
+	auto b = ghost->addComponent<HealthComponent>();
+	b->setMaxHealth(200);
+	ghost->addComponent<EnemyHealthBarComponent>();
+	ghost->addComponent<StatusComponent>();
+	auto p = ghost->addComponent<EnemyAttackComponent>();
+	p->setLevel(1);
+	p->setAttack(40);
+	ghost->addComponent<SteeringComponent>(player.get());
+	ghost->addComponent<StatusComponent>();
+	gameScene->getEnts().push_back(ghost);
+	return ghost;
+}
 std::shared_ptr<Entity> MonsterSpawner::spawn_NPC_WELCOME(sf::Vector2f loc)
 {
 	auto npc = std::make_shared<Entity>();
@@ -76,6 +99,39 @@ std::shared_ptr<Entity> MonsterSpawner::spawn_NPC_MOM(sf::Vector2f loc)
 	npc->setPosition(loc);
 	auto d = npc->addComponent<NPCComponent>();
 	d->setDialogue("MOM: Oh! You finally woke up, hon! Master Kenbobi came looking \nfor you earlier. There are zombies everywhere,and he needs \nyour help! He'll be waiting for you in the forest.");
+	gameScene->getEnts().push_back(npc);
+	return npc;
+}
+std::shared_ptr<Entity> MonsterSpawner::spawn_NPC_MASTER_FOREST(sf::Vector2f loc)
+{
+	auto npc = std::make_shared<Entity>();
+	npc->setFace(3);
+	auto n = npc->addComponent<StaticSpriteComponent>();
+	n->getSprite().setTexture(npcsTexture);
+	n->getSprite().setTextureRect({ 64,0,16,21 });
+	n->getSprite().setScale({ 2.0f*WX / 1280, 2.0f*WY / 720 });
+	n->getSprite().setOrigin(8.0f, 12.0f);
+//	n->setDefaultFrames();
+	npc->setPosition(loc);
+	auto d = npc->addComponent<NPCComponent>();
+	d->setDialogue("KENBOBI: Finally here, Grasshopah! I've completed the study\n of the anomaly! I have good news, and bad news! The good news\n is, that this is not any kind of religuous apocalypse. \nCome back to my tower, we have much to discuss!");
+	d->setBodyless();
+	gameScene->getEnts().push_back(npc);
+	return npc;
+}
+std::shared_ptr<Entity> MonsterSpawner::spawn_NPC_MASTER_TOWER(sf::Vector2f loc)
+{
+	auto npc = std::make_shared<Entity>();
+	npc->setFace(3);
+	auto n = npc->addComponent<StaticSpriteComponent>();
+	n->getSprite().setTexture(npcsTexture);
+	n->getSprite().setTextureRect({ 64,0,16,21 });
+	n->getSprite().setScale({ 2.0f*WX / 1280, 2.0f*WY / 720 });
+	n->getSprite().setOrigin(8.0f, 12.0f);
+	//n->setDefaultFrames();
+	npc->setPosition(loc);
+	auto d = npc->addComponent<NPCComponent>();
+	d->setDialogue("KENBOBI: Oh, the bad news?\n................................\nThe bad news is that this is just a demo. Sorry, lad!");
 	gameScene->getEnts().push_back(npc);
 	return npc;
 }

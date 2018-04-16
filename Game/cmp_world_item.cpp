@@ -31,6 +31,8 @@ void WorldItemComponent::update(double dt)
 			evs->map_interior0();
 		else if (map_id == 1)
 			evs->map_village0();
+		else if (map_id == 2)
+			evs->map_forest0();
 		}
 	}
 	else if (teleporter)

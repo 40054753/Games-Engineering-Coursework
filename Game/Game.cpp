@@ -22,11 +22,12 @@
 using namespace sf;
 using namespace std;
 Font font;
-Texture playerTexture, tile_textures, zombieTexture,spell_icons, npcsTexture, spellsTexture, snowEffect, iconsTexture, itemsTexture, animatedSpellsTexture, swordSwingTexture;
+Texture playerTexture, tile_textures, zombieTexture, zombieTexture2,spell_icons, npcsTexture, spellsTexture, snowEffect, iconsTexture, itemsTexture, animatedSpellsTexture, swordSwingTexture;
 Texture menuBg;
+Music music_menu, music_game, music_forest;
 sf::Sprite background;
-SoundBuffer buffer;
-Sound sound;
+SoundBuffer buffer, buffer_fire, buffer_dragon, buffer_water, buffer_swing, buffer_earth, buffer_wind;
+Sound sound, sound_spells;
 RectangleShape rect;
 Vector2i mousePos;
 int resolution_index = 0;
@@ -98,9 +99,14 @@ void MenuScene::load() {
 
 	setID(0);
 	if (!buffer.loadFromFile("res/sound/click.wav")) {
-		cout << "Cannot load font!" << endl;
+		cout << "Cannot load click sound!" << endl;
 	}
 	sound.setBuffer(buffer);
+	if (music_menu.openFromFile("res/sound/castle.ogg"))
+	{
+		cout << "Cannot load castle  music!" << endl;
+	}
+	music_menu.play();
 	if (!font.loadFromFile("res/fonts/font.ttf")) {
 		cout << "Cannot load font!" << endl;
 	}
@@ -397,7 +403,76 @@ vector<shared_ptr<Entity>> teleporters;
 shared_ptr<Entity> player;
 shared_ptr<Entity> hud;
 shared_ptr<Entity> cursor;
+void GameScene::respawn_forest0()
+{
+	blackout.setPosition(sf::Vector2f(player->getPosition().x - WX / 2, player->getPosition().y - WY / 2));
+	int number_of_enemies = 40;
+	MonsterSpawner* spawner = MonsterSpawner::getInstance();
+	for (auto n : ghosts)
+	{
+		n->setForDelete();
+		n.reset();
+	}
+	ghosts.clear();
+	for (auto n : npcs)
+	{
+		n->setForDelete();
+		n.reset();
+	}
+	npcs.clear();
+	for (auto n : teleporters)
+	{
+		n->setForDelete();
+		n.reset();
+	}
+	teleporters.clear();
 
+
+	_ents.list[0]->setPosition(EventSystem::getInstance()->getDest());
+	if(!EventSystem::getInstance()->is_forrest_dialogue_finished())
+	npcs.push_back(MonsterSpawner::getInstance()->spawn_NPC_MASTER_FOREST(ls::findTiles2(-5)[0]));
+
+	auto ghost_spawns = ls::findTiles2(-3);
+	for (int i = 0; i < number_of_enemies; ++i)
+	{
+		ghosts.push_back(spawner->spawn_zombie(ghost_spawns[i-1]));
+	}
+	for (int i = 0; i < 10; ++i)
+	{
+		ghosts.push_back(spawner->spawn_strong_zombie(ghost_spawns[number_of_enemies+i - 1]));
+	}
+
+
+	auto att = _ents.list[0]->GetComponent<AttackComponent>();
+	att->setEntities(ghosts);
+	SpellCaster::getInstance()->setEntities(ghosts);
+
+	//////////////////////////////////DOORS  MAP CHANGER//////////////////////////////
+	auto tp3 = make_shared<Entity>();
+	tp3->setPosition({ 15 * WX / 1280, 2728 * WY / 720 });
+	auto x = tp3->addComponent<WorldItemComponent>();
+	x->setMapChanger(1);
+	x->setTeleportDestination({ 1545 * WX / 1280, 674 * WY / 720 });
+	auto helper3 = tp3->addComponent<AnimatedSpriteComponent>();
+	helper3->getSprite().setTexture(animatedSpellsTexture);
+	helper3->getSprite().setOrigin(10, 15);
+	helper3->getSprite().setScale(WX / 1280, WY / 720);
+	helper3->getSprite().setTextureRect({ 150,0,30,30 });
+	helper3->setDelay(0.25f);
+	helper3->addFrame({ 150,0,30,30 });
+	helper3->addFrame({ 180,0,30,30 });
+	helper3->addFrame({ 210,0,30,30 });
+	helper3->addFrame({ 240,0,30,30 });
+	teleporters.push_back(tp3);
+	_ents.list.push_back(tp3);
+	_ents.list[0]->setPosition(EventSystem::getInstance()->getDest());
+	if (EventSystem::getInstance()->is_tutorial())
+	{
+		npcs.push_back(MonsterSpawner::getInstance()->spawn_NPC_WELCOME2({ 0,0 }));
+		EventSystem::getInstance()->switch_tutorial_complete();
+	}
+
+}
 void GameScene::respawn_village0()
 {
 	blackout.setPosition(sf::Vector2f(player->getPosition().x - WX / 2, player->getPosition().y - WY / 2));
@@ -422,13 +497,13 @@ void GameScene::respawn_village0()
 	}
 	teleporters.clear();
 
-	
+
 	_ents.list[0]->setPosition(EventSystem::getInstance()->getDest());
 
 
 	auto ghost_spawns = ls::findTiles2(-3);
 	for (int i = 0; i < number_of_enemies; ++i)
-	{		
+	{
 		ghosts.push_back(spawner->spawn_zombie(ghost_spawns[i]));
 	}
 
@@ -444,7 +519,7 @@ void GameScene::respawn_village0()
 	tp3->setPosition({ 463 * WX / 1280,740 * WY / 720 });
 	auto x = tp3->addComponent<WorldItemComponent>();
 	x->setMapChanger(0);
-	x->setTeleportDestination({ 290,1130 });
+	x->setTeleportDestination({ 290*WX/1280,1130*WY/720 });
 	auto helper3 = tp3->addComponent<AnimatedSpriteComponent>();
 	helper3->getSprite().setTexture(animatedSpellsTexture);
 	helper3->getSprite().setOrigin(10, 15);
@@ -457,7 +532,50 @@ void GameScene::respawn_village0()
 	helper3->addFrame({ 240,0,30,30 });
 	teleporters.push_back(tp3);
 	_ents.list.push_back(tp3);
+
+
+	//////////////////////////////////FOREST  MAP CHANGER//////////////////////////////
+	auto tp4 = make_shared<Entity>();
+	tp4->setPosition({ 1575 * WX / 1280, 674 * WY / 720 });
+	auto v = tp4->addComponent<WorldItemComponent>();
+	v->setMapChanger(2);
+	v->setTeleportDestination({50 * WX / 1280, 2728 * WY / 720});
+
+	auto helper = tp4->addComponent<AnimatedSpriteComponent>();
+	helper->getSprite().setTexture(animatedSpellsTexture);
+	helper->getSprite().setOrigin(10, 15);
+	helper->getSprite().setScale(WX / 1280, WY / 720);
+	helper->getSprite().setTextureRect({ 150,0,30,30 });
+	helper->setDelay(0.25f);
+	helper->addFrame({ 150,0,30,30 });
+	helper->addFrame({ 180,0,30,30 });
+	helper->addFrame({ 210,0,30,30 });
+	helper->addFrame({ 240,0,30,30 });
+	teleporters.push_back(tp4);
+	_ents.list.push_back(tp4);
 	_ents.list[0]->setPosition(EventSystem::getInstance()->getDest());
+
+	if (EventSystem::getInstance()->is_forrest_dialogue_finished())
+	{
+		//////////////////////////////////WIZARD TOWER  MAP CHANGER//////////////////////////////
+		auto tp5 = make_shared<Entity>();
+		tp5->setPosition({ 815 * WX / 1280, 635 * WY / 720 });
+		auto v = tp5->addComponent<WorldItemComponent>();
+		v->setMapChanger(0);		
+		v->setTeleportDestination({ 290 * WX / 1280,2125 * WY / 720 });
+		auto helper = tp5->addComponent<AnimatedSpriteComponent>();
+		helper->getSprite().setTexture(animatedSpellsTexture);
+		helper->getSprite().setOrigin(10, 15);
+		helper->getSprite().setScale(WX / 1280, WY / 720);
+		helper->getSprite().setTextureRect({ 150,0,30,30 });
+		helper->setDelay(0.25f);
+		helper->addFrame({ 150,0,30,30 });
+		helper->addFrame({ 180,0,30,30 });
+		helper->addFrame({ 210,0,30,30 });
+		helper->addFrame({ 240,0,30,30 });
+		teleporters.push_back(tp5);
+		_ents.list.push_back(tp5);
+	}
 	if (EventSystem::getInstance()->is_tutorial())
 	{
 		npcs.push_back(MonsterSpawner::getInstance()->spawn_NPC_WELCOME2({ 0,0 }));
@@ -541,9 +659,28 @@ void GameScene::respawn_interior0()
 	helper3->addFrame({ 240,0,30,30 });
 	teleporters.push_back(tp3);
 	_ents.list.push_back(tp3);
+	//////////////////////////////////WIZARD TOWER  MAP CHANGER//////////////////////////////
+	auto tp10 = make_shared<Entity>();
+	tp10->setPosition({ 285 * WX / 1280, 2170 * WY / 720 });
+	auto v = tp10->addComponent<WorldItemComponent>();
+	v->setMapChanger(1);
+	v->setTeleportDestination({ 815 * WX / 1280,655 * WY / 720 });
+	helper = tp10->addComponent<AnimatedSpriteComponent>();
+	helper->getSprite().setTexture(animatedSpellsTexture);
+	helper->getSprite().setOrigin(10, 15);
+	helper->getSprite().setScale(WX / 1280, WY / 720);
+	helper->getSprite().setTextureRect({ 150,0,30,30 });
+	helper->setDelay(0.25f);
+	helper->addFrame({ 150,0,30,30 });
+	helper->addFrame({ 180,0,30,30 });
+	helper->addFrame({ 210,0,30,30 });
+	helper->addFrame({ 240,0,30,30 });
+	teleporters.push_back(tp10);
+	_ents.list.push_back(tp10);
 	
 	_ents.list[0]->setPosition(EventSystem::getInstance()->getDest());
 	npcs.push_back(MonsterSpawner::getInstance()->spawn_NPC_MOM({ 200 * WX / 1280,1000 * WY / 720 }));
+	npcs.push_back(MonsterSpawner::getInstance()->spawn_NPC_MASTER_TOWER({ 200 * WX / 1280,1900 * WY / 720 }));
 	if (EventSystem::getInstance()->is_newGame())
 	{
 		npcs.push_back(MonsterSpawner::getInstance()->spawn_NPC_WELCOME({ 0,0 }));
@@ -559,6 +696,16 @@ void GameScene::load()
 	setID(1);
 	EventSystem* events = EventSystem::getInstance();
 	events->gameLoad();
+	if (music_forest.openFromFile("res/sound/desert.ogg"))
+	{
+		cout << "Cannot load music!" << endl;
+	}
+	if (music_game.openFromFile("res/sound/icy cold blues piano.ogg"))
+	{
+		cout << "Cannot load music!" << endl;
+	}
+	music_menu.stop();
+	music_game.play();
 	if (!playerTexture.loadFromFile("res/img/player.png"))
 	{
 		cerr << "Failed to load spritesheet!" << endl;
@@ -579,6 +726,10 @@ void GameScene::load()
 	{
 		cerr << "Failed to load spritesheet!" << endl;
 	}
+	if (!zombieTexture2.loadFromFile("res/img/strong_zombie.png"))
+	{
+		cerr << "Failed to load spritesheet!" << endl;
+	}
 	if (!swordSwingTexture.loadFromFile("res/img/sword_swing.png"))
 	{
 		cerr << "Failed to load spritesheet!" << endl;
@@ -592,11 +743,25 @@ void GameScene::load()
 	if (!tile_textures.loadFromFile("res/img/spell_icons.png")) {
 		cout << "Cannot load img!" << endl;
 	}
-
-
 	if (!npcsTexture.loadFromFile("res/img/npcs.png")) {
 		cout << "Cannot load img!" << endl;
 	}
+	if (!buffer_fire.loadFromFile("res/sound/fire.ogg")) {
+		cout << "Cannot load img!" << endl;
+	}
+	if (!buffer_water.loadFromFile("res/sound/water.ogg")) {
+		cout << "Cannot load img!" << endl;
+	}
+	if (!buffer_earth.loadFromFile("res/sound/earth.ogg")) {
+		cout << "Cannot load img!" << endl;
+	}
+	if (!buffer_dragon.loadFromFile("res/sound/dragonbreath.ogg")) {
+		cout << "Cannot load img!" << endl;
+	}
+	if (!buffer_swing.loadFromFile("res/sound/swing2.wav")) {
+		cout << "Cannot load img!" << endl;
+	}
+
 	if (EventSystem::getInstance()->is_newGame())
 	{
 		ls::loadLevelFile("res/levels/interior_Tile Layer 1.csv", 32.0f * WX / 1280);
@@ -613,7 +778,7 @@ void GameScene::load()
 	s->getSprite().setTextureRect({ 0,0,16,21 });
 	s->setDefaultFrames();
 	s->getSprite().setScale({ 2.0f*WX/1280, 2.0f*WY/720 });
-	s->getSprite().setOrigin({ 8.0f, 18.0f });
+	s->getSprite().setOrigin({ 8.0f, 13.0f });
 	s->getSprite().setPosition({ 100.0f, 100.0f });
 	gameScene->getEnts().push_back(pl);
 	pl->addComponent<AttackComponent>();
@@ -678,6 +843,11 @@ void GameScene::update(double dt)
 		start_blackout = true;
 		if (stop_blackout)
 		{
+			if (music_forest.Playing)
+			{			
+				music_forest.stop();
+				music_game.play();
+			}
 			ls::loadLevelFile("res/levels/village0_Tile Layer 1.csv", 32.0f * WX / 1280);
 			ls::loadLevelFile2("res/levels/village0_Tile Layer 2.csv");
 			respawn_village0();
@@ -695,6 +865,22 @@ void GameScene::update(double dt)
 			ls::loadLevelFile("res/levels/interior_Tile Layer 1.csv", 32.0f * WX / 1280);
 			ls::loadLevelFile2("res/levels/interior_Tile Layer 2.csv");
 			respawn_interior0();
+			evs->changeMapFinished();
+			evs->SaveGame();
+		}
+	}
+	if (evs->if_changeMap() && evs->if_forest0())
+	{
+		if (!start_blackout)
+			start_blackout = true;
+		if (stop_blackout)
+		{
+			music_game.stop();
+			music_forest.play();
+			start_blackout = true;
+			ls::loadLevelFile("res/levels/forest_Tile Layer 1.csv", 32.0f * WX / 1280);
+			ls::loadLevelFile2("res/levels/forest_Tile Layer 2.csv");
+			respawn_forest0();
 			evs->changeMapFinished();
 			evs->SaveGame();
 		}

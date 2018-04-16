@@ -4,6 +4,8 @@
 
 class NPCComponent : public Component {
 protected:
+	bool has_switch = false;
+	int switch_id = 0;
 	sf::RectangleShape dialogueBox;
 	std::string dialogue;
 	std::string dialogue2;
@@ -19,6 +21,6 @@ public:
 	void update(double dt) override;
 	void setDialogue(std::string x);
 	void render() override;
-	void interact();	
+	void addSwitch(int id) { has_switch = true; switch_id = id; };
 	
 };

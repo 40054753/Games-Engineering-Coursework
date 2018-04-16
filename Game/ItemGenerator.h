@@ -21,6 +21,8 @@ public:
 	void create_templar_sword(sf::Vector2f location);
 	void create_giant_sword(sf::Vector2f location);
 	void create_magic_sword(sf::Vector2f location);
+	void create_simple_shield(sf::Vector2f location);
+	void create_nike_jordans(sf::Vector2f location);
 
 	void recreate_forbidden_item(bool equipped);
 	void recreate_iron_helmet(bool equipped);
@@ -30,6 +32,8 @@ public:
 	void recreate_templar_sword(bool equipped);
 	void recreate_giant_sword(bool equipped);
 	void recreate_magic_sword(bool equipped);
+	void recreate_simple_shield(bool equipped);
+	void recreate_nike_jordans(bool equipped);
 
 
 	void random_drop(int level,sf::Vector2f location);

@@ -2,6 +2,7 @@
 #include "SystemRenderer.h"
 #include "Game.h"
 #include "cmp_actor_movement.h"
+#include "EventSystem.h"
 
 sf::Clock timer;
 int i = 0;
@@ -54,6 +55,16 @@ void NPCComponent::update(double dt)
 			dialogueFinished = false;
 			interactionDelay = 0.4f;
 			player->GetComponent<PlayerMovementComponent>()->mobilize();
+			if (has_switch)
+			{
+				switch (switch_id)
+				{
+				case 0:
+					EventSystem::getInstance()->switch_forrest_dialogue();
+				default:
+					break;
+				}
+			}
 			if (bodylessText)
 				_parent->setForDelete();
 			

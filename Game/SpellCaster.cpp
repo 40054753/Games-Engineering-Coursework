@@ -49,10 +49,10 @@ void SpellCaster::cast_spell_id(int id, sf::Vector2f location)
 		cast_earth_spike(location);
 		break;
 	case 4:
-		cast_sword_swing(location);
+		cast_sword_swing(location);		
 		break;
 	case 5:
-		cast_dragon_breath(location);
+		cast_dragon_breath(location);		
 		break;
 	case 6:
 		cast_ice_barrage(location);
@@ -75,6 +75,8 @@ void SpellCaster::cast_fire_ball(sf::Vector2f location)
 	auto health_mana = player->GetComponent<HealthComponent>();
 	if (health_mana->getMana()>=10)
 	{
+		sound_spells.setBuffer(buffer_fire);
+		sound_spells.play();
 		health_mana->reduceMana(10);
 
 		auto bullet = std::make_shared<Entity>();
@@ -103,6 +105,8 @@ void SpellCaster::cast_water_gun(sf::Vector2f location)
 	auto health_mana = player->GetComponent<HealthComponent>();
 	if (health_mana->getMana()>=10)
 	{
+		sound_spells.setBuffer(buffer_water);
+		sound_spells.play();
 		health_mana->reduceMana(10);
 		auto bullet = std::make_shared<Entity>();
 		bullet->setPosition(player->getPosition());
@@ -129,6 +133,8 @@ void SpellCaster::cast_sonic_boom(sf::Vector2f location)
 	auto health_mana = player->GetComponent<HealthComponent>();
 	if (health_mana->getMana()>=10)
 	{
+		sound_spells.setBuffer(buffer_water);
+		sound_spells.play();
 		health_mana->reduceMana(10);
 		auto bullet = std::make_shared<Entity>();
 		bullet->setPosition(player->getPosition());
@@ -156,6 +162,8 @@ void SpellCaster::cast_earth_spike(sf::Vector2f location)
 	auto health_mana = player->GetComponent<HealthComponent>();
 	if (health_mana->getMana()>=10)
 	{
+		sound_spells.setBuffer(buffer_earth);
+		sound_spells.play();
 		health_mana->reduceMana(10);
 		auto bullet = std::make_shared<Entity>();
 		bullet->setPosition(player->getPosition());
@@ -187,24 +195,28 @@ void SpellCaster::cast_earth_spike(sf::Vector2f location)
 void SpellCaster::cast_sword_swing(sf::Vector2f location)
 {////////////////////spell ID: 4//////////////////////////////////////
 
+	
 	auto health_mana = player->GetComponent<HealthComponent>();
 	if (health_mana->getStamina() >= 4)
 	{
+		sound_spells.setBuffer(buffer_swing);
+		sound_spells.play();
 		health_mana->reduceStamina(4);
 		auto bullet = std::make_shared<Entity>();
-		auto pr = bullet->addComponent<PlayerMovementComponent>();
+		auto pr = bullet->addComponent<SwordMovementComponent>();
 		bullet->setFace(player->getFace());
+		auto dmg = player->GetComponent<CharacterSheetComponent>();
 		auto c2 = bullet->addComponent<ProjectileComponent>();
 		c2->finishAnimationFirst();
 		c2->setEntities(_entities);
 		c2->addKnockback();
-		auto dmg = player->GetComponent<CharacterSheetComponent>();
 		c2->setDamage(dmg->getStatAttack());
 		c2->setType(0);
+		c2->setTimer(0.35f);
 		auto s = bullet->addComponent<AnimatedSpriteComponent>();
 		s->getSprite().setTexture(swordSwingTexture);
-		s->getSprite().setOrigin({ 60, 35 });
-		c2->setTimer(0.35f);
+		s->getSprite().setOrigin({ 45, 40 });
+		
 		s->setDelay(0.05f);
 		s->setScale();
 		s->playOnce();
@@ -230,6 +242,7 @@ void SpellCaster::cast_sword_swing(sf::Vector2f location)
 			s->setPriority(1);
 			bullet->setPosition(player->getPosition() + sf::Vector2f(0, 15.0 *WY / 720));
 			s->getSprite().rotate(90);
+
 		}
 		else if (player->getFace() == 4)
 		{

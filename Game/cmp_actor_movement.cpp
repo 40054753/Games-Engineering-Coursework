@@ -3,7 +3,8 @@
 #include "SystemRenderer.h"
 #include "cmp_sprite.h"
 #include "Game.h"
-
+#include "EventSystem.h"
+#include "cmp_char_sheet.h"
 using namespace sf;
 static const Vector2i directions[] = { Vector2i{ 0, 1 }, Vector2i{ 1, 0 }, Vector2i{ 0, -1 }, Vector2i{ -1, 0 } };
 //ACTOR MOVEMENT
@@ -45,8 +46,15 @@ void ActorMovementComponent::move(const Vector2f &p)
 }
 void ActorMovementComponent::push(const Vector2f &p)
 {
+	EventSystem* evs= EventSystem::getInstance();
+
 	pushed = true;
 	pushVector = 0.3f*p;
+	if (evs->if_forest0())
+	{
+		pushVector.x *= evs->getFM();
+		pushVector.y *= evs->getFM();
+	}
 	pushTimer = 0.1f;
 	auto c = _parent->GetComponent<CharacterSpriteComponent>();
 	c->getSprite().setColor(sf::Color::Red);
@@ -142,6 +150,12 @@ PlayerMovementComponent::PlayerMovementComponent(Entity *p) : ActorMovementCompo
 
 void PlayerMovementComponent::update(double dt) 
 {
+	auto c = _parent->GetComponent<CharacterSheetComponent>();
+	float spd = c->getStatSpeed();
+	if (spd > 0)
+	{
+		_speed = 100 + spd;
+	}
 	if (pushed)
 	{
 		pushTimer -= dt;
@@ -184,7 +198,44 @@ void PlayerMovementComponent::render() {
 	ActorMovementComponent::render();
 }
 
+SwordMovementComponent::SwordMovementComponent(Entity *p) : ActorMovementComponent(p) {}
 
+void SwordMovementComponent::update(double dt)
+{
+	auto c = player->GetComponent<CharacterSheetComponent>();
+	float spd = c->getStatSpeed();
+	if (spd > 0)
+	{
+		_speed = 100 + spd;
+	}
+	
+	if (player->GetComponent<PlayerMovementComponent>()->canMove())
+	{
+		int xdir = 0, ydir = 0;
+		if (Keyboard::isKeyPressed(controls[0]) || (sf::Joystick::isConnected(0) && sf::Joystick::getAxisPosition(0, sf::Joystick::Axis::PovY) == 100)) {
+			_parent->setFace(1);
+			move(Vector2f(0, -_speed * dt));
+		}
+		else if (Keyboard::isKeyPressed(controls[1]) || (sf::Joystick::isConnected(0) && sf::Joystick::getAxisPosition(0, sf::Joystick::Axis::PovY) == -100)) {
+			_parent->setFace(3);
+			move(Vector2f(0, _speed * dt));
+		}
+		else if (Keyboard::isKeyPressed(controls[3]) || (sf::Joystick::isConnected(0) && sf::Joystick::getAxisPosition(0, sf::Joystick::Axis::PovX) == -100)) {
+			_parent->setFace(4);
+			move(Vector2f(-_speed * dt, 0));
+		}
+		else if (Keyboard::isKeyPressed(controls[2]) || (sf::Joystick::isConnected(0) && sf::Joystick::getAxisPosition(0, sf::Joystick::Axis::PovX) == 100)) {
+			_parent->setFace(2);
+			move(Vector2f(_speed * dt, 0));
+		}
+
+		ActorMovementComponent::update(dt);
+	}
+}
+
+void SwordMovementComponent::render() {
+	ActorMovementComponent::render();
+}
 EnemyAIComponent::EnemyAIComponent(Entity * p) : ActorMovementComponent(p) {
 	_state = ROAMING;
 	_speed = 100.0f;

@@ -15,6 +15,7 @@ public:
 	float getSpeed() const;
 	void setSpeed(float speed);
 	void immobilize() { immobilized = true; }
+	bool canMove() { return !immobilized; }
 	void mobilize() { immobilized = false; }
 	void move(const sf::Vector2f&);
 	void push(const sf::Vector2f&);
@@ -82,6 +83,15 @@ class PlayerMovementComponent : public ActorMovementComponent {
 public:
 	PlayerMovementComponent() = delete;
 	explicit PlayerMovementComponent(Entity *p);
+
+	void update(double dt) override;
+	void render() override;
+
+};
+class SwordMovementComponent : public ActorMovementComponent {
+public:
+	SwordMovementComponent() = delete;
+	explicit SwordMovementComponent(Entity *p);
 
 	void update(double dt) override;
 	void render() override;

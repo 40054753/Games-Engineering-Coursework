@@ -14,6 +14,7 @@ extern std::shared_ptr<Scene> optionsScene;
 extern std::shared_ptr<Scene> activeScene;
 extern sf::Texture playerTexture;
 extern sf::Texture zombieTexture;
+extern sf::Texture zombieTexture2;
 extern sf::Texture spellsTexture;
 extern sf::Texture animatedSpellsTexture;
 extern sf::Texture iconsTexture;
@@ -25,8 +26,9 @@ extern sf::Texture swordSwingTexture;
 extern sf::Texture cursorTexture;
 extern std::shared_ptr<Entity> player;
 extern std::shared_ptr<Entity> cursor;
-extern sf::SoundBuffer buffer;
-extern sf::Sound sound;
+extern sf::SoundBuffer buffer, buffer_fire, buffer_dragon, buffer_water, buffer_swing, buffer_earth, buffer_wind;
+extern sf::Sound sound, sound_spells;
+extern sf::Music music_menu, music_game , music_forest;
 extern sf::Texture snowEffect;
 extern sf::Font font;
 extern sf::Vector2i mousePos;
@@ -72,6 +74,7 @@ private:
 	sf::Text text;
 	void respawn_interior0();
 	void respawn_village0();
+	void respawn_forest0();
 public:
 	GameScene() { }
 	void update(double dt) override;

@@ -84,13 +84,16 @@ void EventSystem::LoadGame()
 		case 1:
 			village0 = true;
 			mapChange = true;
+		case 2:
+			forest0 = true;
+			mapChange = true;
 		default:
 			break;
 		}
 		new_destination = { (float)location[1],(float)location[2] };
 		////////// set switches//////////////////
 		tutorial_text0 = switches[0];
-
+		forrest0_dialogue_finished = switches[1];
 		activeScene = gameScene;
 		player->setPosition({ (float)location[1],(float)location[2] });
 		character->setLevels(levels[0], levels[1], levels[2], levels[3], levels[4]);
@@ -127,12 +130,14 @@ int EventSystem::getCurrentMap()
 		return 0;
 	else if (village0)
 		return 1;
+	else if (forest0)
+		return 2;
 	else
 		return 0;
 }
 std::string EventSystem::getSwitches()
 {
-	return std::to_string((int)tutorial_text0) + ",";
+	return std::to_string((int)tutorial_text0) + "," +std::to_string((int)forrest0_dialogue_finished);
 }
 void EventSystem::SaveGame()
 {
