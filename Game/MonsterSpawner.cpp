@@ -116,6 +116,7 @@ std::shared_ptr<Entity> MonsterSpawner::spawn_NPC_MASTER_FOREST(sf::Vector2f loc
 	auto d = npc->addComponent<NPCComponent>();
 	d->setDialogue("KENBOBI: Finally here, Grasshopah! I've completed the study\n of the anomaly! I have good news, and bad news! The good news\n is, that this is not any kind of religuous apocalypse. \nCome back to my tower, we have much to discuss!");
 	d->setDisappear();
+	d->addSwitch(0);
 	gameScene->getEnts().push_back(npc);
 	return npc;
 }
