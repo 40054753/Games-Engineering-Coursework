@@ -167,7 +167,15 @@ void CharacterSpriteComponent::setScale()
 	_sprite->setScale(WX / 1280, WY / 720);
 }
 void CharacterSpriteComponent::render() {
+	if(_parent->isPlayer())
 	Renderer::queue(1,_sprite.get());
+	else
+	{
+		if(_parent->getPosition().y>=player->getPosition().y)
+			Renderer::queue(1, _sprite.get());
+		else
+			Renderer::queue(2, _sprite.get());
+	}
 }
 sf::Sprite& CharacterSpriteComponent::getSprite() const {
 	return *_sprite;
