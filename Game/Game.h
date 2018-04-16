@@ -23,7 +23,7 @@ extern sf::Texture tile_textures;
 extern sf::Texture swordSwingTexture;
 extern sf::Texture cursorTexture;
 extern std::shared_ptr<Entity> player;
-//extern std::shared_ptr<Entity> cursor;
+extern std::shared_ptr<Entity> cursor;
 extern sf::SoundBuffer buffer;
 extern sf::Sound sound;
 extern sf::Texture snowEffect;
@@ -61,7 +61,7 @@ public:
 class GameScene : public Scene
 {
 private:
-	float pauseTimer = 0.0f;
+	float pauseTimer = 0.2f;
 	sf::Text text;
 	void respawn();
 public:
