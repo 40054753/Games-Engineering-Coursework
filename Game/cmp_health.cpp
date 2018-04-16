@@ -6,9 +6,9 @@
 HealthComponent::HealthComponent(Entity *p) : Component(p) 
 {
 	health = 150;
-	mana = 200;
+	mana = 250;
 	maxHealth = 150;
-	maxMana = 200;
+	maxMana = 250;
 	stamina = 100;
 	maxStamina = 100;
 }
@@ -27,8 +27,8 @@ void HealthComponent::update(double dt)
 	{
 		if (health <= maxHealth-3)
 			health += 3;
-		if (mana <= maxMana-3)
-			mana += 3;
+		if (mana <= maxMana-6)
+			mana += 6;
 		if (stamina <= maxStamina - 15)
 			stamina += 15;
 		recoveryTimer = recoveryDelay;
