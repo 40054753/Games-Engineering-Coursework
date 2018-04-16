@@ -770,6 +770,7 @@ void HudComponent::reload()
 }
 void HudComponent::update(double dt)
 {
+
 	Vector2f joystickPos(cursor->getPosition());
 	auto leftBumper = sf::Joystick::U;
 	auto back = sf::Joystick::PovX;
@@ -1001,7 +1002,7 @@ void HudComponent::update(double dt)
 			}
 		}
 		//joystick
-
+		if(sf::Joystick::isConnected(0))
 		if (joystickPos.x + 16 - windowZero.x >= label_spell_options_1.getPosition().x - windowZero.x  && joystickPos.x + 16 - windowZero.x <= label_spell_options_1.getPosition().x + 0.2f*WX - windowZero.x)
 		{
 			if (joystickPos.y - windowZero.y >= label_spell_options_1.getPosition().y - windowZero.y  && joystickPos.y - windowZero.y <= label_spell_options_1.getPosition().y + 0.045f*WY - windowZero.y)
@@ -1303,7 +1304,8 @@ void HudComponent::update(double dt)
 			hide_skill_tree = true;
 
 	}
-	if (show_skill_tree || showInventory) {
+	if ((show_skill_tree || showInventory) && (sf::Joystick::isConnected(0))) {
+
 		auto showCursor = cursor->GetComponent<CursorSpriteComponent>();
 		showCursor->getSprite().setScale(2, 2);
 	}

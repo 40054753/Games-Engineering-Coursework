@@ -22,7 +22,7 @@
 using namespace sf;
 using namespace std;
 Font font;
-Texture playerTexture, tile_textures, zombieTexture,spell_icons, npcsTexture, cursorTexture, spellsTexture, snowEffect, iconsTexture, itemsTexture, animatedSpellsTexture, swordSwingTexture;
+Texture playerTexture, tile_textures, zombieTexture,spell_icons, npcsTexture, spellsTexture, snowEffect, iconsTexture, itemsTexture, animatedSpellsTexture, swordSwingTexture;
 Texture menuBg;
 sf::Sprite background;
 SoundBuffer buffer;
@@ -592,9 +592,7 @@ void GameScene::load()
 	if (!tile_textures.loadFromFile("res/img/spell_icons.png")) {
 		cout << "Cannot load img!" << endl;
 	}
-	if (!cursorTexture.loadFromFile("res/img/items.png")) {
-		cout << "Cannot load img!" << endl;
-	}
+
 
 	if (!npcsTexture.loadFromFile("res/img/npcs.png")) {
 		cout << "Cannot load img!" << endl;
@@ -630,7 +628,7 @@ void GameScene::load()
 	auto cur = std::make_shared<Entity>();
 	cur->addComponent<CursorMovementComponent>();
 	auto spr = cur->addComponent<CursorSpriteComponent>();
-	spr->getSprite().setTexture(cursorTexture);
+	spr->getSprite().setTexture(itemsTexture);
 	spr->getSprite().setTextureRect({ 0,112,16,16 });
 	spr->getSprite().setPosition({ WX/2, WY/2});
 	spr->setScale();
@@ -876,14 +874,12 @@ void OptionsScene::load()
 	button_screenmode_dot.setOutlineThickness(5.0f);
 	button_screenmode_dot.setPosition(bg_screenmode.getPosition() + Vector2f(0.24f*WX, 0.013f*WY));
 
-	if (!cursorTexture.loadFromFile("res/img/items.png")) {
-		cout << "Cannot load img!" << endl;
-	}
+
 
 	auto cur = std::make_shared<Entity>();
 	cur->addComponent<OptionsMovementComponent>();
 	auto spr = cur->addComponent<CursorSpriteComponent>();
-	spr->getSprite().setTexture(cursorTexture);
+	spr->getSprite().setTexture(itemsTexture);
 	spr->getSprite().setTextureRect({ 0,112,16,16 });
 	spr->getSprite().setPosition({ WX / 2, WY / 2 });
 	spr->setScale();
