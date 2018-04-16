@@ -26,7 +26,7 @@ protected:
 	float experience_earth = 0;
 	float experience_thresholds[MAX_LEVEL];
 	///////////////////////////////GENERAL STATS//////////////////////////////
-	float stat_melee_attack = 0;
+	float stat_melee_attack = 5;
 	float stat_defence = 0;
 	float stat_speed = 0;
 public:

@@ -11,6 +11,10 @@ public:
 	static MonsterSpawner* getInstance();
 	~MonsterSpawner()=default;
 
-	std::shared_ptr<Entity> spawn_zombie();
+	std::shared_ptr<Entity> spawn_zombie(sf::Vector2f loc);
+
+	////////////////NPCS
 	std::shared_ptr<Entity> spawn_NPC_WELCOME(sf::Vector2f loc);
+	std::shared_ptr<Entity> spawn_NPC_WELCOME2(sf::Vector2f loc);
+	std::shared_ptr<Entity> spawn_NPC_MOM(sf::Vector2f loc);
 };

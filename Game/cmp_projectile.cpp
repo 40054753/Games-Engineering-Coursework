@@ -60,22 +60,15 @@ void ProjectileComponent::update(double dt)
 						}
 						if (chance > 5 && blind) {
 							auto blindcmp = g->GetComponent<StatusComponent>();
-							blindcmp->setBlinded();
-							auto s = g->GetComponent<CharacterSpriteComponent>();
-							s->getSprite().setColor(sf::Color::Yellow);
+							blindcmp->setBlinded();							
 						}
 						if (slow) {
 							auto slowcmp = g->GetComponent<StatusComponent>();
-							slowcmp->setSlowed();
-							auto s = g->GetComponent<CharacterSpriteComponent>();
-							s->getSprite().setColor(sf::Color(123, 119, 255, 255));
-
+							slowcmp->setSlowed();							
 						}
 						if (chance >= 4 && burn) {
 							auto burncmp = g->GetComponent<StatusComponent>();
 							burncmp->setBurning();
-							auto s = g->GetComponent<CharacterSpriteComponent>();
-							s->getSprite().setColor(sf::Color(255, 0, 0, 190));
 						}
 						if (!indestructable)
 						{

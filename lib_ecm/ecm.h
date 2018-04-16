@@ -16,13 +16,15 @@ private:
 	int face=rand()%3+1;
 	float _rotation=0.0f;
 	bool _alive=true;
+	bool _moving = false;
 	bool _visible=true;
 	bool _forDeletion=false;
 	bool _isPlayer = false;
 public:
 	Entity();
+	void setMoving(bool m) { _moving = m; }
 	virtual ~Entity() = default;
-
+	bool isMoving() { return _moving; }
 	virtual void update(const double dt);
 	virtual void render();
 	int getFace() { return face; }

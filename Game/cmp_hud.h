@@ -29,6 +29,7 @@ protected:
 
 	/////////////////////////////////////////INGAME MENU BUTTONS
 	sf::RectangleShape button_inventory;
+	sf::RectangleShape button_skill_tree;
 	sf::RectangleShape button_menu;
 	sf::RectangleShape button_save;
 	//////////////////////////////////////////inventory window
@@ -56,6 +57,7 @@ protected:
 	sf::Sprite icon_inventory;
 	sf::Sprite icon_menu;
 	sf::Sprite icon_save;
+	sf::Sprite icon_skills;
 	float sliderX=0;
 	float slideTime = 0.2f;
 

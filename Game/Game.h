@@ -18,6 +18,7 @@ extern sf::Texture spellsTexture;
 extern sf::Texture animatedSpellsTexture;
 extern sf::Texture iconsTexture;
 extern sf::Texture itemsTexture;
+extern sf::Texture npcsTexture;
 extern sf::Texture spell_icons;
 extern sf::Texture tile_textures;
 extern sf::Texture swordSwingTexture;
@@ -60,10 +61,17 @@ public:
 
 class GameScene : public Scene
 {
+
 private:
 	float pauseTimer = 0.2f;
+	bool start_blackout = false;
+	bool stop_blackout = false;
+	float blackout_slider=0;
+	sf::RectangleShape blackout;
+
 	sf::Text text;
-	void respawn();
+	void respawn_interior0();
+	void respawn_village0();
 public:
 	GameScene() { }
 	void update(double dt) override;

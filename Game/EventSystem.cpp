@@ -39,6 +39,8 @@ void EventSystem::LoadGame()
 	std::vector<int> items;
 	std::vector<int> keys;
 	std::vector<int> spells;
+	std::vector<bool> switches;
+	int map;
 	auto character = player->GetComponent<CharacterSheetComponent>();
 	std::ifstream save("save.txt");
 	if (save.good())
@@ -63,12 +65,31 @@ void EventSystem::LoadGame()
 					keys.push_back(i);
 				else if (line_number == 5)
 					spells.push_back(i);
+				else if (line_number == 6)
+					map = i;
+				else if (line_number == 7)
+					switches.push_back((bool)i);
 
 				if (ss.peek() == ',')
 					ss.ignore();
 			}
 			line_number++;
 		}
+		switch (map)
+		{
+		case 0:
+			interior0 = true;
+			mapChange = true;
+			break;
+		case 1:
+			village0 = true;
+			mapChange = true;
+		default:
+			break;
+		}
+		new_destination = { (float)location[1],(float)location[2] };
+		////////// set switches//////////////////
+		tutorial_text0 = switches[0];
 
 		activeScene = gameScene;
 		player->setPosition({ (float)location[1],(float)location[2] });
@@ -83,6 +104,13 @@ void EventSystem::LoadGame()
 		{
 			itemGenerator->load(items[i], (bool)items[i + 1]);
 		}
+		for (int i = 0; i<10000; i++)
+		{
+			
+			auto cherry = std::make_shared<Entity>();
+			cherry->setForDelete();
+			gameScene->getEnts().push_back(cherry);
+		}
 		auto x = player->GetComponent<HudComponent>();
 		x->reload();
 		for (int i = 0; i < 12; i++)
@@ -92,6 +120,19 @@ void EventSystem::LoadGame()
 		LVUP = true;
 	}
 	
+}
+int EventSystem::getCurrentMap()
+{
+	if (interior0)
+		return 0;
+	else if (village0)
+		return 1;
+	else
+		return 0;
+}
+std::string EventSystem::getSwitches()
+{
+	return std::to_string((int)tutorial_text0) + ",";
 }
 void EventSystem::SaveGame()
 {
@@ -105,6 +146,8 @@ void EventSystem::SaveGame()
 		save << character->saveItems() + "\n";
 		save << character->saveControls() + "\n";
 		save << character->saveSpells() + "\n";
+		save << std::to_string(getCurrentMap()) + "\n";
+		save << getSwitches() + "\n";
 		save.close();
 	}
 	else std::cout << "Unable to open file";

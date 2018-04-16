@@ -5,6 +5,7 @@
 #include "cmp_status.h"
 #include "Game.h"
 #include "cmp_health.h"
+#include "cmp_ai_steering.h"
 using namespace sf;
 ShapeComponent::ShapeComponent(Entity *p) : Component(p), _shape(std::make_shared<sf::CircleShape>()) {}
 
@@ -38,15 +39,15 @@ void CharacterSpriteComponent::setDefaultFrames()
 	walkingAnimationUp.push_back(sf::IntRect(32, 42, 16, 21));
 	walkingAnimationUp.push_back(sf::IntRect(48, 42, 16, 21));
 
-	walkingAnimationRight.push_back(sf::IntRect(0, 22, 16, 21));
-	walkingAnimationRight.push_back(sf::IntRect(16, 22, 16, 21));
-	walkingAnimationRight.push_back(sf::IntRect(32, 22, 16, 21));
-	walkingAnimationRight.push_back(sf::IntRect(48, 22, 16, 21));
+	walkingAnimationRight.push_back(sf::IntRect(0, 21, 16, 21));
+	walkingAnimationRight.push_back(sf::IntRect(16, 21, 16, 21));
+	walkingAnimationRight.push_back(sf::IntRect(32, 21, 16, 21));
+	walkingAnimationRight.push_back(sf::IntRect(48, 21, 16, 21));
 
-	walkingAnimationLeft.push_back(sf::IntRect(0, 65, 16, 21));
-	walkingAnimationLeft.push_back(sf::IntRect(16, 65, 16, 21));
-	walkingAnimationLeft.push_back(sf::IntRect(32, 65, 16, 21));
-	walkingAnimationLeft.push_back(sf::IntRect(48, 65, 16, 21));
+	walkingAnimationLeft.push_back(sf::IntRect(0, 64, 16, 21));
+	walkingAnimationLeft.push_back(sf::IntRect(16, 64, 16, 21));
+	walkingAnimationLeft.push_back(sf::IntRect(32, 64, 16, 21));
+	walkingAnimationLeft.push_back(sf::IntRect(48, 64, 16, 21));
 }
 void CharacterSpriteComponent::update(double dt)
 {
@@ -54,32 +55,41 @@ void CharacterSpriteComponent::update(double dt)
 	AnimationCounter -= dt;
 	if (!_parent->isPlayer())
 	{
+	
+		bool mov = _parent->isMoving();
+		
 		if (frame > 3) frame = 0;
 
 		if (_parent->getFace() == 1 && AnimationCounter <= 0.0f)
-		{
-			_sprite->setTextureRect(walkingAnimationUp[frame]);
-			frame++;
-			AnimationCounter = AnimationDelay;
-		}
+			{
+				_sprite->setTextureRect(walkingAnimationUp[frame]);
+				frame++;
+				AnimationCounter = AnimationDelay;
+			}
 		else if (_parent->getFace() == 2 && AnimationCounter <= 0.0f)
-		{
-			_sprite->setTextureRect(walkingAnimationRight[frame]);
-			frame++;
-			AnimationCounter = AnimationDelay;
-		}
+			{
+				_sprite->setTextureRect(walkingAnimationRight[frame]);
+				frame++;
+				AnimationCounter = AnimationDelay;
+			}
 		else if (_parent->getFace() == 3 && AnimationCounter <= 0.0f)
-		{
-			_sprite->setTextureRect(walkingAnimationDown[frame]);
-			frame++;
-			AnimationCounter = AnimationDelay;
-		}
+			{
+				_sprite->setTextureRect(walkingAnimationDown[frame]);
+				frame++;
+				AnimationCounter = AnimationDelay;
+			}
 		else if (_parent->getFace() == 4 && AnimationCounter <= 0.0f)
+			{
+				_sprite->setTextureRect(walkingAnimationLeft[frame]);
+				frame++;
+				AnimationCounter = AnimationDelay;
+			}
+		
+		if (!mov)
 		{
-			_sprite->setTextureRect(walkingAnimationLeft[frame]);
-			frame++;
-			AnimationCounter = AnimationDelay;
+			frame = 0;
 		}
+			
 
 	}
 	else
@@ -157,7 +167,15 @@ void CharacterSpriteComponent::setScale()
 	_sprite->setScale(WX / 1280, WY / 720);
 }
 void CharacterSpriteComponent::render() {
+	if(_parent->isPlayer())
 	Renderer::queue(1,_sprite.get());
+	else
+	{
+		if(_parent->getPosition().y>=player->getPosition().y)
+			Renderer::queue(1, _sprite.get());
+		else
+			Renderer::queue(2, _sprite.get());
+	}
 }
 sf::Sprite& CharacterSpriteComponent::getSprite() const {
 	return *_sprite;

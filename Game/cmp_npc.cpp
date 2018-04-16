@@ -24,32 +24,41 @@ void NPCComponent::update(double dt)
 	interactionDelay -= dt;
 	dialogueBox.setPosition(player->getPosition() + sf::Vector2f(-0.49f* WX, 0.14f*WY));
 	text.setPosition(player->getPosition() + sf::Vector2f(-0.48f* WX, 0.15f*WY));
-	if (interactionDelay <= 0 && (length(_parent->getPosition() - player->getPosition()) < 21.0f*WX/1280) && (sf::Keyboard::isKeyPressed(controls[12]) || sf::Joystick::isButtonPressed(0, sf::Joystick::Z)))
+  if (!bodylessText && interactionDelay <= 0 && (length(_parent->getPosition() - player->getPosition()) < 35.0f*WX/1280) &&  (sf::Keyboard::isKeyPressed(controls[12]) || sf::Joystick::isButtonPressed(0, sf::Joystick::Z)))
+
 	{
 		player->GetComponent<PlayerMovementComponent>()->immobilize();
-		interact();
+		trigger = true;
 	}
-		
+	if (bodylessText)
+	{
+		trigger = true;
+		player->GetComponent<PlayerMovementComponent>()->immobilize();
+	}
 
-	if (trigger && timer.getElapsedTime().asMilliseconds() > 40.0f && i < dialogue.length())
-	{
-		timer.restart();
-		i++;
-		text.setString(sf::String(dialogue.substr(0, i)));
-	}
+		if (trigger && timer.getElapsedTime().asMilliseconds() > 30.0f && i < dialogue.length())
+		{
+			timer.restart();
+			i++;
+			text.setString(sf::String(dialogue.substr(0, i)));
+		}
+
+		if (i >= dialogue.size())
+		{
+			dialogueFinished = true;
+		}
+		if (dialogueFinished && sf::Keyboard::isKeyPressed(controls[12]))
+		{
+			i = 0;
+			trigger = false;
+			dialogueFinished = false;
+			interactionDelay = 0.4f;
+			player->GetComponent<PlayerMovementComponent>()->mobilize();
+			if (bodylessText)
+				_parent->setForDelete();
+			
+		}
 	
-	if (i >= dialogue.size())
-	{
-		dialogueFinished = true;
-	}
-	if (dialogueFinished && (length(_parent->getPosition() - player->getPosition()) < 21.0f*WX / 1280) && (sf::Keyboard::isKeyPressed(controls[12]) || sf::Joystick::isButtonPressed(0, sf::Joystick::Z)))
-	{
-		i = 0;
-		trigger = false;
-		dialogueFinished = false;
-		interactionDelay = 0.4f;
-		player->GetComponent<PlayerMovementComponent>()->mobilize();
-	}
 	
 }
 void NPCComponent::render() 
@@ -59,8 +68,4 @@ void NPCComponent::render()
 		Renderer::queue(0,&dialogueBox);
 		Renderer::queue(0,&text);
 	}
-}
-void NPCComponent::interact()
-{
-	trigger = true;
 }

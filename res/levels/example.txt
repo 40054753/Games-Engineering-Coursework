@@ -3,21 +3,21 @@ w+    +  n                                       +    +w
 w+    +                    n                     +    +w
 w+    +                                          +    +w
 w+    +     n                                    +    +w
-w+    +                                 n        +    +w
+w+    +               w             w   n        +    +w
 w+    +                                          +    +w
 w+    +                                          +    +w
 w+    +                                          +    +w
 w+    +                                          +    +w
-w+    +                                wwwwwwwwwwwwwwwww
+w+    +         w                      wwwwwwwwwwwwwwwww
 w+    +  n                  s          w                
 w+    +                                w                
 w+    +                                wwwwwwwwwwwwwwwww
 w+    +                                          +    +w
+w+    +            w                             +    +w
 w+    +                                          +    +w
 w+    +                                          +    +w
-w+    +                                          +    +w
-w+    +      n                                   +    +w
-w+    +                                          +    +w
+w+    +      n                         w         +    +w
+w+    +                    w                     +    +w
 w+    +                                          +    +w
 w+    +                                   n      +    +w
 w+    +    n               n                     +    +w

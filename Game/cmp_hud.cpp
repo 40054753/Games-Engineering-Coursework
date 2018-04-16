@@ -71,17 +71,17 @@ HudComponent::HudComponent(Entity *p) : Component(p)
 	label_skill3.setColor(sf::Color::Cyan);
 	label_skill3.setCharacterSize(15.0f);
 	label_skill3.setScale(WX / 1280, WY / 720);
-	label_skill3.setString(codes[controls[6]]);
+	label_skill3.setString(codes[controls[7]]);
 	label_skill4.setFont(font);
 	label_skill4.setColor(sf::Color::Cyan);
 	label_skill4.setCharacterSize(15.0f);
 	label_skill4.setScale(WX / 1280, WY / 720);
-	label_skill4.setString(codes[controls[7]]);
+	label_skill4.setString(codes[controls[8]]);
 	label_skill5.setFont(font);
 	label_skill5.setColor(sf::Color::Cyan);
 	label_skill5.setCharacterSize(15.0f);
 	label_skill5.setScale(WX / 1280, WY / 720);
-	label_skill5.setString(codes[controls[8]]);
+	label_skill5.setString(codes[controls[9]]);
 
 	////////////////////////BUTTONS
 	button_menu.setOutlineColor(sf::Color::Black);
@@ -96,6 +96,10 @@ HudComponent::HudComponent(Entity *p) : Component(p)
 	button_inventory.setOutlineThickness(5.0f);
 	button_inventory.setFillColor(sf::Color(79, 79, 79, 255));
 	button_inventory.setSize({ 0.045f*WX, 0.07f * WY });
+	button_skill_tree.setOutlineColor(sf::Color::Black);
+	button_skill_tree.setOutlineThickness(5.0f);
+	button_skill_tree.setFillColor(sf::Color(79, 79, 79, 255));
+	button_skill_tree.setSize({ 0.045f*WX, 0.07f * WY });
 
 	///////////////////////////////INVENTORY/////////////////////////////
 	inventory.setFillColor(sf::Color(255, 255, 255, 150));
@@ -207,6 +211,10 @@ HudComponent::HudComponent(Entity *p) : Component(p)
 	icon_menu.setTexture(iconsTexture);
 	icon_menu.setTextureRect({ 300,0,50,50 });
 	icon_menu.setScale(WX / 1280, WY / 720);
+
+	icon_skills.setTexture(iconsTexture);
+	icon_skills.setTextureRect({ 350,0,50,50 });
+	icon_skills.setScale(WX / 1280, WY / 720);
 
 
 
@@ -543,6 +551,7 @@ void HudComponent::resetButtons()
 	button_menu.setFillColor(sf::Color(79, 79, 79, 255));
 	button_inventory.setFillColor(sf::Color(79, 79, 79, 255));
 	button_save.setFillColor(sf::Color(79, 79, 79, 255));
+	button_skill_tree.setFillColor(sf::Color(79, 79, 79, 255));
 }
 void HudComponent::resetSlot(int i)
 {
@@ -579,9 +588,11 @@ void HudComponent::render()
 	Renderer::queue(0,&button_inventory);
 	Renderer::queue(0,&button_menu);
 	Renderer::queue(0,&button_save);
+	Renderer::queue(0, &button_skill_tree);
 	Renderer::queue(0,&icon_inventory);
 	Renderer::queue(0, &icon_save);
 	Renderer::queue(0, &icon_menu);
+	Renderer::queue(0, &icon_skills);
 	if (show_skill_tree || hide_skill_tree)
 	{
 		Renderer::queue(0, &skill_tree);
@@ -1462,6 +1473,20 @@ void HudComponent::update(double dt)
 				evs->SaveGame();
 			}
 		}
+		else if (mousePos.x >= 0.51f*WX && mousePos.x <= 0.555f*WX)
+		{
+			button_skill_tree.setFillColor(sf::Color::White);
+			if (!highlighted)sound.play();
+			highlighted = true;
+			if (buttonDelay<0 && sf::Mouse::isButtonPressed(Mouse::Left))
+			{
+				buttonDelay = 0.2f;
+				if (!show_skill_tree)
+					show_skill_tree = true;
+				else
+					hide_skill_tree = true;
+			}
+		}
 		else
 		{
 			resetButtons();
@@ -1529,6 +1554,8 @@ void HudComponent::setPosition()
 	icon_inventory.setPosition(button_inventory.getPosition());
 	button_menu.setPosition(windowZero + Vector2f(0.69f*WX, 0.915f*WY));
 	icon_save.setPosition(button_save.getPosition());
+	button_skill_tree.setPosition(windowZero + Vector2f(0.51f*WX, 0.915f*WY));
+	icon_skills.setPosition(button_skill_tree.getPosition());
 	////////////////////////////INVENTORY
 	inventory.setPosition(windowZero + Vector2f(WX, 0.02f*WY) - Vector2f(sliderX, 0));
 
