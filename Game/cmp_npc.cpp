@@ -26,18 +26,19 @@ void NPCComponent::update(double dt)
 	dialogueBox.setPosition(player->getPosition() + sf::Vector2f(-0.49f* WX, 0.14f*WY));
 	text.setPosition(player->getPosition() + sf::Vector2f(-0.48f* WX, 0.15f*WY));
   if (!bodylessText && interactionDelay <= 0 && (length(_parent->getPosition() - player->getPosition()) < 35.0f*WX/1280) &&  (sf::Keyboard::isKeyPressed(controls[12]) || sf::Joystick::isButtonPressed(0, sf::Joystick::Z)))
-
 	{
 		player->GetComponent<PlayerMovementComponent>()->immobilize();
 		trigger = true;
 	}
-	if (bodylessText)
+	if (bodylessText && !dialogueStarted)
 	{
+		i = 0;
+		dialogueStarted = true;
 		trigger = true;
 		player->GetComponent<PlayerMovementComponent>()->immobilize();
 	}
 
-		if (trigger && timer.getElapsedTime().asMilliseconds() > 30.0f && i < dialogue.length())
+		if (trigger && timer.getElapsedTime().asMilliseconds() > letter_delay && i < dialogue.length())
 		{
 			timer.restart();
 			i++;
@@ -50,7 +51,6 @@ void NPCComponent::update(double dt)
 		}
 		if (dialogueFinished && sf::Keyboard::isKeyPressed(controls[12]))
 		{
-			i = 0;
 			trigger = false;
 			dialogueFinished = false;
 			interactionDelay = 0.4f;
@@ -65,8 +65,12 @@ void NPCComponent::update(double dt)
 					break;
 				}
 			}
-			if (bodylessText)
+			if (bodylessText || disappearAfter)
+			{
 				_parent->setForDelete();
+				i = 0;
+			}
+
 			
 		}
 	
