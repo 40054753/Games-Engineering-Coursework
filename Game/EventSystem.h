@@ -14,7 +14,7 @@ private:
 	bool interior0 = false;
 	bool forest0 = false;
 	float forestMultiplier = 3.33f;
-	sf::Vector2f new_destination = {100,120};
+	sf::Vector2f new_destination;
 	////////////////////switches
 
 	bool LVUP = true;
@@ -36,7 +36,7 @@ public:
 	void switch_tutorial_complete() { tutorial_text0 = false; }
 	bool is_newGame() { return newGame;  }
 	void switch_new_game_dialogue() { newGame = false; }
-	void setNewGame() { newGame = true; new_destination = { 100,120 }; reset_switches();}
+	void setNewGame() { newGame = true; new_destination = { 150,170 }; reset_switches();}
 	int getCurrentMap();
 	std::string getSwitches();
 	bool if_changeMap() { return mapChange; }

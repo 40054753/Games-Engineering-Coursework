@@ -606,10 +606,10 @@ void GameScene::respawn_interior0()
 	teleporters.clear();
 	//////////////////////////////////UPSTAIRS STAIRS TELEPORTER//////////////////////////////
 	auto tp = make_shared<Entity>();
-	tp->setPosition({ 620,145 });
+	tp->setPosition({ 620 * WX / 1280,145*WY/720 });
 	auto d = tp->addComponent<WorldItemComponent>();
 	d->setTeleporter();
-	d->setTeleportDestination({590,915});
+	d->setTeleportDestination({590 * WX / 1280,915*WY/720});
 	auto helper = tp->addComponent<AnimatedSpriteComponent>();
 	helper->getSprite().setTexture(animatedSpellsTexture);
 	helper->getSprite().setOrigin(10, 15);
@@ -624,10 +624,10 @@ void GameScene::respawn_interior0()
 	_ents.list.push_back(tp);
 	//////////////////////////////////DOWNSTAIRS STAIRS TELEPORTER//////////////////////////////
 	auto tp2= make_shared<Entity>();
-	tp2->setPosition({ 620,915 });
+	tp2->setPosition({ 620*WX/1280,915*WY/720 });
 	auto s = tp2->addComponent<WorldItemComponent>();
 	s->setTeleporter();
-	s->setTeleportDestination({ 590,145 });
+	s->setTeleportDestination({ 590 * WX / 1280,145 *WY/720});
 	auto helper2 = tp2->addComponent<AnimatedSpriteComponent>();
 	helper2->getSprite().setTexture(animatedSpellsTexture);
 	helper2->getSprite().setOrigin(10, 15);
